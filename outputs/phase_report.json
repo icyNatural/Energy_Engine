@@ -1,0 +1,7 @@
+{
+  "phase": "Settle",
+  "icon": "\ud83c\udf19",
+  "condition": "System begins to quiet",
+  "sense": "Output softens and recovery preparation begins",
+  "quote": "System begins to quiet."
+}

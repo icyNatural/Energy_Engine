@@ -1,0 +1,15 @@
+{
+  "score": 34.2,
+  "band": "regenerating",
+  "state_label": "Regenerating",
+  "meaning": "Recovery signals are asking for more room.",
+  "guidance": "Lower friction tasks may feel better.",
+  "drivers": [
+    "Heart variability expanded beyond usual range.",
+    "Sleeping heart rhythm shifted outside normal band.",
+    "Sleep time asked for more recovery room.",
+    "Deep recovery window felt shorter.",
+    "Mental reset rhythm stayed consistent.",
+    "Breathing rhythm moved slightly downward."
+  ]
+}

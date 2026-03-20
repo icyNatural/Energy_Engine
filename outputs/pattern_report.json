@@ -1,0 +1,27 @@
+{
+  "summary": "Pattern watch active: Short sleep rhythm.",
+  "patterns": [
+    {
+      "id": "short_sleep_rhythm",
+      "title": "Short sleep rhythm",
+      "meaning": "Rest demand is gradually rising.",
+      "note": "Body is running on reduced recovery windows.",
+      "detail": "Sleep time has stayed below your recent baseline for 2 day(s).",
+      "pattern_presence": "present",
+      "pattern_presence_label": "Present",
+      "pattern_presence_description": "Pattern repeating enough to notice"
+    }
+  ],
+  "signals": {
+    "sleeping_hrv_baseline_median": 48.0,
+    "sleeping_hr_baseline_median": 62.0,
+    "respiratory_rate_baseline_median": 12.4,
+    "actual_sleep_minutes_baseline_median": 299.0
+  },
+  "memory": [
+    {
+      "count": 0,
+      "summary": "No personal outcome history yet."
+    }
+  ]
+}

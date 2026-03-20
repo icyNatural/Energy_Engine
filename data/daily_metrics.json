@@ -1,0 +1,50 @@
+﻿[
+    {
+        "actual_sleep_minutes":  320,
+        "rem_minutes":  70,
+        "deep_minutes":  95,
+        "sleeping_hr":  62,
+        "sleeping_hrv":  50,
+        "effective_awake_minutes":  869,
+        "nap_credit_minutes":  85,
+        "activity_minutes":  204
+    },
+    {
+        "date":  "2026-02-22",
+        "actual_sleep_minutes":  278,
+        "rem_minutes":  71,
+        "light_minutes":  163,
+        "deep_minutes":  44,
+        "sleeping_hr":  62,
+        "sleeping_hrv":  46,
+        "respiratory_rate":  12.4,
+        "latency_minutes":  17,
+        "restfulness_minutes":  11,
+        "sleep_start":  "03:29",
+        "sleep_end":  "08:18",
+        "nap_start":  "10:08",
+        "nap_end":  "11:17",
+        "nap_credit_minutes":  69,
+        "effective_awake_minutes":  null,
+        "activity_minutes":  210
+    },
+    {
+        "date":  "2026-02-24",
+        "actual_sleep_minutes":  235,
+        "rem_minutes":  71,
+        "light_minutes":  163,
+        "deep_minutes":  44,
+        "sleeping_hr":  66,
+        "sleeping_hrv":  50,
+        "respiratory_rate":  12.1,
+        "latency_minutes":  16,
+        "restfulness_minutes":  14,
+        "sleep_start":  "20:31",
+        "sleep_end":  "00:17",
+        "nap_start":  "11:13",
+        "nap_end":  "14:07",
+        "nap_credit_minutes":  174,
+        "effective_awake_minutes":  null,
+        "activity_minutes":  163
+    }
+]
