@@ -1,25 +1,24 @@
-﻿async function loadData() {
+﻿async function load(){
 
-    const phase = await fetch('outputs/phase_report.json').then(r=>r.json());
-    const energy = await fetch('outputs/energy_report.json').then(r=>r.json());
-    const pattern = await fetch('outputs/pattern_report.json').then(r=>r.json());
+const phase = await fetch('outputs/phase_report.json').then(r=>r.json());
+const energy = await fetch('outputs/energy_report.json').then(r=>r.json());
+const pattern = await fetch('outputs/pattern_report.json').then(r=>r.json());
 
-    document.getElementById('content').innerHTML = 
-        <div class='card'>
-            <h2>Phase</h2>
-            <pre>\</pre>
-        </div>
+document.getElementById('phaseCard').innerHTML = 
+<div class="title">Current Phase</div>
+<div class="value">\</div>
+;
 
-        <div class='card'>
-            <h2>Energy</h2>
-            <pre>\</pre>
-        </div>
+document.getElementById('energyCard').innerHTML = 
+<div class="title">Energy Score</div>
+<div class="value">\</div>
+;
 
-        <div class='card'>
-            <h2>Patterns</h2>
-            <pre>\</pre>
-        </div>
-    ;
+document.getElementById('patternCard').innerHTML = 
+<div class="title">Dominant Pattern</div>
+<div class="value">\</div>
+;
+
 }
 
-loadData();
+load();

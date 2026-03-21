@@ -1,19 +1,42 @@
-﻿body {
-    background:#0f172a;
-    color:#e5e7eb;
-    font-family:Arial;
-    text-align:center;
-    padding:40px;
+﻿body{
+background:#020617;
+color:white;
+font-family:Segoe UI;
+margin:0;
 }
 
-h1 {
-    color:#38bdf8;
+.container{
+text-align:center;
+padding:40px;
 }
 
-.card {
-    background:#111827;
-    padding:20px;
-    margin:20px auto;
-    width:400px;
-    border-radius:12px;
+h1{
+color:#38bdf8;
+margin-bottom:40px;
+}
+
+.grid{
+display:flex;
+gap:30px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.card{
+background:#0f172a;
+padding:25px;
+border-radius:14px;
+width:300px;
+box-shadow:0 0 20px rgba(0,0,0,.6);
+}
+
+.title{
+color:#22c55e;
+font-size:22px;
+margin-bottom:15px;
+}
+
+.value{
+font-size:26px;
+font-weight:bold;
 }
