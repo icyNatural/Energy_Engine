@@ -113,7 +113,6 @@ def parse_hhmm_to_ts(hhmm: str):
     now = datetime.now()
     dt = now.replace(hour=hh, minute=mm, second=0, microsecond=0)
 
-    # If entered time is in the future, treat it as yesterday.
     if dt.timestamp() > time.time():
         dt = dt - timedelta(days=1)
 
@@ -172,35 +171,15 @@ def phase_from_effective_awake(effective_awake_min: int, extension_min: int = 0)
     surge_end = 18 * 60 + round(extension_min * 0.6)
 
     if effective_awake_min < recovery_end:
-        return (
-            "🌑",
-            "Recovery",
-            "System rebuilds quietly.",
-        )
+        return ("🌑", "Recovery", "System rebuilds quietly.")
     elif effective_awake_min < flow_end:
-        return (
-            "🌊",
-            "Flow",
-            "Movement continues without resistance.",
-        )
+        return ("🌊", "Flow", "Movement continues without resistance.")
     elif effective_awake_min < radiance_end:
-        return (
-            "☀️",
-            "Radiance",
-            "The sun shines unhindered.",
-        )
+        return ("☀️", "Radiance", "The sun shines unhindered.")
     elif effective_awake_min < surge_end:
-        return (
-            "⚡",
-            "Surge",
-            "Energy expands beyond demand.",
-        )
+        return ("⚡", "Surge", "Energy expands beyond demand.")
     else:
-        return (
-            "🌙",
-            "Settle",
-            "System begins to quiet.",
-        )
+        return ("🌙", "Settle", "System begins to quiet.")
 
 
 def phase_color(name: str):
