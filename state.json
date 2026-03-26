@@ -1,7 +1,18 @@
 {
-  "wake_ts": 1774194240,
+  "wake_ts": 1774545175,
   "nap_start_ts": null,
   "nap_wake_ts": null,
   "nap_duration_m": 0,
-  "last_updated_ts": 1774214657
+  "last_updated_ts": 1774545175,
+  "daily": {
+    "actual_sleep_minutes": null,
+    "deep_minutes": null,
+    "rem_minutes": null,
+    "sleep_hr": null,
+    "hrv": null,
+    "respiratory_rate": null,
+    "activity_minutes": null,
+    "sleep_eff": null
+  },
+  "history": []
 }
