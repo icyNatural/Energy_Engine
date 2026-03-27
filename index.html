@@ -16,17 +16,10 @@
       --btn-text: #fff;
       --btn-primary-bg: #fff;
       --btn-primary-text: #081225;
-      --recovery: #64748b;
-      --flow: #38bdf8;
-      --radiance: #f59e0b;
-      --surge: #a855f7;
-      --settle: #94a3b8;
-      --untracked: #6b7280;
       --danger: rgba(239, 68, 68, 0.18);
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       padding: 16px;
@@ -34,12 +27,10 @@
       color: var(--text);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-
     .wrap {
-      max-width: 640px;
+      max-width: 680px;
       margin: 0 auto;
     }
-
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -48,21 +39,17 @@
       margin-bottom: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,.22);
     }
-
     .hero { padding-top: 20px; }
-
     .phase-row {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 8px;
     }
-
     .emoji {
       font-size: 34px;
       line-height: 1;
     }
-
     .phase {
       font-size: 46px;
       line-height: 1;
@@ -70,45 +57,38 @@
       margin: 0;
       color: white;
     }
-
     .sub {
       font-size: 16px;
       color: #dbe4ef;
       line-height: 1.45;
       margin-top: 4px;
     }
-
     .stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 16px;
     }
-
     .stat {
       background: var(--card-2);
       border-radius: 16px;
       padding: 12px;
     }
-
     .stat-label {
       font-size: 12px;
       color: var(--muted);
       margin-bottom: 4px;
     }
-
     .stat-value {
       font-size: 16px;
       font-weight: 700;
     }
-
     .row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 14px;
     }
-
     .btn {
       appearance: none;
       border: 0;
@@ -120,43 +100,36 @@
       background: var(--btn);
       color: var(--btn-text);
     }
-
     .btn-primary {
       background: var(--btn-primary-bg);
       color: var(--btn-primary-text);
     }
-
     .btn-danger {
       background: var(--danger);
       color: #fecaca;
     }
-
     .title {
       font-size: 17px;
       font-weight: 800;
       margin-bottom: 10px;
     }
-
     .big {
       font-size: 34px;
       font-weight: 800;
       line-height: 1.05;
       margin-bottom: 8px;
     }
-
     .text {
       font-size: 16px;
       line-height: 1.45;
       color: #dbe4ef;
     }
-
     .muted {
       font-size: 14px;
       line-height: 1.45;
       color: var(--muted);
       margin-top: 6px;
     }
-
     .bar {
       width: 100%;
       height: 12px;
@@ -165,14 +138,12 @@
       overflow: hidden;
       margin-top: 12px;
     }
-
     .fill {
       height: 12px;
       width: 0%;
-      background: var(--flow);
+      background: #38bdf8;
       transition: width .25s ease;
     }
-
     input {
       width: 100%;
       padding: 13px 14px;
@@ -183,11 +154,9 @@
       color: white;
       outline: none;
     }
-
     input::placeholder {
       color: var(--muted);
     }
-
     .inline-form {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -195,28 +164,24 @@
       align-items: center;
       margin-top: 12px;
     }
-
     .double-form {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 12px;
     }
-
     .triple-form {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
       margin-top: 12px;
     }
-
     .mini-box {
       background: var(--card-2);
       border-radius: 16px;
       padding: 12px;
       margin-top: 10px;
     }
-
     .mini-title-row {
       display: flex;
       justify-content: space-between;
@@ -224,18 +189,15 @@
       gap: 8px;
       margin-bottom: 6px;
     }
-
     .mini-title {
       font-size: 15px;
       font-weight: 800;
     }
-
     .mini-text {
       font-size: 14px;
       color: #dbe4ef;
       line-height: 1.4;
     }
-
     .tag {
       padding: 4px 10px;
       border-radius: 999px;
@@ -245,18 +207,14 @@
       color: white;
       white-space: nowrap;
     }
-
     .footer-note {
       text-align: center;
       color: var(--muted);
       font-size: 13px;
       margin-top: 10px;
     }
-
-    @media (max-width: 600px) {
-      .inline-form, .double-form, .triple-form {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 640px) {
+      .inline-form, .double-form, .triple-form { grid-template-columns: 1fr; }
       .phase { font-size: 42px; }
       .big { font-size: 30px; }
     }
@@ -294,7 +252,10 @@
       <div class="row">
         <button class="btn btn-primary" id="wakeNowBtn">Set Wake Now</button>
         <button class="btn" id="refreshBtn">Refresh</button>
+        <button class="btn" id="exportBtn">Export</button>
+        <button class="btn" id="importBtn">Import</button>
       </div>
+      <input type="file" id="importFile" style="display:none" accept="application/json" />
     </div>
 
     <div class="card">
@@ -309,18 +270,18 @@
     <div class="card">
       <div class="title">Daily inputs</div>
       <div class="triple-form">
-        <input id="sleepMinutesInput" placeholder="Actual sleep min" inputmode="numeric" />
-        <input id="deepMinutesInput" placeholder="Deep min" inputmode="numeric" />
-        <input id="remMinutesInput" placeholder="REM min" inputmode="numeric" />
+        <input id="actualSleepInput" placeholder="Actual sleep min" />
+        <input id="deepInput" placeholder="Deep min" />
+        <input id="remInput" placeholder="REM min" />
       </div>
       <div class="triple-form">
-        <input id="sleepHrInput" placeholder="Sleep HR" inputmode="decimal" />
-        <input id="sleepHrvInput" placeholder="Sleep HRV" inputmode="decimal" />
-        <input id="respiratoryInput" placeholder="Respiratory" inputmode="decimal" />
+        <input id="sleepHrInput" placeholder="Sleep HR" />
+        <input id="hrvInput" placeholder="HRV" />
+        <input id="respiratoryInput" placeholder="Respiratory" />
       </div>
       <div class="double-form">
-        <input id="activityInput" placeholder="Activity min" inputmode="numeric" />
-        <input id="restfulnessInput" placeholder="Restfulness %" inputmode="numeric" />
+        <input id="activityInput" placeholder="Activity min" />
+        <input id="sleepEffInput" placeholder="Sleep efficiency %" />
       </div>
       <div class="row">
         <button class="btn" id="saveDailyBtn">Save Daily Inputs</button>
@@ -340,7 +301,7 @@
       <div class="title">Recovery</div>
       <div class="big" id="recoveryState">Untracked</div>
       <div class="text" id="recoveryMeaning">Recovery state will appear after inputs are logged.</div>
-      <div class="muted" id="recoveryGuidance">Enter actual sleep, deep, REM, HR, and HRV.</div>
+      <div class="muted" id="recoveryGuidance">Enter actual sleep, deep, REM, HR, HRV, and respiratory.</div>
     </div>
 
     <div class="card">
@@ -373,16 +334,49 @@
       <div id="patternList"></div>
     </div>
 
+    <div class="card">
+      <div class="title">Baseline core</div>
+      <div class="muted" id="baselineDays">Baseline days used: 0</div>
+      <div class="muted" id="readinessCore">Readiness core: 0.000</div>
+      <div class="muted" id="baselineNotes">Add a few days of data to strengthen baseline learning.</div>
+    </div>
+
     <div class="footer-note">
-      Static GitHub Pages version. State is stored in your browser.
+      Static GitHub Pages version. State is stored in this browser.
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = "energy_engine_static_v2";
+    const STORAGE_KEY = "energy_engine_static_memory_v1";
 
     function nowTs() {
       return Math.floor(Date.now() / 1000);
+    }
+
+    function clamp(x, lo = -1.0, hi = 1.0) {
+      return Math.max(lo, Math.min(hi, x));
+    }
+
+    function safeNum(v) {
+      if (v === null || v === undefined || v === "") return null;
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function median(arr) {
+      const vals = arr.filter(v => v !== null && v !== undefined && Number.isFinite(v)).sort((a, b) => a - b);
+      if (!vals.length) return null;
+      const mid = Math.floor(vals.length / 2);
+      return vals.length % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
+    }
+
+    function robustScale(values, minScale, fallback) {
+      const vals = values.filter(v => v !== null && v !== undefined && Number.isFinite(v));
+      if (vals.length < 3) return Math.max(minScale, fallback);
+      const m = median(vals);
+      const absDevs = vals.map(v => Math.abs(v - m));
+      const mad = median(absDevs);
+      return Math.max(minScale, mad > 0 ? mad : fallback);
     }
 
     function defaultState() {
@@ -396,11 +390,11 @@
           actual_sleep_minutes: null,
           deep_minutes: null,
           rem_minutes: null,
-          sleeping_hr: null,
-          sleeping_hrv: null,
+          sleep_hr: null,
+          hrv: null,
           respiratory_rate: null,
           activity_minutes: null,
-          restfulness: null
+          sleep_eff: null
         },
         history: []
       };
@@ -410,12 +404,12 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return defaultState();
-        const parsed = JSON.parse(raw);
+        const data = JSON.parse(raw);
         return {
           ...defaultState(),
-          ...parsed,
-          daily: { ...defaultState().daily, ...(parsed.daily || {}) },
-          history: Array.isArray(parsed.history) ? parsed.history : []
+          ...data,
+          daily: { ...defaultState().daily, ...(data.daily || {}) },
+          history: Array.isArray(data.history) ? data.history : []
         };
       } catch {
         return defaultState();
@@ -462,10 +456,7 @@
 
       hh = Number(hh);
       mm = Number(mm);
-
-      if (Number.isNaN(hh) || Number.isNaN(mm) || hh < 0 || hh > 23 || mm < 0 || mm > 59) {
-        return null;
-      }
+      if (!Number.isFinite(hh) || !Number.isFinite(mm) || hh < 0 || hh > 23 || mm < 0 || mm > 59) return null;
 
       const now = new Date();
       const d = new Date(now);
@@ -481,9 +472,7 @@
     function computeNapDuration(state) {
       const start = state.nap_start_ts;
       const wake = state.nap_wake_ts;
-      if (start && wake && wake >= start) {
-        return Math.floor((wake - start) / 60);
-      }
+      if (start && wake && wake >= start) return Math.floor((wake - start) / 60);
       return 0;
     }
 
@@ -499,12 +488,12 @@
 
     function phaseExtensionMinutes(n) {
       if (!n || n <= 0) return 0;
-      let extension;
-      if (n <= 20) extension = Math.round(n * 0.2);
-      else if (n <= 45) extension = Math.round(4 + (n - 20) * 0.35);
-      else if (n <= 90) extension = Math.round(13 + (n - 45) * 0.45);
-      else extension = Math.round(33 + (n - 90) * 0.2);
-      return Math.min(extension, 45);
+      let ext;
+      if (n <= 20) ext = Math.round(n * 0.2);
+      else if (n <= 45) ext = Math.round(4 + (n - 20) * 0.35);
+      else if (n <= 90) ext = Math.round(13 + (n - 45) * 0.45);
+      else ext = Math.round(33 + (n - 90) * 0.2);
+      return Math.min(ext, 45);
     }
 
     function phaseFromEffectiveAwake(effectiveAwakeMin, extensionMin = 0) {
@@ -517,150 +506,191 @@
       const radianceEnd = 14 * 60 + extensionMin;
       const surgeEnd = 18 * 60 + Math.round(extensionMin * 0.6);
 
-      if (effectiveAwakeMin < recoveryEnd) {
-        return { emoji: "🌑", name: "Recovery", quote: "System rebuilds quietly.", color: "#64748b" };
-      }
-      if (effectiveAwakeMin < flowEnd) {
-        return { emoji: "🌊", name: "Flow", quote: "Movement continues without resistance.", color: "#38bdf8" };
-      }
-      if (effectiveAwakeMin < radianceEnd) {
-        return { emoji: "☀️", name: "Radiance", quote: "The sun shines unhindered.", color: "#f59e0b" };
-      }
-      if (effectiveAwakeMin < surgeEnd) {
-        return { emoji: "⚡", name: "Surge", quote: "Energy expands beyond demand.", color: "#a855f7" };
-      }
+      if (effectiveAwakeMin < recoveryEnd) return { emoji: "🌑", name: "Recovery", quote: "System rebuilds quietly.", color: "#64748b" };
+      if (effectiveAwakeMin < flowEnd) return { emoji: "🌊", name: "Flow", quote: "Movement continues without resistance.", color: "#38bdf8" };
+      if (effectiveAwakeMin < radianceEnd) return { emoji: "☀️", name: "Radiance", quote: "The sun shines unhindered.", color: "#f59e0b" };
+      if (effectiveAwakeMin < surgeEnd) return { emoji: "⚡", name: "Surge", quote: "Energy expands beyond demand.", color: "#a855f7" };
       return { emoji: "🌙", name: "Settle", quote: "System begins to quiet.", color: "#94a3b8" };
     }
 
-    function median(values) {
-      const nums = values.filter(v => typeof v === "number" && !Number.isNaN(v)).sort((a, b) => a - b);
-      if (!nums.length) return null;
-      const mid = Math.floor(nums.length / 2);
-      return nums.length % 2 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    function recentHistory(state, n = 7) {
+      return Array.isArray(state.history) ? state.history.slice(-n) : [];
+    }
+
+    function collect(rows, key) {
+      return rows.map(r => safeNum(r[key])).filter(v => v !== null);
+    }
+
+    function baselineBundle(rows) {
+      const out = {};
+      [
+        "sleep_hr",
+        "hrv",
+        "sleep_eff",
+        "actual_sleep_minutes",
+        "deep_minutes",
+        "rem_minutes",
+        "respiratory_rate",
+        "activity_minutes"
+      ].forEach(f => {
+        const vals = collect(rows, f);
+        out[f] = vals.length ? median(vals) : null;
+      });
+      return out;
+    }
+
+    function scoreV1(state) {
+      const d = state.daily || {};
+      const rows = recentHistory(state, 7);
+      const base = baselineBundle(rows);
+
+      const hrVals = collect(rows, "sleep_hr");
+      const hrvVals = collect(rows, "hrv");
+      const effVals = collect(rows, "sleep_eff");
+      const sleepVals = collect(rows, "actual_sleep_minutes");
+      const deepVals = collect(rows, "deep_minutes");
+      const remVals = collect(rows, "rem_minutes");
+      const rrVals = collect(rows, "respiratory_rate");
+      const actVals = collect(rows, "activity_minutes");
+
+      const hr = safeNum(d.sleep_hr);
+      const hrv = safeNum(d.hrv);
+      const eff = safeNum(d.sleep_eff);
+      const sleepMin = safeNum(d.actual_sleep_minutes);
+      const deep = safeNum(d.deep_minutes);
+      const rem = safeNum(d.rem_minutes);
+      const rr = safeNum(d.respiratory_rate);
+      const act = safeNum(d.activity_minutes);
+
+      const hrScale = robustScale(hrVals, 1.0, 2.0);
+      const hrvScale = robustScale(hrvVals, 5.0, 10.0);
+      const effScale = robustScale(effVals, 2.0, 5.0);
+      const sleepScale = robustScale(sleepVals, 30.0, 60.0);
+      const deepScale = robustScale(deepVals, 10.0, 20.0);
+      const remScale = robustScale(remVals, 10.0, 20.0);
+      const rrScale = robustScale(rrVals, 0.3, 0.6);
+      const actScale = robustScale(actVals, 20.0, 40.0);
+
+      const scores = {};
+      const notes = [];
+
+      if (hr !== null && base.sleep_hr !== null) {
+        const dHr = hr - base.sleep_hr;
+        scores.sleep_hr = clamp((-dHr) / hrScale);
+        notes.push(`Sleep HR vs baseline: ${dHr >= 0 ? "+" : ""}${dHr.toFixed(1)}`);
+      } else scores.sleep_hr = null;
+
+      if (hrv !== null && base.hrv !== null) {
+        const dHrv = hrv - base.hrv;
+        scores.hrv = clamp(dHrv / hrvScale);
+        notes.push(`HRV vs baseline: ${dHrv >= 0 ? "+" : ""}${dHrv.toFixed(1)}`);
+      } else scores.hrv = null;
+
+      if (eff !== null && base.sleep_eff !== null) {
+        const dEff = eff - base.sleep_eff;
+        scores.sleep_eff = clamp(dEff / effScale);
+        notes.push(`Sleep efficiency vs baseline: ${dEff >= 0 ? "+" : ""}${dEff.toFixed(1)}`);
+      } else scores.sleep_eff = null;
+
+      if (sleepMin !== null && base.actual_sleep_minutes !== null) {
+        const dSleep = sleepMin - base.actual_sleep_minutes;
+        scores.actual_sleep_minutes = clamp(dSleep / sleepScale);
+        notes.push(`Actual sleep vs baseline: ${dSleep >= 0 ? "+" : ""}${dSleep.toFixed(1)}`);
+      } else scores.actual_sleep_minutes = null;
+
+      if (deep !== null && base.deep_minutes !== null) {
+        const dDeep = deep - base.deep_minutes;
+        scores.deep_minutes = clamp(dDeep / deepScale);
+        notes.push(`Deep vs baseline: ${dDeep >= 0 ? "+" : ""}${dDeep.toFixed(1)}`);
+      } else scores.deep_minutes = null;
+
+      if (rem !== null && base.rem_minutes !== null) {
+        const dRem = rem - base.rem_minutes;
+        scores.rem_minutes = clamp(dRem / remScale);
+        notes.push(`REM vs baseline: ${dRem >= 0 ? "+" : ""}${dRem.toFixed(1)}`);
+      } else scores.rem_minutes = null;
+
+      if (rr !== null && base.respiratory_rate !== null) {
+        const dRr = rr - base.respiratory_rate;
+        scores.respiratory_rate = clamp((-dRr) / rrScale);
+        notes.push(`Respiratory vs baseline: ${dRr >= 0 ? "+" : ""}${dRr.toFixed(2)}`);
+      } else scores.respiratory_rate = null;
+
+      if (act !== null && base.activity_minutes !== null && base.activity_minutes > 0) {
+        const ratio = act / base.activity_minutes;
+        const dist = Math.abs(ratio - 1.0);
+        scores.activity_minutes = -clamp(dist / Math.max(actScale / Math.max(base.activity_minutes, 1), 0.25));
+        notes.push(`Activity ratio vs baseline: x${ratio.toFixed(2)}`);
+      } else scores.activity_minutes = null;
+
+      const pick = (name, fallback = 0.0) => scores[name] !== null ? scores[name] : fallback;
+
+      const readiness = clamp(
+        0.24 * pick("sleep_hr") +
+        0.24 * pick("hrv") +
+        0.12 * pick("sleep_eff") +
+        0.14 * pick("actual_sleep_minutes") +
+        0.10 * pick("deep_minutes") +
+        0.06 * pick("rem_minutes") +
+        0.06 * pick("respiratory_rate") +
+        0.04 * pick("activity_minutes")
+      );
+
+      return {
+        baselineDays: rows.length,
+        baseline: base,
+        readiness,
+        notes
+      };
+    }
+
+    function bandFromEnergy(score100) {
+      if (score100 >= 78) return ["Open", "Energy looks widely available.", "This is a strong window for action and expression."];
+      if (score100 >= 55) return ["Usable", "Energy is available but not unlimited.", "Move forward with steady pacing."];
+      return ["Narrow", "Energy range looks smaller right now.", "Choose essential actions and conserve effort."];
+    }
+
+    function bandFromRecovery(score100) {
+      if (score100 >= 75) return ["Restored", "Recovery signals are coming through clearly.", "Movement is available without forcing."];
+      if (score100 >= 58) return ["Steady", "Recovery signals look workable and balanced.", "Favor smoother pacing today."];
+      return ["Regenerating", "Recovery signals are asking for more room.", "Lower friction tasks may feel better."];
     }
 
     function buildDashboard(state) {
-      const d = state.daily || {};
-      const history = Array.isArray(state.history) ? state.history.slice(-14) : [];
-
       const wakeTs = state.wake_ts;
       const minsAwake = minsSince(wakeTs);
       const napDur = computeNapDuration(state);
       const napCredit = napCreditMinutes(napDur);
       const phaseExtension = phaseExtensionMinutes(napDur);
-      const effAwake = minsAwake === null ? null : Math.max(0, minsAwake - napCredit);
+
+      let effAwake = null;
+      if (minsAwake !== null) effAwake = Math.max(0, minsAwake - napCredit);
+
       const phase = phaseFromEffectiveAwake(effAwake, phaseExtension);
-
-      const sleepBase = median(history.map(x => x.actual_sleep_minutes));
-      const hrvBase = median(history.map(x => x.sleeping_hrv));
-      const hrBase = median(history.map(x => x.sleeping_hr));
-      const rrBase = median(history.map(x => x.respiratory_rate));
-
-      let recoveryScore = 50;
-      let recoveryState = "Untracked";
-      let recoveryMeaning = "Recovery state will appear after inputs are logged.";
-      let recoveryGuidance = "Enter actual sleep, deep, REM, HR, and HRV.";
-      const patternItems = [];
-
-      const hasInputs =
-        d.actual_sleep_minutes !== null ||
-        d.deep_minutes !== null ||
-        d.rem_minutes !== null ||
-        d.sleeping_hr !== null ||
-        d.sleeping_hrv !== null;
-
-      if (hasInputs) {
-        recoveryState = "Regenerating";
-        recoveryMeaning = "Recovery signals are asking for more room.";
-        recoveryGuidance = "Lower friction tasks may feel better.";
-
-        if (typeof d.actual_sleep_minutes === "number") {
-          if (sleepBase !== null && d.actual_sleep_minutes < sleepBase) {
-            recoveryScore -= 10;
-            patternItems.push({
-              title: "Short sleep rhythm",
-              label: "Present",
-              meaning: "Rest demand is gradually rising."
-            });
-          } else if (d.actual_sleep_minutes >= 420) {
-            recoveryScore += 12;
-          } else if (d.actual_sleep_minutes >= 300) {
-            recoveryScore += 3;
-          } else {
-            recoveryScore -= 8;
-          }
-        }
-
-        if (typeof d.deep_minutes === "number") {
-          if (d.deep_minutes >= 60) recoveryScore += 6;
-          else recoveryScore -= 4;
-        }
-
-        if (typeof d.rem_minutes === "number") {
-          if (d.rem_minutes >= 60) recoveryScore += 4;
-          else recoveryScore -= 3;
-        }
-
-        if (typeof d.sleeping_hrv === "number" && hrvBase !== null) {
-          recoveryScore += (d.sleeping_hrv - hrvBase) * 1.2;
-        }
-
-        if (typeof d.sleeping_hr === "number" && hrBase !== null) {
-          recoveryScore += (hrBase - d.sleeping_hr) * 1.0;
-        }
-
-        if (typeof d.respiratory_rate === "number" && rrBase !== null && d.respiratory_rate > rrBase + 0.4) {
-          recoveryScore -= 4;
-        }
-
-        recoveryScore = Math.max(0, Math.min(100, Math.round(recoveryScore * 10) / 10));
-
-        if (recoveryScore >= 75) {
-          recoveryState = "Restored";
-          recoveryMeaning = "Recovery signals are coming through clearly.";
-          recoveryGuidance = "Movement is available without forcing.";
-        } else if (recoveryScore >= 58) {
-          recoveryState = "Steady";
-          recoveryMeaning = "Recovery signals look workable and balanced.";
-          recoveryGuidance = "Favor smoother pacing today.";
-        } else {
-          recoveryState = "Regenerating";
-          recoveryMeaning = "Recovery signals are asking for more room.";
-          recoveryGuidance = "Lower friction tasks may feel better.";
-        }
-      }
+      const core = scoreV1(state);
+      const readiness = core.readiness;
+      const recoveryScore = Math.round(((readiness + 1) / 2) * 1000) / 10;
 
       let energyScore = 0;
-      let energyState = "Untracked";
-      let energyMeaning = "Set wake and inputs to begin.";
-      let energyGuidance = "Anchor the day first.";
-
       if (effAwake !== null) {
-        energyScore = 92 - (effAwake / 60) * 3.1 + napCredit * 0.35;
+        const wakeDrag = Math.min((effAwake / 60) * 3.0, 45);
+        const napBonus = Math.min(napCredit * 0.35 + phaseExtension * 0.5, 22);
+        energyScore = Math.max(0, Math.min(100, Math.round((readiness * 50 + 50 + napBonus - wakeDrag - 5) * 10) / 10));
+      }
 
-        if (typeof d.activity_minutes === "number") {
-          energyScore -= Math.max(0, d.activity_minutes - 60) * 0.08;
-        }
+      const [energyState, energyMeaning, energyGuidance] = bandFromEnergy(energyScore);
+      const [recoveryState, recoveryMeaning, recoveryGuidance] = bandFromRecovery(recoveryScore);
 
-        if (typeof d.actual_sleep_minutes === "number" && d.actual_sleep_minutes < 300) {
-          energyScore -= 10;
-        }
+      const patternItems = [];
+      const d = state.daily;
+      const base = core.baseline;
 
-        energyScore = Math.max(0, Math.min(100, Math.round(energyScore * 10) / 10));
-
-        if (energyScore >= 78) {
-          energyState = "Open";
-          energyMeaning = "Energy looks widely available.";
-          energyGuidance = "This is a strong window for action and expression.";
-        } else if (energyScore >= 55) {
-          energyState = "Usable";
-          energyMeaning = "Energy is available but not unlimited.";
-          energyGuidance = "Move forward with steady pacing.";
-        } else {
-          energyState = "Narrow";
-          energyMeaning = "Energy range looks smaller right now.";
-          energyGuidance = "Choose essential actions and conserve effort.";
-        }
+      if (d.actual_sleep_minutes !== null && base.actual_sleep_minutes !== null && d.actual_sleep_minutes < base.actual_sleep_minutes) {
+        patternItems.push({
+          title: "Short sleep rhythm",
+          label: "Present",
+          meaning: "Rest demand is gradually rising."
+        });
       }
 
       if (napDur > 0) {
@@ -673,15 +703,33 @@
 
       return {
         wakeTs,
+        effAwake,
         napDur,
         napCredit,
         phaseExtension,
-        effAwake,
         phase,
-        energy: { state: energyState, meaning: energyMeaning, guidance: energyGuidance, score: energyScore },
-        recovery: { state: recoveryState, meaning: recoveryMeaning, guidance: recoveryGuidance, score: recoveryScore },
-        patterns: patternItems
+        energyScore,
+        energyState,
+        energyMeaning,
+        energyGuidance,
+        recoveryScore,
+        recoveryState,
+        recoveryMeaning,
+        recoveryGuidance,
+        patternItems,
+        core
       };
+    }
+
+    function fillInputs(state) {
+      document.getElementById("actualSleepInput").value = state.daily.actual_sleep_minutes ?? "";
+      document.getElementById("deepInput").value = state.daily.deep_minutes ?? "";
+      document.getElementById("remInput").value = state.daily.rem_minutes ?? "";
+      document.getElementById("sleepHrInput").value = state.daily.sleep_hr ?? "";
+      document.getElementById("hrvInput").value = state.daily.hrv ?? "";
+      document.getElementById("respiratoryInput").value = state.daily.respiratory_rate ?? "";
+      document.getElementById("activityInput").value = state.daily.activity_minutes ?? "";
+      document.getElementById("sleepEffInput").value = state.daily.sleep_eff ?? "";
     }
 
     function render() {
@@ -696,32 +744,37 @@
       document.getElementById("napCreditDisplay").textContent = `${dash.napCredit}m`;
       document.getElementById("phaseExtensionDisplay").textContent = `+${dash.phaseExtension}m`;
 
-      document.getElementById("energyState").textContent = dash.energy.state;
-      document.getElementById("energyMeaning").textContent = dash.energy.meaning;
-      document.getElementById("energyGuidance").textContent = dash.energy.guidance;
-      document.getElementById("energyFill").style.width = `${dash.energy.score}%`;
+      document.getElementById("energyState").textContent = dash.energyState;
+      document.getElementById("energyMeaning").textContent = dash.energyMeaning;
+      document.getElementById("energyGuidance").textContent = dash.energyGuidance;
+      document.getElementById("energyFill").style.width = `${dash.energyScore}%`;
       document.getElementById("energyFill").style.background = dash.phase.color;
-      document.getElementById("energyScore").textContent = `Energy index: ${dash.energy.score}/100`;
+      document.getElementById("energyScore").textContent = `Energy index: ${dash.energyScore}/100`;
 
-      document.getElementById("recoveryState").textContent = dash.recovery.state;
-      document.getElementById("recoveryMeaning").textContent = dash.recovery.meaning;
-      document.getElementById("recoveryGuidance").textContent = dash.recovery.guidance;
+      document.getElementById("recoveryState").textContent = dash.recoveryState;
+      document.getElementById("recoveryMeaning").textContent = dash.recoveryMeaning;
+      document.getElementById("recoveryGuidance").textContent = dash.recoveryGuidance;
 
       document.getElementById("napSummary").innerHTML =
         `Nap start: ${fmtTimeFromTs(state.nap_start_ts)}<br>` +
         `Nap wake: ${fmtTimeFromTs(state.nap_wake_ts)}<br>` +
         `Nap duration: ${dash.napDur ? dash.napDur + "m" : "—"}`;
 
+      document.getElementById("baselineDays").textContent = `Baseline days used: ${dash.core.baselineDays}`;
+      document.getElementById("readinessCore").textContent = `Readiness core: ${dash.core.readiness.toFixed(3)}`;
+      document.getElementById("baselineNotes").textContent =
+        dash.core.notes.length ? dash.core.notes.slice(0, 5).join(" | ") : "Add a few days of data to strengthen baseline learning.";
+
       const patternSummary = document.getElementById("patternSummary");
       const patternList = document.getElementById("patternList");
       patternList.innerHTML = "";
 
-      if (!dash.patterns.length) {
+      if (!dash.patternItems.length) {
         patternSummary.textContent = "No active patterns.";
         patternList.innerHTML = '<div class="muted">No active patterns.</div>';
       } else {
         patternSummary.textContent = "Pattern watch active.";
-        dash.patterns.forEach(p => {
+        dash.patternItems.forEach(p => {
           const div = document.createElement("div");
           div.className = "mini-box";
           div.innerHTML = `
@@ -734,32 +787,8 @@
           patternList.appendChild(div);
         });
       }
-    }
 
-    function saveDailyInputs() {
-      const state = loadState();
-      const val = id => document.getElementById(id).value.trim();
-
-      state.daily.actual_sleep_minutes = val("sleepMinutesInput") === "" ? null : Number(val("sleepMinutesInput"));
-      state.daily.deep_minutes = val("deepMinutesInput") === "" ? null : Number(val("deepMinutesInput"));
-      state.daily.rem_minutes = val("remMinutesInput") === "" ? null : Number(val("remMinutesInput"));
-      state.daily.sleeping_hr = val("sleepHrInput") === "" ? null : Number(val("sleepHrInput"));
-      state.daily.sleeping_hrv = val("sleepHrvInput") === "" ? null : Number(val("sleepHrvInput"));
-      state.daily.respiratory_rate = val("respiratoryInput") === "" ? null : Number(val("respiratoryInput"));
-      state.daily.activity_minutes = val("activityInput") === "" ? null : Number(val("activityInput"));
-      state.daily.restfulness = val("restfulnessInput") === "" ? null : Number(val("restfulnessInput"));
-
-      const snapshot = {
-        date: new Date().toISOString().slice(0, 10),
-        ...state.daily
-      };
-
-      state.history = Array.isArray(state.history) ? state.history : [];
-      state.history.push(snapshot);
-      state.history = state.history.slice(-30);
-
-      saveState(state);
-      render();
+      fillInputs(state);
     }
 
     document.getElementById("wakeNowBtn").addEventListener("click", () => {
@@ -784,7 +813,26 @@
     });
 
     document.getElementById("saveDailyBtn").addEventListener("click", () => {
-      saveDailyInputs();
+      const state = loadState();
+      state.daily.actual_sleep_minutes = safeNum(document.getElementById("actualSleepInput").value);
+      state.daily.deep_minutes = safeNum(document.getElementById("deepInput").value);
+      state.daily.rem_minutes = safeNum(document.getElementById("remInput").value);
+      state.daily.sleep_hr = safeNum(document.getElementById("sleepHrInput").value);
+      state.daily.hrv = safeNum(document.getElementById("hrvInput").value);
+      state.daily.respiratory_rate = safeNum(document.getElementById("respiratoryInput").value);
+      state.daily.activity_minutes = safeNum(document.getElementById("activityInput").value);
+      state.daily.sleep_eff = safeNum(document.getElementById("sleepEffInput").value);
+
+      const snapshot = {
+        date: new Date().toISOString().slice(0, 10),
+        ...state.daily
+      };
+
+      state.history.push(snapshot);
+      state.history = state.history.slice(-30);
+
+      saveState(state);
+      render();
     });
 
     document.getElementById("napStartBtn").addEventListener("click", () => {
@@ -818,7 +866,6 @@
       const wakeRaw = document.getElementById("napWakeInput").value;
       const startTs = parseHHMMToTs(startRaw);
       let wakeTs = parseHHMMToTs(wakeRaw);
-
       if (!startTs || !wakeTs) return;
       if (wakeTs < startTs) wakeTs += 24 * 60 * 60;
 
@@ -828,6 +875,36 @@
       state.nap_duration_m = computeNapDuration(state);
       saveState(state);
       render();
+    });
+
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(loadState(), null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "energy_engine_state.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    document.getElementById("importBtn").addEventListener("click", () => {
+      document.getElementById("importFile").click();
+    });
+
+    document.getElementById("importFile").addEventListener("change", async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        const merged = {
+          ...defaultState(),
+          ...data,
+          daily: { ...defaultState().daily, ...(data.daily || {}) },
+          history: Array.isArray(data.history) ? data.history : []
+        };
+        saveState(merged);
+        render();
+      } catch {}
     });
 
     render();
