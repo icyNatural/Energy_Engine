@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Energy Engine v1</title>
+  <title>Icy Natural OS v1</title>
   <style>
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       padding: 18px;
@@ -14,199 +13,184 @@
       color: #f8fafc;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
+    .wrap { max-width: 920px; margin: 0 auto; }
+    .app-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 8px;
     }
-
+    .app-sub {
+      color: #9fb0c8;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .nav-btn.active {
+      background: white;
+      color: #081225;
+    }
     .card {
-      background: rgba(12, 24, 48, 0.88);
+      background: rgba(12,24,48,0.9);
       border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 28px;
-      padding: 20px;
+      border-radius: 26px;
+      padding: 18px;
       margin-bottom: 16px;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.26);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.24);
       backdrop-filter: blur(8px);
     }
-
     .hero {
-      padding: 24px 20px 20px;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
     }
-
     .hero::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
       pointer-events: none;
     }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-    }
-
+    .hero-inner { position: relative; z-index: 1; }
     .eyebrow {
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.65);
-      margin-bottom: 12px;
-    }
-
-    .phase-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      color: rgba(255,255,255,0.66);
       margin-bottom: 10px;
     }
-
-    .emoji {
-      font-size: 34px;
-      line-height: 1;
+    .phase-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
     }
-
+    .emoji { font-size: 34px; }
     .phase {
-      font-size: 48px;
-      line-height: 1;
+      font-size: 44px;
       font-weight: 900;
+      line-height: 1;
       margin: 0;
     }
-
     .phase-quote {
+      color: #dce5f1;
       font-size: 16px;
       line-height: 1.5;
-      color: #dbe4ef;
-      margin-top: 6px;
+      margin-top: 4px;
     }
-
     .energy-state {
-      margin-top: 22px;
+      margin-top: 18px;
       font-size: 34px;
-      line-height: 1;
       font-weight: 900;
+      line-height: 1;
     }
-
     .energy-meaning {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 18px;
-      line-height: 1.45;
-      color: #e8eef7;
+      color: #e5edf7;
+      line-height: 1.4;
     }
-
     .energy-action {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 20px;
-      line-height: 1.35;
       font-weight: 800;
+      line-height: 1.35;
     }
-
     .window {
-      margin-top: 12px;
-      font-size: 14px;
+      margin-top: 10px;
       color: #aebed3;
+      font-size: 14px;
     }
-
     .bar {
       width: 100%;
       height: 12px;
       border-radius: 999px;
       background: rgba(255,255,255,0.08);
       overflow: hidden;
-      margin-top: 18px;
+      margin-top: 16px;
     }
-
     .fill {
-      height: 12px;
       width: 0%;
-      background: #38bdf8;
+      height: 12px;
       border-radius: 999px;
+      background: #38bdf8;
       transition: width 0.2s ease;
     }
-
-    .hero-actions {
+    .hero-actions,
+    .two,
+    .three,
+    .grid-2,
+    .grid-3 {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
-      margin-top: 18px;
     }
-
+    .hero-actions, .grid-3, .three { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .two { grid-template-columns: repeat(2, 1fr); }
     .section-title {
       font-size: 15px;
       font-weight: 800;
-      color: rgba(255,255,255,0.76);
+      color: rgba(255,255,255,0.78);
       margin-bottom: 14px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
     .metric {
       background: rgba(255,255,255,0.035);
       border-radius: 18px;
       padding: 14px;
     }
-
     .metric-label {
       font-size: 12px;
       color: #94a3b8;
       margin-bottom: 6px;
     }
-
     .metric-value {
       font-size: 20px;
       font-weight: 800;
       line-height: 1.1;
     }
-
     .metric-sub {
       margin-top: 4px;
       font-size: 12px;
       color: #93a7c2;
     }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 14px;
-    }
-
-    .recovery-big {
-      font-size: 34px;
-      line-height: 1;
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
-
     .text {
       font-size: 16px;
       line-height: 1.5;
       color: #dbe4ef;
     }
-
+    .big {
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
     .muted {
       margin-top: 8px;
       font-size: 14px;
-      line-height: 1.45;
       color: #94a3b8;
+      line-height: 1.45;
     }
-
-    .row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
     .btn {
       appearance: none;
       border: 0;
@@ -217,66 +201,39 @@
       cursor: pointer;
       width: 100%;
     }
-
-    .btn-primary {
-      background: white;
-      color: #081225;
-    }
-
-    .btn-ghost {
-      background: rgba(255,255,255,0.08);
-      color: white;
-    }
-
-    .btn-soft {
-      background: rgba(255,255,255,0.04);
-      color: white;
-    }
-
-    input {
+    .btn-primary { background: white; color: #081225; }
+    .btn-ghost { background: rgba(255,255,255,0.08); color: white; }
+    .btn-soft { background: rgba(255,255,255,0.04); color: white; }
+    .btn-danger { background: rgba(127,29,29,0.55); color: #fff; }
+    input, textarea, select {
       width: 100%;
-      padding: 14px 14px;
-      font-size: 16px;
+      padding: 14px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,0.08);
       background: rgba(255,255,255,0.04);
       color: white;
+      font-size: 16px;
       outline: none;
     }
-
-    input::placeholder {
-      color: #94a3b8;
-    }
-
-    .inline-form {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
+    textarea { min-height: 110px; resize: vertical; }
+    input::placeholder, textarea::placeholder { color: #94a3b8; }
+    details {
       margin-top: 12px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 18px;
+      padding: 14px;
     }
-
-    .double-form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: white;
     }
-
-    .triple-form {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
     .mini-box {
       background: rgba(255,255,255,0.035);
       border-radius: 18px;
       padding: 14px;
       margin-top: 10px;
     }
-
     .mini-title-row {
       display: flex;
       justify-content: space-between;
@@ -284,18 +241,8 @@
       gap: 8px;
       margin-bottom: 6px;
     }
-
-    .mini-title {
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .mini-text {
-      font-size: 14px;
-      color: #dbe4ef;
-      line-height: 1.45;
-    }
-
+    .mini-title { font-size: 15px; font-weight: 800; }
+    .mini-text { font-size: 14px; color: #dbe4ef; line-height: 1.45; }
     .tag {
       padding: 5px 10px;
       border-radius: 999px;
@@ -305,207 +252,317 @@
       color: white;
       white-space: nowrap;
     }
-
-    details {
-      margin-top: 10px;
-      background: rgba(255,255,255,0.02);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    summary {
-      cursor: pointer;
-      font-weight: 800;
-      color: white;
-    }
-
-    ul {
-      margin: 10px 0 0 18px;
-      padding: 0;
-    }
-
-    li {
-      color: #dbe4ef;
-      margin-bottom: 6px;
-      line-height: 1.45;
-    }
-
+    .hidden { display: none; }
     .tiny {
-      font-size: 12px;
+      margin-top: 8px;
       color: #93a7c2;
+      font-size: 12px;
+    }
+    .list {
+      display: grid;
+      gap: 10px;
       margin-top: 10px;
     }
-
-    @media (max-width: 640px) {
-      .hero-actions,
-      .split,
-      .metrics,
-      .inline-form,
-      .double-form,
-      .triple-form {
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 13px;
+    }
+    @media (max-width: 700px) {
+      .hero-actions, .three, .grid-3, .grid-2, .two {
         grid-template-columns: 1fr;
       }
-
-      .phase {
-        font-size: 42px;
-      }
-
-      .energy-state {
-        font-size: 30px;
-      }
+      .phase { font-size: 40px; }
+      .energy-state { font-size: 30px; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="app-title">Icy Natural OS</div>
+    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
 
-    <div class="card hero">
-      <div class="hero-inner">
-        <div class="eyebrow">Your state right now</div>
-
-        <div class="phase-row">
-          <div class="emoji" id="phaseIcon">⏳</div>
-          <div class="phase" id="phaseName">Untracked</div>
-        </div>
-
-        <div class="phase-quote" id="phaseQuote">Set your wake time to begin.</div>
-
-        <div class="energy-state" id="energyState">Low</div>
-        <div class="energy-meaning" id="energyMeaning">Energy is limited right now</div>
-        <div class="energy-action" id="energyAction">Keep things light and avoid pressure</div>
-        <div class="window" id="windowText">Set your wake time to begin.</div>
-
-        <div class="bar"><div class="fill" id="energyFill"></div></div>
-
-        <div class="hero-actions">
-          <button class="btn btn-primary" id="wakeNowBtn" type="button">Set Wake Now</button>
-          <button class="btn btn-ghost" id="napStartBtn" type="button">Start Nap</button>
-          <button class="btn btn-soft" id="refreshBtn" type="button">Refresh</button>
-        </div>
+    <div class="topbar">
+      <div class="nav">
+        <button class="nav-btn active" data-page="home">Home</button>
+        <button class="nav-btn" data-page="energy">Energy</button>
+        <button class="nav-btn" data-page="meaning">Meaning</button>
+        <button class="nav-btn" data-page="questions">Questions</button>
+        <button class="nav-btn" data-page="patterns">Patterns</button>
+        <button class="nav-btn" data-page="settings">Settings</button>
       </div>
     </div>
 
-    <div class="card">
-      <div class="section-title">Today</div>
-      <div class="metrics">
-        <div class="metric">
-          <div class="metric-label">Wake time</div>
-          <div class="metric-value" id="wakeValue">Not set</div>
-        </div>
+    <section id="page-home" class="page">
+      <div class="card hero">
+        <div class="hero-inner">
+          <div class="eyebrow">Your state right now</div>
 
-        <div class="metric">
-          <div class="metric-label">Time awake</div>
-          <div class="metric-value" id="awakeValue">Not set</div>
-        </div>
+          <div class="phase-row">
+            <div class="emoji" id="phaseIcon">⏳</div>
+            <div class="phase" id="phaseName">Untracked</div>
+          </div>
 
-        <div class="metric">
-          <div class="metric-label">Nap credit</div>
-          <div class="metric-value" id="napCreditValue">0m</div>
-          <div class="metric-sub">Energy back from nap recovery</div>
-        </div>
+          <div class="phase-quote" id="phaseQuote">Set your wake time to begin.</div>
 
-        <div class="metric">
-          <div class="metric-label">Phase extension</div>
-          <div class="metric-value" id="phaseExtensionValue">+0m</div>
-          <div class="metric-sub">Added to your stronger window</div>
+          <div class="energy-state" id="energyState">Low</div>
+          <div class="energy-meaning" id="energyMeaning">Energy is limited right now</div>
+          <div class="energy-action" id="energyAction">Keep things light and avoid pressure</div>
+          <div class="window" id="windowText">Signal is still gathering.</div>
+
+          <div class="bar"><div class="fill" id="energyFill"></div></div>
+
+          <div class="hero-actions" style="margin-top:18px;">
+            <button class="btn btn-primary" id="wakeNowBtn" type="button">Set Wake Now</button>
+            <button class="btn btn-ghost" id="napStartBtn" type="button">Start Nap</button>
+            <button class="btn btn-soft" id="refreshBtn" type="button">Refresh</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="split">
-      <div class="card">
-        <div class="section-title">Recovery</div>
-        <div class="recovery-big" id="recoveryState">Rebuilding</div>
-        <div class="text" id="recoveryMeaning">Your body needs more recovery</div>
-        <div class="muted" id="recoveryGuidance">Slow down and give yourself space</div>
-        <div class="muted" id="recoveryScoreText">Recovery score 50/100</div>
-        <div class="muted" id="confidenceText">Still learning your baseline.</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Today</div>
+          <div class="grid-2">
+            <div class="metric">
+              <div class="metric-label">Wake time</div>
+              <div class="metric-value" id="wakeValue">Not set</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Time awake</div>
+              <div class="metric-value" id="awakeValue">Not set</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Nap credit</div>
+              <div class="metric-value" id="napCreditValue">0m</div>
+              <div class="metric-sub">Energy back from nap recovery</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Phase extension</div>
+              <div class="metric-value" id="phaseExtensionValue">+0m</div>
+              <div class="metric-sub">Added to your stronger window</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">System loop</div>
+          <div class="text">Energy affects interpretation. Interpretation affects action. Questions interrupt bad loops before they harden.</div>
+          <div class="muted">This is one machine, not separate apps.</div>
+        </div>
       </div>
 
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Recovery</div>
+          <div class="big" id="recoveryState">Rebuilding</div>
+          <div class="text" id="recoveryMeaning">Your body needs more recovery</div>
+          <div class="muted" id="recoveryGuidance">Slow down and give yourself space</div>
+          <div class="muted" id="recoveryScoreText">Recovery score 50/100</div>
+          <div class="muted" id="confidenceText">Still learning your baseline.</div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Pattern watch</div>
+          <div class="text" id="patternsIntro">Nothing to watch right now.</div>
+          <div id="patternsWrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-energy" class="page hidden">
       <div class="card">
-        <div class="section-title">Nap</div>
-        <div class="text">
-          Start <span id="napStartValue">Not set</span><br>
-          End <span id="napWakeValue">Not set</span><br>
-          Length <span id="napDurationValue">—</span> minutes
+        <div class="section-title">Energy engine</div>
+
+        <div class="three">
+          <input id="sleepMinutesInput" placeholder="Sleep minutes">
+          <input id="sleepHrInput" placeholder="Sleep heart rate">
+          <input id="hrvInput" placeholder="HRV">
         </div>
 
         <div class="row">
-          <button class="btn btn-primary" id="napWakeBtn" type="button">End Nap</button>
-          <button class="btn btn-ghost" id="napClearBtn" type="button">Clear Nap</button>
+          <button class="btn btn-ghost" id="saveFastBtn" type="button">Save core energy inputs</button>
         </div>
 
         <details>
-          <summary>Set nap time</summary>
-          <div class="double-form">
-            <input id="napStartInput" placeholder="Start 1130 or 11:30">
-            <input id="napWakeInput" placeholder="Wake 1225 or 12:25">
+          <summary>Add more detail</summary>
+          <div class="three">
+            <input id="deepMinutesInput" placeholder="Deep sleep minutes">
+            <input id="remMinutesInput" placeholder="REM minutes">
+            <input id="respRateInput" placeholder="Respiratory rate">
+          </div>
+          <div class="two" style="margin-top:10px;">
+            <input id="activityMinutesInput" placeholder="Activity minutes">
+            <input id="sleepEffInput" placeholder="Sleep efficiency percent">
           </div>
           <div class="row">
-            <button class="btn btn-ghost" id="saveNapManualBtn" type="button">Save Nap Time</button>
+            <button class="btn btn-ghost" id="saveAdvancedBtn" type="button">Save expanded energy inputs</button>
           </div>
         </details>
       </div>
-    </div>
 
-    <div class="card">
-      <div class="section-title">Today’s numbers</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Wake + nap</div>
 
-      <div class="triple-form">
-        <input id="sleepMinutesInput" placeholder="Sleep minutes">
-        <input id="sleepHrInput" placeholder="Sleep heart rate">
-        <input id="hrvInput" placeholder="HRV">
-      </div>
-      <div class="row">
-        <button class="btn btn-ghost" id="saveFastBtn" type="button">Save Today’s Numbers</button>
-      </div>
+          <div class="two">
+            <input id="wakeInput" placeholder="Wake 0930 or 09:30">
+            <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
+          </div>
 
-      <details>
-        <summary>Add more detail</summary>
-        <div class="triple-form">
-          <input id="deepMinutesInput" placeholder="Deep sleep minutes">
-          <input id="remMinutesInput" placeholder="REM minutes">
-          <input id="respRateInput" placeholder="Respiratory rate">
+          <details>
+            <summary>Nap controls</summary>
+            <div class="two">
+              <input id="napStartInput" placeholder="Start 1130 or 11:30">
+              <input id="napWakeInput" placeholder="Wake 1225 or 12:25">
+            </div>
+            <div class="row">
+              <button class="btn btn-ghost" id="saveNapManualBtn" type="button">Save Nap Time</button>
+              <button class="btn btn-primary" id="napWakeBtn" type="button">End Nap</button>
+              <button class="btn btn-danger" id="napClearBtn" type="button">Clear Nap</button>
+            </div>
+          </details>
         </div>
-        <div class="double-form">
-          <input id="activityMinutesInput" placeholder="Activity minutes">
-          <input id="sleepEffInput" placeholder="Sleep efficiency percent">
+
+        <div class="card">
+          <div class="section-title">Latest baseline read</div>
+          <div class="list" id="baselineReadWrap"></div>
         </div>
+      </div>
+    </section>
+
+    <section id="page-meaning" class="page hidden">
+      <div class="card">
+        <div class="section-title">Meaning engine</div>
+        <div class="muted">Log event → assigned meaning → emotion → action → cost.</div>
+
+        <div class="list">
+          <input id="eventInput" placeholder="Event / trigger">
+          <input id="meaningInput" placeholder="Assigned meaning">
+          <input id="emotionInput" placeholder="Emotion / state">
+          <input id="actionInput" placeholder="Action taken">
+          <input id="costInput" placeholder="Cost / consequence">
+          <textarea id="meaningNotesInput" placeholder="Optional notes or context"></textarea>
+        </div>
+
         <div class="row">
-          <button class="btn btn-ghost" id="saveAdvancedBtn" type="button">Save More Detail</button>
+          <button class="btn btn-ghost" id="saveMeaningBtn" type="button">Save meaning loop</button>
         </div>
-      </details>
-    </div>
-
-    <div class="card">
-      <div class="section-title">Set wake time</div>
-      <div class="muted">Use HHMM or HH:MM. If you enter a future time, it will be treated as yesterday.</div>
-      <div class="inline-form">
-        <input id="wakeInput" placeholder="0930 or 09:30">
-        <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
       </div>
-    </div>
 
-    <div class="card">
-      <div class="section-title">Things to watch</div>
-      <div class="text" id="patternsIntro">Nothing to watch right now.</div>
-      <div id="patternsWrap"></div>
-    </div>
+      <div class="card">
+        <div class="section-title">Recent meaning loops</div>
+        <div id="meaningList" class="list"></div>
+      </div>
+    </section>
 
-    <div class="card">
-      <details>
-        <summary>Why this is showing up</summary>
-        <ul id="whyList">
-          <li>Add a few days of data so this gets more accurate.</li>
-        </ul>
-      </details>
-      <div class="tiny">Static GitHub version: saved in this browser only.</div>
-    </div>
+    <section id="page-questions" class="page hidden">
+      <div class="card">
+        <div class="section-title">Questioning engine</div>
+        <div class="muted">Use leverage questions to interrupt loose meaning assignment.</div>
 
+        <div class="two">
+          <select id="questionSetSelect">
+            <option value="default">Default leverage set</option>
+            <option value="socratic">Socratic</option>
+            <option value="precision">Precision</option>
+            <option value="optimal">Optimal move</option>
+          </select>
+          <button class="btn btn-ghost" id="loadQuestionsBtn" type="button">Load question set</button>
+        </div>
+
+        <div class="list" id="questionList"></div>
+
+        <details>
+          <summary>Add your own question</summary>
+          <div class="two">
+            <input id="customQuestionInput" placeholder="Write a custom leverage question">
+            <button class="btn btn-ghost" id="saveCustomQuestionBtn" type="button">Save question</button>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Selected question</div>
+        <div class="big" id="selectedQuestionDisplay">No question selected yet.</div>
+        <div class="muted">Use this when the loop starts forming.</div>
+      </div>
+    </section>
+
+    <section id="page-patterns" class="page hidden">
+      <div class="card">
+        <div class="section-title">Pattern / insight engine</div>
+        <div class="text">This module watches for repeated trigger → meaning → action loops and repeated energy conditions.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Meaning patterns</div>
+          <div id="meaningPatternList" class="list"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Energy patterns</div>
+          <div id="energyPatternList" class="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-settings" class="page hidden">
+      <div class="card">
+        <div class="section-title">Settings</div>
+
+        <div class="two">
+          <button class="btn btn-ghost" id="exportStateBtn" type="button">Export app data</button>
+          <button class="btn btn-danger" id="clearStateBtn" type="button">Clear all app data</button>
+        </div>
+
+        <details>
+          <summary>Import app data</summary>
+          <textarea id="importBox" placeholder="Paste exported JSON here"></textarea>
+          <div class="row">
+            <button class="btn btn-ghost" id="importStateBtn" type="button">Import data</button>
+          </div>
+        </details>
+
+        <div class="tiny mono" id="settingsInfo">Static unified version. Data is saved in this browser only.</div>
+      </div>
+    </section>
   </div>
 
   <script>
-    const STORAGE_KEY = "energy_engine_static_v1";
+    const STORAGE_KEY = "icy_natural_os_v1";
+
+    const QUESTION_BANKS = {
+      default: [
+        "What am I assuming?",
+        "Compared to what?",
+        "What exactly was threatened here?",
+        "What meaning did I assign too fast?",
+        "What is the real cost if I keep this frame?",
+        "What is the optimal move here?"
+      ],
+      socratic: [
+        "What is the claim?",
+        "What evidence actually supports it?",
+        "What contradicts it?",
+        "What definition am I using?",
+        "Would this still hold under clearer language?"
+      ],
+      precision: [
+        "What happened literally?",
+        "What did I add to it mentally?",
+        "What is signal and what is story?",
+        "What word here is doing too much work?",
+        "What is the cleaner description?"
+      ],
+      optimal: [
+        "What is the optimal move here?",
+        "What preserves capacity?",
+        "What reduces future cost?",
+        "What action closes the loop cleanly?",
+        "What is usable right now?"
+      ]
+    };
 
     function nowTs() {
       return Math.floor(Date.now() / 1000);
@@ -513,19 +570,19 @@
 
     function todayIso() {
       const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${y}-${m}-${day}`;
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
     }
 
     function defaultState() {
       return {
+        page: "home",
         wake_ts: null,
         nap_start_ts: null,
         nap_wake_ts: null,
         nap_duration_m: 0,
         last_updated_ts: null,
+        selected_question: null,
+        custom_questions: [],
         daily: {
           actual_sleep_minutes: null,
           deep_minutes: null,
@@ -536,7 +593,8 @@
           activity_minutes: null,
           sleep_eff: null
         },
-        history: []
+        history: [],
+        meaning_logs: []
       };
     }
 
@@ -550,7 +608,9 @@
           ...base,
           ...parsed,
           daily: { ...base.daily, ...(parsed.daily || {}) },
-          history: Array.isArray(parsed.history) ? parsed.history : []
+          history: Array.isArray(parsed.history) ? parsed.history : [],
+          meaning_logs: Array.isArray(parsed.meaning_logs) ? parsed.meaning_logs : [],
+          custom_questions: Array.isArray(parsed.custom_questions) ? parsed.custom_questions : []
         };
       } catch {
         return defaultState();
@@ -568,7 +628,7 @@
       return Number.isFinite(n) ? n : null;
     }
 
-    function clamp(x, lo = -1, hi = 1) {
+    function clamp(x, lo=-1, hi=1) {
       return Math.max(lo, Math.min(hi, x));
     }
 
@@ -579,9 +639,7 @@
     function fmtTimeFromTs(ts) {
       if (!ts) return "Not set";
       const d = new Date(ts * 1000);
-      const hh = String(d.getHours()).padStart(2, "0");
-      const mm = String(d.getMinutes()).padStart(2, "0");
-      return `${hh}:${mm}`;
+      return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
     }
 
     function minsSince(ts) {
@@ -601,7 +659,6 @@
       if (!hhmm) return null;
 
       let hh, mm;
-
       if (hhmm.includes(":")) {
         const parts = hhmm.split(":");
         if (parts.length !== 2) return null;
@@ -614,32 +671,25 @@
 
       hh = Number(hh);
       mm = Number(mm);
-
       if (!Number.isInteger(hh) || !Number.isInteger(mm)) return null;
       if (hh < 0 || hh > 23 || mm < 0 || mm > 59) return null;
 
       const now = new Date();
       const dt = new Date(now);
       dt.setHours(hh, mm, 0, 0);
-
-      if (dt.getTime() > Date.now()) {
-        dt.setDate(dt.getDate() - 1);
-      }
-
+      if (dt.getTime() > Date.now()) dt.setDate(dt.getDate() - 1);
       return Math.floor(dt.getTime() / 1000);
     }
 
     function computeNapDuration(state) {
       const startTs = state.nap_start_ts;
       const wakeTs = state.nap_wake_ts;
-      if (startTs && wakeTs && wakeTs >= startTs) {
-        return Math.floor((wakeTs - startTs) / 60);
-      }
+      if (startTs && wakeTs && wakeTs >= startTs) return Math.floor((wakeTs - startTs) / 60);
       return 0;
     }
 
     function median(values) {
-      const vals = values.filter(v => v !== null && v !== undefined).sort((a, b) => a - b);
+      const vals = values.filter(v => v !== null && v !== undefined).sort((a,b)=>a-b);
       if (!vals.length) return null;
       const mid = Math.floor(vals.length / 2);
       return vals.length % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
@@ -678,7 +728,6 @@
       if (effectiveAwakeMin === null || effectiveAwakeMin === undefined) {
         return ["⏳", "Untracked", "Set your wake time to begin."];
       }
-
       const recoveryEnd = 4 * 60;
       const flowEnd = 10 * 60 + extensionMin;
       const radianceEnd = 14 * 60 + extensionMin;
@@ -726,14 +775,12 @@
           break;
         }
       }
-
       if (!updated) hist.push(snapshot);
-
-      hist.sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+      hist.sort((a,b)=>(a.date || "").localeCompare(b.date || ""));
       state.history = hist.slice(-30);
     }
 
-    function uniqueRecentDays(state, n = 7) {
+    function uniqueRecentDays(state, n=7) {
       const hist = Array.isArray(state.history) ? state.history : [];
       const byDate = {};
       for (const row of hist) {
@@ -753,16 +800,7 @@
     }
 
     function baselineBundle(rows) {
-      const fields = [
-        "sleep_hr",
-        "hrv",
-        "sleep_eff",
-        "actual_sleep_minutes",
-        "deep_minutes",
-        "rem_minutes",
-        "respiratory_rate",
-        "activity_minutes"
-      ];
+      const fields = ["sleep_hr","hrv","sleep_eff","actual_sleep_minutes","deep_minutes","rem_minutes","respiratory_rate","activity_minutes"];
       const out = {};
       for (const f of fields) {
         const vals = collect(rows, f);
@@ -869,13 +907,7 @@
 
       readiness = clamp(readiness);
 
-      return {
-        baseline_days: rows.length,
-        baseline: base,
-        scores,
-        readiness,
-        notes
-      };
+      return { baseline_days: rows.length, baseline: base, scores, readiness, notes };
     }
 
     function bandFromEnergy(score100) {
@@ -892,24 +924,162 @@
 
     function estimateWindowText(phaseName, effAwake, phaseExtension) {
       if (effAwake === null || effAwake === undefined) return "Set your wake time to begin.";
-
       if (phaseName === "Recovery") {
         const minsLeft = Math.max(0, (4 * 60) - effAwake);
-        return `You will feel better in about ${humanMins(minsLeft)}`;
+        return `Clarity is still gathering. Next rise in ~${humanMins(minsLeft)}.`;
       }
       if (phaseName === "Flow") {
         const minsLeft = Math.max(0, (10 * 60 + phaseExtension) - effAwake);
-        return `Strong window for the next ${humanMins(minsLeft)}`;
+        return `Usable momentum is here. Window holds for ~${humanMins(minsLeft)}.`;
       }
       if (phaseName === "Radiance") {
         const minsLeft = Math.max(0, (14 * 60 + phaseExtension) - effAwake);
-        return `Peak window for the next ${humanMins(minsLeft)}`;
+        return `Clarity is fully online. Peak holds for ~${humanMins(minsLeft)}.`;
       }
       if (phaseName === "Surge") {
         const minsLeft = Math.max(0, (18 * 60 + Math.round(phaseExtension * 0.6)) - effAwake);
-        return `High energy for about ${humanMins(minsLeft)} more`;
+        return `Extra capacity is live. Strong push for ~${humanMins(minsLeft)}.`;
       }
-      return "You will likely need rest soon.";
+      return "The window is thinning.";
+    }
+
+    function switchPage(pageName) {
+      const state = loadState();
+      state.page = pageName;
+      saveState(state);
+
+      document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+      document.getElementById(`page-${pageName}`).classList.remove("hidden");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.page === pageName);
+      });
+    }
+
+    function renderQuestions() {
+      const state = loadState();
+      const type = document.getElementById("questionSetSelect").value;
+      const base = QUESTION_BANKS[type] || QUESTION_BANKS.default;
+      const all = [...base, ...state.custom_questions];
+      const wrap = document.getElementById("questionList");
+      wrap.innerHTML = "";
+
+      all.forEach(q => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${q}</div>
+            <div class="tag">Question</div>
+          </div>
+          <button class="btn btn-ghost">Use this</button>
+        `;
+        box.querySelector("button").addEventListener("click", () => {
+          const s = loadState();
+          s.selected_question = q;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(box);
+      });
+    }
+
+    function renderMeaningLogs() {
+      const state = loadState();
+      const wrap = document.getElementById("meaningList");
+      wrap.innerHTML = "";
+
+      const items = [...state.meaning_logs].reverse().slice(0, 8);
+      if (!items.length) {
+        wrap.innerHTML = `<div class="mini-box"><div class="mini-text">No meaning loops logged yet.</div></div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${item.event || "Untitled event"}</div>
+            <div class="tag">${item.date}</div>
+          </div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
+          <div class="mini-text"><b>Emotion:</b> ${item.emotion || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Cost:</b> ${item.cost || "—"}</div>
+        `;
+        wrap.appendChild(box);
+      });
+    }
+
+    function renderPatternPages(state) {
+      const meaningWrap = document.getElementById("meaningPatternList");
+      const energyWrap = document.getElementById("energyPatternList");
+      meaningWrap.innerHTML = "";
+      energyWrap.innerHTML = "";
+
+      const meaningLogs = state.meaning_logs || [];
+      if (!meaningLogs.length) {
+        meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No meaning patterns detected yet.</div></div>`;
+      } else {
+        const meaningCount = {};
+        meaningLogs.forEach(x => {
+          const key = (x.meaning || "").trim().toLowerCase();
+          if (key) meaningCount[key] = (meaningCount[key] || 0) + 1;
+        });
+        const sorted = Object.entries(meaningCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+        if (!sorted.length) {
+          meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No repeated meaning assignments yet.</div></div>`;
+        } else {
+          sorted.forEach(([k,v]) => {
+            const box = document.createElement("div");
+            box.className = "mini-box";
+            box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${k}</div><div class="tag">${v}x</div></div><div class="mini-text">This assigned meaning keeps returning.</div>`;
+            meaningWrap.appendChild(box);
+          });
+        }
+      }
+
+      const recent = uniqueRecentDays(state, 7);
+      if (!recent.length) {
+        energyWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No energy history yet.</div></div>`;
+      } else {
+        const base = baselineBundle(recent);
+        const lines = [
+          ["Sleep HR baseline", base.sleep_hr],
+          ["HRV baseline", base.hrv],
+          ["Sleep minutes baseline", base.actual_sleep_minutes],
+          ["Activity baseline", base.activity_minutes]
+        ];
+        lines.forEach(([label, val]) => {
+          const box = document.createElement("div");
+          box.className = "mini-box";
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">Personal baseline, not population default.</div>`;
+          energyWrap.appendChild(box);
+        });
+      }
+    }
+
+    function renderBaselineRead(core) {
+      const wrap = document.getElementById("baselineReadWrap");
+      wrap.innerHTML = "";
+      const base = core.baseline || {};
+      const items = [
+        ["Sleep HR", base.sleep_hr],
+        ["HRV", base.hrv],
+        ["Sleep min", base.actual_sleep_minutes],
+        ["Deep", base.deep_minutes],
+        ["REM", base.rem_minutes],
+        ["Respiratory", base.respiratory_rate],
+        ["Activity", base.activity_minutes],
+        ["Sleep eff", base.sleep_eff]
+      ];
+      items.forEach(([label, val]) => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
+        wrap.appendChild(box);
+      });
     }
 
     function render() {
@@ -917,8 +1087,8 @@
 
       const wakeTs = state.wake_ts;
       const minsAwake = minsSince(wakeTs);
-
       const napDur = computeNapDuration(state);
+
       if (state.nap_duration_m !== napDur) {
         state.nap_duration_m = napDur;
         saveState(state);
@@ -930,7 +1100,7 @@
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["⏳", "Untracked", "Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -942,9 +1112,8 @@
       const recoveryScore = Math.round(((readiness + 1) / 2) * 1000) / 10;
 
       let energyScore;
-      if (effAwake === null) {
-        energyScore = 0;
-      } else {
+      if (effAwake === null) energyScore = 0;
+      else {
         const wakeDrag = Math.min((effAwake / 60) * 3, 45);
         const napBonus = Math.min(napCredit * 0.35 + phaseExtension * 0.5, 22);
         energyScore = clamp100(Math.round((readiness * 50 + 50 + napBonus - wakeDrag - 5) * 10) / 10);
@@ -959,20 +1128,12 @@
 
       if (d.actual_sleep_minutes !== null && base.actual_sleep_minutes !== null) {
         if (safeNum(d.actual_sleep_minutes) < base.actual_sleep_minutes) {
-          patternItems.push({
-            title: "Short sleep",
-            label: "Watch",
-            meaning: "You may be running a little low on rest."
-          });
+          patternItems.push({ title: "Short sleep", label: "Watch", meaning: "You may be running a little low on rest." });
         }
       }
 
       if (napDur > 0) {
-        patternItems.push({
-          title: "Nap boost",
-          label: "Active",
-          meaning: `That nap gave you ${napCredit} minutes back and opened a little more time.`
-        });
+        patternItems.push({ title: "Nap boost", label: "Active", meaning: `That nap gave you ${napCredit} minutes back and opened a little more time.` });
       }
 
       const whyItems = core.notes.slice(0, 4);
@@ -986,7 +1147,6 @@
       document.getElementById("phaseIcon").textContent = phaseIcon;
       document.getElementById("phaseName").textContent = phaseName;
       document.getElementById("phaseQuote").textContent = phaseQuote;
-
       document.getElementById("energyState").textContent = energyState;
       document.getElementById("energyMeaning").textContent = energyMeaning;
       document.getElementById("energyAction").textContent = energyAction;
@@ -1007,10 +1167,6 @@
       document.getElementById("recoveryScoreText").textContent = `Recovery score ${recoveryScore}/100`;
       document.getElementById("confidenceText").textContent = confidenceText;
 
-      document.getElementById("napStartValue").textContent = fmtTimeFromTs(state.nap_start_ts);
-      document.getElementById("napWakeValue").textContent = fmtTimeFromTs(state.nap_wake_ts);
-      document.getElementById("napDurationValue").textContent = napDur ? String(napDur) : "—";
-
       document.getElementById("sleepMinutesInput").value = d.actual_sleep_minutes ?? "";
       document.getElementById("sleepHrInput").value = d.sleep_hr ?? "";
       document.getElementById("hrvInput").value = d.hrv ?? "";
@@ -1020,6 +1176,10 @@
       document.getElementById("activityMinutesInput").value = d.activity_minutes ?? "";
       document.getElementById("sleepEffInput").value = d.sleep_eff ?? "";
 
+      document.getElementById("napStartValue").textContent = fmtTimeFromTs(state.nap_start_ts);
+      document.getElementById("napWakeValue").textContent = fmtTimeFromTs(state.nap_wake_ts);
+      document.getElementById("napDurationValue").textContent = napDur ? String(napDur) : "—";
+
       const patternsIntro = document.getElementById("patternsIntro");
       const patternsWrap = document.getElementById("patternsWrap");
       patternsWrap.innerHTML = "";
@@ -1028,34 +1188,39 @@
         patternsIntro.textContent = "Nothing to watch right now.";
       } else {
         patternsIntro.textContent = "A few things are worth watching.";
-        for (const p of patternItems) {
+        patternItems.forEach(p => {
           const div = document.createElement("div");
           div.className = "mini-box";
-          div.innerHTML = `
-            <div class="mini-title-row">
-              <div class="mini-title">${p.title}</div>
-              <div class="tag">${p.label}</div>
-            </div>
-            <div class="mini-text">${p.meaning}</div>
-          `;
+          div.innerHTML = `<div class="mini-title-row"><div class="mini-title">${p.title}</div><div class="tag">${p.label}</div></div><div class="mini-text">${p.meaning}</div>`;
           patternsWrap.appendChild(div);
-        }
+        });
       }
 
       const whyList = document.getElementById("whyList");
       whyList.innerHTML = "";
       if (!whyItems.length) {
-        const li = document.createElement("li");
-        li.textContent = "Add a few days of data so this gets more accurate.";
-        whyList.appendChild(li);
+        whyList.innerHTML = `<li>Add a few days of data so this gets more accurate.</li>`;
       } else {
-        for (const item of whyItems) {
+        whyItems.forEach(item => {
           const li = document.createElement("li");
           li.textContent = item;
           whyList.appendChild(li);
-        }
+        });
       }
+
+      const selected = state.selected_question || "No question selected yet.";
+      document.getElementById("selectedQuestionDisplay").textContent = selected;
+
+      renderQuestions();
+      renderMeaningLogs();
+      renderPatternPages(state);
+      renderBaselineRead(core);
+      switchPage(state.page || "home");
     }
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => switchPage(btn.dataset.page));
+    });
 
     document.getElementById("wakeNowBtn").addEventListener("click", () => {
       const s = loadState();
@@ -1126,18 +1291,13 @@
     document.getElementById("saveNapManualBtn").addEventListener("click", () => {
       const startTs = parseHhmmToTs(document.getElementById("napStartInput").value);
       let wakeTs = parseHhmmToTs(document.getElementById("napWakeInput").value);
-
       if (startTs && wakeTs) {
-        if (wakeTs < startTs) {
-          wakeTs += 24 * 60 * 60;
-        }
-
+        if (wakeTs < startTs) wakeTs += 24 * 60 * 60;
         const s = loadState();
         s.nap_start_ts = startTs;
         s.nap_wake_ts = wakeTs;
         s.nap_duration_m = computeNapDuration(s);
         saveState(s);
-
         document.getElementById("napStartInput").value = "";
         document.getElementById("napWakeInput").value = "";
         render();
@@ -1145,6 +1305,65 @@
     });
 
     document.getElementById("refreshBtn").addEventListener("click", render);
+
+    document.getElementById("loadQuestionsBtn").addEventListener("click", renderQuestions);
+
+    document.getElementById("saveCustomQuestionBtn").addEventListener("click", () => {
+      const input = document.getElementById("customQuestionInput");
+      const q = (input.value || "").trim();
+      if (!q) return;
+      const s = loadState();
+      s.custom_questions.push(q);
+      saveState(s);
+      input.value = "";
+      render();
+    });
+
+    document.getElementById("saveMeaningBtn").addEventListener("click", () => {
+      const event = document.getElementById("eventInput").value.trim();
+      const meaning = document.getElementById("meaningInput").value.trim();
+      const emotion = document.getElementById("emotionInput").value.trim();
+      const action = document.getElementById("actionInput").value.trim();
+      const cost = document.getElementById("costInput").value.trim();
+      const notes = document.getElementById("meaningNotesInput").value.trim();
+
+      const s = loadState();
+      s.meaning_logs.push({
+        date: todayIso(),
+        event, meaning, emotion, action, cost, notes
+      });
+      s.meaning_logs = s.meaning_logs.slice(-100);
+      saveState(s);
+
+      document.getElementById("eventInput").value = "";
+      document.getElementById("meaningInput").value = "";
+      document.getElementById("emotionInput").value = "";
+      document.getElementById("actionInput").value = "";
+      document.getElementById("costInput").value = "";
+      document.getElementById("meaningNotesInput").value = "";
+      render();
+    });
+
+    document.getElementById("exportStateBtn").addEventListener("click", () => {
+      const s = loadState();
+      document.getElementById("importBox").value = JSON.stringify(s, null, 2);
+    });
+
+    document.getElementById("importStateBtn").addEventListener("click", () => {
+      try {
+        const raw = document.getElementById("importBox").value;
+        const parsed = JSON.parse(raw);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+        render();
+      } catch {
+        alert("Import JSON is invalid.");
+      }
+    });
+
+    document.getElementById("clearStateBtn").addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      render();
+    });
 
     render();
   </script>
