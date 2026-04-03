@@ -6,6 +6,7 @@
   <title>Icy Natural OS v1</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       padding: 18px;
@@ -13,56 +14,64 @@
       color: #f8fafc;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
+
     .wrap { max-width: 920px; margin: 0 auto; }
+
     .app-title {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 900;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      line-height: 1.1;
     }
+
     .app-sub {
       color: #9fb0c8;
-      font-size: 14px;
+      font-size: 15px;
       margin-bottom: 18px;
     }
-    .topbar {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
+
     .nav {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
+      margin-bottom: 18px;
     }
+
     .nav-btn {
       appearance: none;
       border: 0;
       border-radius: 999px;
-      padding: 12px 14px;
+      padding: 12px 16px;
       background: rgba(255,255,255,0.06);
       color: white;
       font-size: 14px;
       font-weight: 800;
       cursor: pointer;
     }
+
     .nav-btn.active {
       background: white;
       color: #081225;
     }
+
+    .page.hidden { display: none; }
+
     .card {
-      background: rgba(12,24,48,0.9);
+      background: rgba(12,24,48,0.90);
       border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 26px;
+      border-radius: 28px;
       padding: 18px;
       margin-bottom: 16px;
       box-shadow: 0 14px 34px rgba(0,0,0,0.24);
       backdrop-filter: blur(8px);
     }
+
     .hero {
       position: relative;
       overflow: hidden;
+      padding: 22px 20px 20px;
     }
+
     .hero::before {
       content: "";
       position: absolute;
@@ -70,7 +79,9 @@
       background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
       pointer-events: none;
     }
+
     .hero-inner { position: relative; z-index: 1; }
+
     .eyebrow {
       font-size: 12px;
       font-weight: 800;
@@ -79,48 +90,57 @@
       color: rgba(255,255,255,0.66);
       margin-bottom: 10px;
     }
+
     .phase-row {
       display: flex;
       gap: 12px;
       align-items: center;
       margin-bottom: 10px;
     }
+
     .emoji { font-size: 34px; }
+
     .phase {
-      font-size: 44px;
+      font-size: 48px;
       font-weight: 900;
       line-height: 1;
       margin: 0;
     }
+
     .phase-quote {
       color: #dce5f1;
       font-size: 16px;
       line-height: 1.5;
       margin-top: 4px;
     }
+
     .energy-state {
       margin-top: 18px;
       font-size: 34px;
       font-weight: 900;
       line-height: 1;
     }
+
     .energy-meaning {
       margin-top: 8px;
       font-size: 18px;
       color: #e5edf7;
       line-height: 1.4;
     }
+
     .energy-action {
       margin-top: 8px;
       font-size: 20px;
       font-weight: 800;
       line-height: 1.35;
     }
+
     .window {
       margin-top: 10px;
       color: #aebed3;
       font-size: 14px;
     }
+
     .bar {
       width: 100%;
       height: 12px;
@@ -129,6 +149,7 @@
       overflow: hidden;
       margin-top: 16px;
     }
+
     .fill {
       width: 0%;
       height: 12px;
@@ -136,16 +157,7 @@
       background: #38bdf8;
       transition: width 0.2s ease;
     }
-    .hero-actions,
-    .two,
-    .three,
-    .grid-2,
-    .grid-3 {
-      display: grid;
-      gap: 10px;
-    }
-    .hero-actions, .grid-3, .three { grid-template-columns: repeat(3, 1fr); }
-    .grid-2, .two { grid-template-columns: repeat(2, 1fr); }
+
     .section-title {
       font-size: 15px;
       font-weight: 800;
@@ -154,43 +166,66 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
+
+    .hero-actions, .grid-2, .grid-3, .two, .three {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-actions, .grid-3, .three { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .two { grid-template-columns: repeat(2, 1fr); }
+
     .metric {
       background: rgba(255,255,255,0.035);
       border-radius: 18px;
       padding: 14px;
     }
+
     .metric-label {
       font-size: 12px;
       color: #94a3b8;
       margin-bottom: 6px;
     }
+
     .metric-value {
       font-size: 20px;
       font-weight: 800;
       line-height: 1.1;
     }
+
     .metric-sub {
       margin-top: 4px;
       font-size: 12px;
       color: #93a7c2;
     }
+
     .text {
       font-size: 16px;
       line-height: 1.5;
       color: #dbe4ef;
     }
+
     .big {
       font-size: 32px;
       line-height: 1;
       font-weight: 900;
       margin-bottom: 10px;
     }
+
     .muted {
       margin-top: 8px;
       font-size: 14px;
       color: #94a3b8;
       line-height: 1.45;
     }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
     .btn {
       appearance: none;
       border: 0;
@@ -201,10 +236,12 @@
       cursor: pointer;
       width: 100%;
     }
+
     .btn-primary { background: white; color: #081225; }
     .btn-ghost { background: rgba(255,255,255,0.08); color: white; }
     .btn-soft { background: rgba(255,255,255,0.04); color: white; }
-    .btn-danger { background: rgba(127,29,29,0.55); color: #fff; }
+    .btn-danger { background: rgba(127,29,29,0.55); color: white; }
+
     input, textarea, select {
       width: 100%;
       padding: 14px;
@@ -215,25 +252,36 @@
       font-size: 16px;
       outline: none;
     }
-    textarea { min-height: 110px; resize: vertical; }
-    input::placeholder, textarea::placeholder { color: #94a3b8; }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #94a3b8;
+    }
+
     details {
       margin-top: 12px;
       background: rgba(255,255,255,0.02);
       border-radius: 18px;
       padding: 14px;
     }
+
     summary {
       cursor: pointer;
       font-weight: 800;
       color: white;
     }
+
     .mini-box {
       background: rgba(255,255,255,0.035);
       border-radius: 18px;
       padding: 14px;
       margin-top: 10px;
     }
+
     .mini-title-row {
       display: flex;
       justify-content: space-between;
@@ -241,8 +289,18 @@
       gap: 8px;
       margin-bottom: 6px;
     }
-    .mini-title { font-size: 15px; font-weight: 800; }
-    .mini-text { font-size: 14px; color: #dbe4ef; line-height: 1.45; }
+
+    .mini-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .mini-text {
+      font-size: 14px;
+      color: #dbe4ef;
+      line-height: 1.45;
+    }
+
     .tag {
       padding: 5px 10px;
       border-radius: 999px;
@@ -252,25 +310,29 @@
       color: white;
       white-space: nowrap;
     }
-    .hidden { display: none; }
-    .tiny {
-      margin-top: 8px;
-      color: #93a7c2;
-      font-size: 12px;
-    }
+
     .list {
       display: grid;
       gap: 10px;
       margin-top: 10px;
     }
+
+    .tiny {
+      margin-top: 8px;
+      color: #93a7c2;
+      font-size: 12px;
+    }
+
     .mono {
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: 13px;
     }
+
     @media (max-width: 700px) {
-      .hero-actions, .three, .grid-3, .grid-2, .two {
+      .hero-actions, .grid-2, .grid-3, .two, .three {
         grid-template-columns: 1fr;
       }
+
       .phase { font-size: 40px; }
       .energy-state { font-size: 30px; }
     }
@@ -281,15 +343,12 @@
     <div class="app-title">Icy Natural OS</div>
     <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
 
-    <div class="topbar">
-      <div class="nav">
-        <button class="nav-btn active" data-page="home">Home</button>
-        <button class="nav-btn" data-page="energy">Energy</button>
-        <button class="nav-btn" data-page="meaning">Meaning</button>
-        <button class="nav-btn" data-page="questions">Questions</button>
-        <button class="nav-btn" data-page="patterns">Patterns</button>
-        <button class="nav-btn" data-page="settings">Settings</button>
-      </div>
+    <div class="nav">
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="meaning">Meaning</button>
+      <button class="nav-btn" data-page="questions">Questions</button>
+      <button class="nav-btn" data-page="patterns">Patterns</button>
+      <button class="nav-btn" data-page="settings">Settings</button>
     </div>
 
     <section id="page-home" class="page">
@@ -367,9 +426,7 @@
           <div id="patternsWrap"></div>
         </div>
       </div>
-    </section>
 
-    <section id="page-energy" class="page hidden">
       <div class="card">
         <div class="section-title">Energy engine</div>
 
@@ -390,10 +447,12 @@
             <input id="remMinutesInput" placeholder="REM minutes">
             <input id="respRateInput" placeholder="Respiratory rate">
           </div>
+
           <div class="two" style="margin-top:10px;">
             <input id="activityMinutesInput" placeholder="Activity minutes">
             <input id="sleepEffInput" placeholder="Sleep efficiency percent">
           </div>
+
           <div class="row">
             <button class="btn btn-ghost" id="saveAdvancedBtn" type="button">Save expanded energy inputs</button>
           </div>
@@ -415,6 +474,7 @@
               <input id="napStartInput" placeholder="Start 1130 or 11:30">
               <input id="napWakeInput" placeholder="Wake 1225 or 12:25">
             </div>
+
             <div class="row">
               <button class="btn btn-ghost" id="saveNapManualBtn" type="button">Save Nap Time</button>
               <button class="btn btn-primary" id="napWakeBtn" type="button">End Nap</button>
@@ -425,7 +485,7 @@
 
         <div class="card">
           <div class="section-title">Latest baseline read</div>
-          <div class="list" id="baselineReadWrap"></div>
+          <div id="baselineReadWrap" class="list"></div>
         </div>
       </div>
     </section>
@@ -433,15 +493,15 @@
     <section id="page-meaning" class="page hidden">
       <div class="card">
         <div class="section-title">Meaning engine</div>
-        <div class="muted">Log event → assigned meaning → emotion → action → cost.</div>
+        <div class="muted">Log event → assigned meaning → felt state → action → cost.</div>
 
         <div class="list">
-          <input id="eventInput" placeholder="Event / trigger">
-          <input id="meaningInput" placeholder="Assigned meaning">
-          <input id="emotionInput" placeholder="Emotion / state">
-          <input id="actionInput" placeholder="Action taken">
-          <input id="costInput" placeholder="Cost / consequence">
-          <textarea id="meaningNotesInput" placeholder="Optional notes or context"></textarea>
+          <input id="eventInput" placeholder="What happened?">
+          <input id="meaningInput" placeholder="What meaning did you assign to it?">
+          <input id="emotionInput" placeholder="What did it make you feel or become?">
+          <input id="actionInput" placeholder="What did you do next?">
+          <input id="costInput" placeholder="What did that cost you?">
+          <textarea id="meaningNotesInput" placeholder="Optional notes or extra context"></textarea>
         </div>
 
         <div class="row">
@@ -458,14 +518,14 @@
     <section id="page-questions" class="page hidden">
       <div class="card">
         <div class="section-title">Questioning engine</div>
-        <div class="muted">Use leverage questions to interrupt loose meaning assignment.</div>
+        <div class="muted">Use simple leverage questions to break bad interpretation loops before they become behavior.</div>
 
         <div class="two">
           <select id="questionSetSelect">
-            <option value="default">Default leverage set</option>
-            <option value="socratic">Socratic</option>
-            <option value="precision">Precision</option>
-            <option value="optimal">Optimal move</option>
+            <option value="default">Everyday clarity</option>
+            <option value="socratic">Socratic clean-up</option>
+            <option value="precision">Precision mode</option>
+            <option value="optimal">Best move mode</option>
           </select>
           <button class="btn btn-ghost" id="loadQuestionsBtn" type="button">Load question set</button>
         </div>
@@ -475,7 +535,7 @@
         <details>
           <summary>Add your own question</summary>
           <div class="two">
-            <input id="customQuestionInput" placeholder="Write a custom leverage question">
+            <input id="customQuestionInput" placeholder="Write a custom question">
             <button class="btn btn-ghost" id="saveCustomQuestionBtn" type="button">Save question</button>
           </div>
         </details>
@@ -484,14 +544,14 @@
       <div class="card">
         <div class="section-title">Selected question</div>
         <div class="big" id="selectedQuestionDisplay">No question selected yet.</div>
-        <div class="muted">Use this when the loop starts forming.</div>
+        <div class="muted">Use this right when a loop starts forming.</div>
       </div>
     </section>
 
     <section id="page-patterns" class="page hidden">
       <div class="card">
         <div class="section-title">Pattern / insight engine</div>
-        <div class="text">This module watches for repeated trigger → meaning → action loops and repeated energy conditions.</div>
+        <div class="text">This module watches repeated trigger → meaning → action loops and repeated energy conditions.</div>
       </div>
 
       <div class="grid-2">
@@ -524,7 +584,7 @@
           </div>
         </details>
 
-        <div class="tiny mono" id="settingsInfo">Static unified version. Data is saved in this browser only.</div>
+        <div class="tiny mono">Static unified version. Data is saved in this browser only.</div>
       </div>
     </section>
   </div>
@@ -534,33 +594,33 @@
 
     const QUESTION_BANKS = {
       default: [
-        "What am I assuming?",
-        "Compared to what?",
-        "What exactly was threatened here?",
-        "What meaning did I assign too fast?",
-        "What is the real cost if I keep this frame?",
-        "What is the optimal move here?"
+        "What actually happened here?",
+        "What story did I just tell myself?",
+        "What am I assuming without proof?",
+        "What feels threatened right now?",
+        "What would the calm useful move be?",
+        "Does this deserve this much weight?"
       ],
       socratic: [
-        "What is the claim?",
-        "What evidence actually supports it?",
-        "What contradicts it?",
-        "What definition am I using?",
-        "Would this still hold under clearer language?"
+        "What are the facts?",
+        "What am I adding on top of the facts?",
+        "Is this definitely true or just possible?",
+        "What else could this mean?",
+        "What evidence would change my mind?"
       ],
       precision: [
-        "What happened literally?",
-        "What did I add to it mentally?",
+        "What word here is exaggerating things?",
+        "What is the cleaner description?",
         "What is signal and what is story?",
-        "What word here is doing too much work?",
-        "What is the cleaner description?"
+        "What part is real and what part is projection?",
+        "What would I call this if I were being exact?"
       ],
       optimal: [
-        "What is the optimal move here?",
-        "What preserves capacity?",
+        "What helps most right now?",
+        "What protects my energy?",
         "What reduces future cost?",
-        "What action closes the loop cleanly?",
-        "What is usable right now?"
+        "What is the next clean move?",
+        "What can I do in under 5 minutes?"
       ]
     };
 
@@ -728,6 +788,7 @@
       if (effectiveAwakeMin === null || effectiveAwakeMin === undefined) {
         return ["⏳", "Untracked", "Set your wake time to begin."];
       }
+
       const recoveryEnd = 4 * 60;
       const flowEnd = 10 * 60 + extensionMin;
       const radianceEnd = 14 * 60 + extensionMin;
@@ -775,7 +836,9 @@
           break;
         }
       }
+
       if (!updated) hist.push(snapshot);
+
       hist.sort((a,b)=>(a.date || "").localeCompare(b.date || ""));
       state.history = hist.slice(-30);
     }
@@ -924,22 +987,27 @@
 
     function estimateWindowText(phaseName, effAwake, phaseExtension) {
       if (effAwake === null || effAwake === undefined) return "Set your wake time to begin.";
+
       if (phaseName === "Recovery") {
         const minsLeft = Math.max(0, (4 * 60) - effAwake);
         return `Clarity is still gathering. Next rise in ~${humanMins(minsLeft)}.`;
       }
+
       if (phaseName === "Flow") {
         const minsLeft = Math.max(0, (10 * 60 + phaseExtension) - effAwake);
         return `Usable momentum is here. Window holds for ~${humanMins(minsLeft)}.`;
       }
+
       if (phaseName === "Radiance") {
         const minsLeft = Math.max(0, (14 * 60 + phaseExtension) - effAwake);
         return `Clarity is fully online. Peak holds for ~${humanMins(minsLeft)}.`;
       }
+
       if (phaseName === "Surge") {
         const minsLeft = Math.max(0, (18 * 60 + Math.round(phaseExtension * 0.6)) - effAwake);
         return `Extra capacity is live. Strong push for ~${humanMins(minsLeft)}.`;
       }
+
       return "The window is thinning.";
     }
 
@@ -1004,7 +1072,7 @@
             <div class="tag">${item.date}</div>
           </div>
           <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
-          <div class="mini-text"><b>Emotion:</b> ${item.emotion || "—"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
           <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
           <div class="mini-text"><b>Cost:</b> ${item.cost || "—"}</div>
         `;
@@ -1027,6 +1095,7 @@
           const key = (x.meaning || "").trim().toLowerCase();
           if (key) meaningCount[key] = (meaningCount[key] || 0) + 1;
         });
+
         const sorted = Object.entries(meaningCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
         if (!sorted.length) {
           meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No repeated meaning assignments yet.</div></div>`;
@@ -1045,16 +1114,15 @@
         energyWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No energy history yet.</div></div>`;
       } else {
         const base = baselineBundle(recent);
-        const lines = [
+        [
           ["Sleep HR baseline", base.sleep_hr],
           ["HRV baseline", base.hrv],
           ["Sleep minutes baseline", base.actual_sleep_minutes],
           ["Activity baseline", base.activity_minutes]
-        ];
-        lines.forEach(([label, val]) => {
+        ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">Personal baseline, not population default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">Personal baseline, not generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -1064,7 +1132,7 @@
       const wrap = document.getElementById("baselineReadWrap");
       wrap.innerHTML = "";
       const base = core.baseline || {};
-      const items = [
+      [
         ["Sleep HR", base.sleep_hr],
         ["HRV", base.hrv],
         ["Sleep min", base.actual_sleep_minutes],
@@ -1073,8 +1141,7 @@
         ["Respiratory", base.respiratory_rate],
         ["Activity", base.activity_minutes],
         ["Sleep eff", base.sleep_eff]
-      ];
-      items.forEach(([label, val]) => {
+      ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
         box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
@@ -1112,8 +1179,9 @@
       const recoveryScore = Math.round(((readiness + 1) / 2) * 1000) / 10;
 
       let energyScore;
-      if (effAwake === null) energyScore = 0;
-      else {
+      if (effAwake === null) {
+        energyScore = 0;
+      } else {
         const wakeDrag = Math.min((effAwake / 60) * 3, 45);
         const napBonus = Math.min(napCredit * 0.35 + phaseExtension * 0.5, 22);
         energyScore = clamp100(Math.round((readiness * 50 + 50 + napBonus - wakeDrag - 5) * 10) / 10);
@@ -1128,12 +1196,20 @@
 
       if (d.actual_sleep_minutes !== null && base.actual_sleep_minutes !== null) {
         if (safeNum(d.actual_sleep_minutes) < base.actual_sleep_minutes) {
-          patternItems.push({ title: "Short sleep", label: "Watch", meaning: "You may be running a little low on rest." });
+          patternItems.push({
+            title: "Short sleep",
+            label: "Watch",
+            meaning: "You may be running a little low on rest."
+          });
         }
       }
 
       if (napDur > 0) {
-        patternItems.push({ title: "Nap boost", label: "Active", meaning: `That nap gave you ${napCredit} minutes back and opened a little more time.` });
+        patternItems.push({
+          title: "Nap boost",
+          label: "Active",
+          meaning: `That nap gave you ${napCredit} minutes back and opened a little more time.`
+        });
       }
 
       const whyItems = core.notes.slice(0, 4);
@@ -1176,51 +1252,37 @@
       document.getElementById("activityMinutesInput").value = d.activity_minutes ?? "";
       document.getElementById("sleepEffInput").value = d.sleep_eff ?? "";
 
-      document.getElementById("napStartValue").textContent = fmtTimeFromTs(state.nap_start_ts);
-      document.getElementById("napWakeValue").textContent = fmtTimeFromTs(state.nap_wake_ts);
-      document.getElementById("napDurationValue").textContent = napDur ? String(napDur) : "—";
-
-      const patternsIntro = document.getElementById("patternsIntro");
+      document.getElementById("patternsIntro").textContent = patternItems.length ? "A few things are worth watching." : "Nothing to watch right now.";
       const patternsWrap = document.getElementById("patternsWrap");
       patternsWrap.innerHTML = "";
+      patternItems.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "mini-box";
+        div.innerHTML = `<div class="mini-title-row"><div class="mini-title">${p.title}</div><div class="tag">${p.label}</div></div><div class="mini-text">${p.meaning}</div>`;
+        patternsWrap.appendChild(div);
+      });
 
-      if (!patternItems.length) {
-        patternsIntro.textContent = "Nothing to watch right now.";
-      } else {
-        patternsIntro.textContent = "A few things are worth watching.";
-        patternItems.forEach(p => {
-          const div = document.createElement("div");
-          div.className = "mini-box";
-          div.innerHTML = `<div class="mini-title-row"><div class="mini-title">${p.title}</div><div class="tag">${p.label}</div></div><div class="mini-text">${p.meaning}</div>`;
-          patternsWrap.appendChild(div);
-        });
-      }
-
-      const whyList = document.getElementById("whyList");
-      whyList.innerHTML = "";
-      if (!whyItems.length) {
-        whyList.innerHTML = `<li>Add a few days of data so this gets more accurate.</li>`;
-      } else {
-        whyItems.forEach(item => {
-          const li = document.createElement("li");
-          li.textContent = item;
-          whyList.appendChild(li);
-        });
-      }
-
-      const selected = state.selected_question || "No question selected yet.";
-      document.getElementById("selectedQuestionDisplay").textContent = selected;
+      document.getElementById("wakeInput").value = "";
+      document.getElementById("napStartValue")?.textContent;
+      document.getElementById("napWakeValue")?.textContent;
 
       renderQuestions();
       renderMeaningLogs();
       renderPatternPages(state);
       renderBaselineRead(core);
+
+      document.getElementById("selectedQuestionDisplay").textContent = state.selected_question || "No question selected yet.";
+
       switchPage(state.page || "home");
     }
 
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-      btn.addEventListener("click", () => switchPage(btn.dataset.page));
-    });
+    function initNav() {
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          switchPage(btn.dataset.page);
+        });
+      });
+    }
 
     document.getElementById("wakeNowBtn").addEventListener("click", () => {
       const s = loadState();
@@ -1231,13 +1293,12 @@
 
     document.getElementById("saveWakeBtn").addEventListener("click", () => {
       const ts = parseHhmmToTs(document.getElementById("wakeInput").value);
-      if (ts) {
-        const s = loadState();
-        s.wake_ts = ts;
-        saveState(s);
-        document.getElementById("wakeInput").value = "";
-        render();
-      }
+      if (!ts) return;
+      const s = loadState();
+      s.wake_ts = ts;
+      saveState(s);
+      document.getElementById("wakeInput").value = "";
+      render();
     });
 
     document.getElementById("saveFastBtn").addEventListener("click", () => {
@@ -1291,6 +1352,7 @@
     document.getElementById("saveNapManualBtn").addEventListener("click", () => {
       const startTs = parseHhmmToTs(document.getElementById("napStartInput").value);
       let wakeTs = parseHhmmToTs(document.getElementById("napWakeInput").value);
+
       if (startTs && wakeTs) {
         if (wakeTs < startTs) wakeTs += 24 * 60 * 60;
         const s = loadState();
@@ -1320,17 +1382,15 @@
     });
 
     document.getElementById("saveMeaningBtn").addEventListener("click", () => {
-      const event = document.getElementById("eventInput").value.trim();
-      const meaning = document.getElementById("meaningInput").value.trim();
-      const emotion = document.getElementById("emotionInput").value.trim();
-      const action = document.getElementById("actionInput").value.trim();
-      const cost = document.getElementById("costInput").value.trim();
-      const notes = document.getElementById("meaningNotesInput").value.trim();
-
       const s = loadState();
       s.meaning_logs.push({
         date: todayIso(),
-        event, meaning, emotion, action, cost, notes
+        event: document.getElementById("eventInput").value.trim(),
+        meaning: document.getElementById("meaningInput").value.trim(),
+        emotion: document.getElementById("emotionInput").value.trim(),
+        action: document.getElementById("actionInput").value.trim(),
+        cost: document.getElementById("costInput").value.trim(),
+        notes: document.getElementById("meaningNotesInput").value.trim()
       });
       s.meaning_logs = s.meaning_logs.slice(-100);
       saveState(s);
@@ -1345,14 +1405,12 @@
     });
 
     document.getElementById("exportStateBtn").addEventListener("click", () => {
-      const s = loadState();
-      document.getElementById("importBox").value = JSON.stringify(s, null, 2);
+      document.getElementById("importBox").value = JSON.stringify(loadState(), null, 2);
     });
 
     document.getElementById("importStateBtn").addEventListener("click", () => {
       try {
-        const raw = document.getElementById("importBox").value;
-        const parsed = JSON.parse(raw);
+        const parsed = JSON.parse(document.getElementById("importBox").value);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
         render();
       } catch {
@@ -1365,6 +1423,7 @@
       render();
     });
 
+    initNav();
     render();
   </script>
 </body>
