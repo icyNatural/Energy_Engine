@@ -15,13 +15,13 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    .wrap { max-width: 920px; margin: 0 auto; }
+    .wrap { max-width: 980px; margin: 0 auto; }
 
     .app-title {
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 900;
+      line-height: 1.05;
       margin-bottom: 6px;
-      line-height: 1.1;
     }
 
     .app-sub {
@@ -167,7 +167,7 @@
       letter-spacing: 0.08em;
     }
 
-    .hero-actions, .grid-2, .grid-3, .two, .three {
+    .hero-actions, .grid-2, .grid-3, .two, .three, .chip-row {
       display: grid;
       gap: 10px;
     }
@@ -242,7 +242,7 @@
     .btn-soft { background: rgba(255,255,255,0.04); color: white; }
     .btn-danger { background: rgba(127,29,29,0.55); color: white; }
 
-    input, textarea, select {
+    input, textarea {
       width: 100%;
       padding: 14px;
       border-radius: 18px;
@@ -254,7 +254,7 @@
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 120px;
       resize: vertical;
     }
 
@@ -311,6 +311,30 @@
       white-space: nowrap;
     }
 
+    .chip-row {
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 12px;
+    }
+
+    .chip {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .chip.active {
+      background: white;
+      color: #081225;
+      border-color: white;
+    }
+
     .list {
       display: grid;
       gap: 10px;
@@ -328,8 +352,59 @@
       font-size: 13px;
     }
 
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .state-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px 10px;
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .state-btn.active {
+      background: white;
+      color: #081225;
+    }
+
+    .output-block {
+      background: rgba(255,255,255,0.035);
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .output-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #93a7c2;
+      margin-bottom: 8px;
+    }
+
+    .output-text {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #e8eef7;
+    }
+
+    @media (max-width: 800px) {
+      .state-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 700px) {
-      .hero-actions, .grid-2, .grid-3, .two, .three {
+      .hero-actions, .grid-2, .grid-3, .two, .three, .chip-row {
         grid-template-columns: 1fr;
       }
 
@@ -345,8 +420,10 @@
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="energy">Energy</button>
       <button class="nav-btn" data-page="meaning">Meaning</button>
       <button class="nav-btn" data-page="questions">Questions</button>
+      <button class="nav-btn" data-page="interpreter">Interpreter</button>
       <button class="nav-btn" data-page="patterns">Patterns</button>
       <button class="nav-btn" data-page="settings">Settings</button>
     </div>
@@ -405,8 +482,8 @@
 
         <div class="card">
           <div class="section-title">System loop</div>
-          <div class="text">Energy affects interpretation. Interpretation affects action. Questions interrupt bad loops before they harden.</div>
-          <div class="muted">This is one machine, not separate apps.</div>
+          <div class="text">Your energy affects how you interpret things. The meaning you assign affects what you do next. Good questions help stop bad loops before they get expensive.</div>
+          <div class="muted">This works best when you stay simple and honest with the inputs.</div>
         </div>
       </div>
 
@@ -426,10 +503,11 @@
           <div id="patternsWrap"></div>
         </div>
       </div>
+    </section>
 
+    <section id="page-energy" class="page hidden">
       <div class="card">
-        <div class="section-title">Energy engine</div>
-
+        <div class="section-title">Core energy inputs</div>
         <div class="three">
           <input id="sleepMinutesInput" placeholder="Sleep minutes">
           <input id="sleepHrInput" placeholder="Sleep heart rate">
@@ -493,7 +571,7 @@
     <section id="page-meaning" class="page hidden">
       <div class="card">
         <div class="section-title">Meaning engine</div>
-        <div class="muted">Log event → assigned meaning → felt state → action → cost.</div>
+        <div class="muted">Log what happened, what you made it mean, what you felt, what you did, and what it cost.</div>
 
         <div class="list">
           <input id="eventInput" placeholder="What happened?">
@@ -501,7 +579,7 @@
           <input id="emotionInput" placeholder="What did it make you feel or become?">
           <input id="actionInput" placeholder="What did you do next?">
           <input id="costInput" placeholder="What did that cost you?">
-          <textarea id="meaningNotesInput" placeholder="Optional notes or extra context"></textarea>
+          <textarea id="meaningNotesInput" placeholder="Extra notes"></textarea>
         </div>
 
         <div class="row">
@@ -517,41 +595,84 @@
 
     <section id="page-questions" class="page hidden">
       <div class="card">
-        <div class="section-title">Questioning engine</div>
-        <div class="muted">Use simple leverage questions to break bad interpretation loops before they become behavior.</div>
+        <div class="section-title">Questions</div>
+        <div class="muted">These are meant to help you think clearly, not confuse you more.</div>
 
-        <div class="two">
-          <select id="questionSetSelect">
-            <option value="default">Everyday clarity</option>
-            <option value="socratic">Socratic clean-up</option>
-            <option value="precision">Precision mode</option>
-            <option value="optimal">Best move mode</option>
-          </select>
-          <button class="btn btn-ghost" id="loadQuestionsBtn" type="button">Load question set</button>
-        </div>
-
+        <div class="chip-row" id="questionSetChips"></div>
         <div class="list" id="questionList"></div>
+      </div>
 
+      <div class="card">
+        <div class="section-title">Current question</div>
+        <div class="big" id="selectedQuestionDisplay">No question selected yet.</div>
+        <div class="muted">Pick a question you can actually answer in plain language.</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Interpreter matched questions</div>
+        <div id="interpreterQuestionList" class="list"></div>
+      </div>
+
+      <div class="card">
         <details>
           <summary>Add your own question</summary>
           <div class="two">
-            <input id="customQuestionInput" placeholder="Write a custom question">
+            <input id="customQuestionInput" placeholder="Write your own question">
             <button class="btn btn-ghost" id="saveCustomQuestionBtn" type="button">Save question</button>
           </div>
         </details>
       </div>
+    </section>
 
+    <section id="page-interpreter" class="page hidden">
       <div class="card">
-        <div class="section-title">Selected question</div>
-        <div class="big" id="selectedQuestionDisplay">No question selected yet.</div>
-        <div class="muted">Use this right when a loop starts forming.</div>
+        <div class="section-title">Interpreter</div>
+        <div class="muted">Start with the quick word you would actually use. Then pick the clearer version that fits best.</div>
+
+        <div class="output-block">
+          <div class="output-label">How it feels at first</div>
+          <div class="state-grid" id="simpleStateGrid"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">A clearer read might be</div>
+          <div class="state-grid" id="refinedStateGrid"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">What this may be</div>
+          <div class="output-text" id="interpSummary">Pick a quick word above.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">What may be underneath</div>
+          <div class="output-text" id="interpUnderneath">The likely structure will show here.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Good questions right now</div>
+          <div id="interpQuestions" class="list"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Best move</div>
+          <div class="output-text" id="interpMove">A usable next move will show here.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Suggested meaning starter</div>
+          <div class="output-text" id="interpMeaningStarter">A suggested starter will show here.</div>
+          <div class="row">
+            <button class="btn btn-ghost" id="useMeaningStarterBtn" type="button">Send this into Meaning</button>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="page-patterns" class="page hidden">
       <div class="card">
-        <div class="section-title">Pattern / insight engine</div>
-        <div class="text">This module watches repeated trigger → meaning → action loops and repeated energy conditions.</div>
+        <div class="section-title">Patterns</div>
+        <div class="text">This page watches repeated meaning loops and repeated energy conditions.</div>
       </div>
 
       <div class="grid-2">
@@ -578,50 +699,324 @@
 
         <details>
           <summary>Import app data</summary>
-          <textarea id="importBox" placeholder="Paste exported JSON here"></textarea>
+          <textarea id="importBox" placeholder="Export first, then paste that JSON here to restore your data"></textarea>
           <div class="row">
             <button class="btn btn-ghost" id="importStateBtn" type="button">Import data</button>
           </div>
+          <div class="muted">Export creates the JSON. Import restores it later on this browser or another device.</div>
         </details>
 
-        <div class="tiny mono">Static unified version. Data is saved in this browser only.</div>
+        <div class="tiny mono">Static version. Data is stored in this browser only.</div>
       </div>
     </section>
   </div>
 
   <script>
-    const STORAGE_KEY = "icy_natural_os_v1";
+    const STORAGE_KEY = "icy_natural_os_v3";
 
     const QUESTION_BANKS = {
       default: [
-        "What actually happened here?",
-        "What story did I just tell myself?",
-        "What am I assuming without proof?",
-        "What feels threatened right now?",
-        "What would the calm useful move be?",
-        "Does this deserve this much weight?"
+        "What actually happened?",
+        "What am I telling myself about it?",
+        "What part is fact and what part is assumption?",
+        "What matters most right now?",
+        "What would help instead of spiral?"
       ],
-      socratic: [
-        "What are the facts?",
-        "What am I adding on top of the facts?",
-        "Is this definitely true or just possible?",
-        "What else could this mean?",
-        "What evidence would change my mind?"
+      direct: [
+        "What is the real problem here?",
+        "What am I avoiding?",
+        "What needs to happen next?",
+        "What am I making bigger than it is?",
+        "What is the clean move?"
       ],
-      precision: [
-        "What word here is exaggerating things?",
-        "What is the cleaner description?",
-        "What is signal and what is story?",
-        "What part is real and what part is projection?",
-        "What would I call this if I were being exact?"
+      calm: [
+        "What would feel simpler here?",
+        "What can I let go of right now?",
+        "What does not need my energy?",
+        "What can wait?",
+        "What would make today easier?"
       ],
-      optimal: [
-        "What helps most right now?",
-        "What protects my energy?",
-        "What reduces future cost?",
-        "What is the next clean move?",
-        "What can I do in under 5 minutes?"
+      grounded: [
+        "What do I know for sure?",
+        "What do I need before deciding?",
+        "What would I say if I were being honest?",
+        "What is worth doing today?",
+        "What can I finish cleanly?"
       ]
+    };
+
+    const QUESTION_SET_LABELS = {
+      default: "Clear thinking",
+      direct: "Direct",
+      calm: "Calm down",
+      grounded: "Grounded"
+    };
+
+    const SIMPLE_TO_REFINED = {
+      sad: ["heavy", "disconnected", "let_down", "flat"],
+      mad: ["irritated", "pressured", "blocked", "disrespected"],
+      tired: ["heavy", "foggy", "low_recovery", "scattered"],
+      stressed: ["pressured", "overwhelmed", "conflicted", "bracing"],
+      anxious: ["doubtful", "pressured", "uncertain", "scanning"],
+      off: ["unclear", "disconnected", "scattered", "unsettled"],
+      low: ["heavy", "flat", "disconnected", "drained"],
+      frustrated: ["irritated", "blocked", "pressured", "overloaded"],
+      confused: ["unclear", "conflicted", "doubtful", "scattered"]
+    };
+
+    const SIMPLE_LABELS = {
+      sad: "Sad",
+      mad: "Mad",
+      tired: "Tired",
+      stressed: "Stressed",
+      anxious: "Anxious",
+      off: "Off",
+      low: "Low",
+      frustrated: "Frustrated",
+      confused: "Confused"
+    };
+
+    const REFINED_BANK = {
+      heavy: {
+        label: "Heavy",
+        summary: "Everything may feel slower and harder than it should.",
+        underneath: "Low recovery, emotional weight, drag, or too much unresolved load.",
+        questions: [
+          "What is making everything feel heavier?",
+          "What can I stop carrying today?",
+          "What actually needs my energy right now?"
+        ],
+        move: "Lower the bar for today and remove extra pressure.",
+        meaningStarter: "Something felt heavy. I may be carrying more than I can process cleanly right now."
+      },
+      disconnected: {
+        label: "Disconnected",
+        summary: "You may be moving without real involvement.",
+        underneath: "Low engagement, emotional distance, fatigue, or meaning loss.",
+        questions: [
+          "What feels far away from me right now?",
+          "What am I no longer connected to?",
+          "What would help me feel more present?"
+        ],
+        move: "Do one thing that reconnects you to what matters.",
+        meaningStarter: "I felt disconnected. It may not be the situation alone. I may be low on involvement or closeness."
+      },
+      let_down: {
+        label: "Let down",
+        summary: "Something may have fallen short of what you hoped for.",
+        underneath: "Expectation loss, disappointment, or a gap between what you wanted and what happened.",
+        questions: [
+          "What did I hope would happen?",
+          "What feels missing right now?",
+          "What part of this is disappointment?"
+        ],
+        move: "Name the loss clearly before trying to move past it.",
+        meaningStarter: "I felt let down. Something did not meet the expectation I had in mind."
+      },
+      flat: {
+        label: "Flat",
+        summary: "Your system may be low on energy, involvement, or emotional lift.",
+        underneath: "Low recovery, low stimulation, or not enough meaningful engagement.",
+        questions: [
+          "Am I low on energy or low on interest?",
+          "What feels dull right now?",
+          "What would wake me up a little?"
+        ],
+        move: "Pick one simple thing that brings some life back into the day.",
+        meaningStarter: "I felt flat. I may be low on energy, interest, or emotional lift."
+      },
+      irritated: {
+        label: "Irritated",
+        summary: "Something feels like friction or disrespect.",
+        underneath: "Boundary strain, overload, blocked momentum, or small things stacking up.",
+        questions: [
+          "What exactly is bothering me?",
+          "What has been rubbing me the wrong way?",
+          "Is this one thing or many small things stacked together?"
+        ],
+        move: "Name the friction clearly before reacting from it.",
+        meaningStarter: "I felt irritated. Something felt like friction, strain, or low-level disrespect."
+      },
+      pressured: {
+        label: "Pressured",
+        summary: "Urgency may be distorting the way this feels.",
+        underneath: "Time pressure, social pressure, or internal pressure to resolve too fast.",
+        questions: [
+          "What actually needs to happen now?",
+          "What can wait?",
+          "Is this real urgency or just felt urgency?"
+        ],
+        move: "Separate the real deadline from the emotional rush.",
+        meaningStarter: "I felt pressured. The urgency may be shaping my reaction more than the facts are."
+      },
+      blocked: {
+        label: "Blocked",
+        summary: "You may know what you want, but something is stopping movement.",
+        underneath: "Resistance, external obstacles, fear of failure, or unclear next steps.",
+        questions: [
+          "What is stopping movement here?",
+          "What part feels blocked?",
+          "What would open this up a little?"
+        ],
+        move: "Find the exact point of friction and solve that first.",
+        meaningStarter: "I felt blocked. Movement felt interrupted by friction, resistance, or uncertainty."
+      },
+      disrespected: {
+        label: "Disrespected",
+        summary: "Something may have landed as dismissive, careless, or beneath what you expected.",
+        underneath: "Boundary sensitivity, unmet standards, or feeling unseen.",
+        questions: [
+          "What felt disrespectful about it?",
+          "Was it intent, tone, or carelessness?",
+          "What boundary feels crossed?"
+        ],
+        move: "Name what felt off before deciding what it means.",
+        meaningStarter: "I felt disrespected. Something about the tone, care, or behavior landed wrong."
+      },
+      foggy: {
+        label: "Foggy",
+        summary: "Your thinking may be slow, blurry, or hard to organize.",
+        underneath: "Low recovery, poor clarity, overload, or not enough mental energy.",
+        questions: [
+          "What feels unclear right now?",
+          "Am I missing sleep, space, or information?",
+          "What would make this easier to sort?"
+        ],
+        move: "Reduce complexity and handle one clear thing at a time.",
+        meaningStarter: "I felt foggy. My clarity may be low from low recovery or too much mental load."
+      },
+      low_recovery: {
+        label: "Low recovery",
+        summary: "Your system may simply not be restored enough yet.",
+        underneath: "Sleep debt, stress carryover, overload, or not enough reset.",
+        questions: [
+          "What signs show that I am not fully restored?",
+          "What can I scale down today?",
+          "What would help recovery instead of draining it?"
+        ],
+        move: "Work with the lower capacity instead of arguing with it.",
+        meaningStarter: "I may be low on recovery. This could be more about restoration than mindset."
+      },
+      scattered: {
+        label: "Scattered",
+        summary: "Your attention is split in too many directions.",
+        underneath: "Too many open loops, poor focus, or low usable clarity.",
+        questions: [
+          "What deserves my attention first?",
+          "What is splitting my focus right now?",
+          "What can I close or mute?"
+        ],
+        move: "Pick one lane and stay there until something is closed.",
+        meaningStarter: "I felt scattered. My attention may be split across too many things at once."
+      },
+      overwhelmed: {
+        label: "Overwhelmed",
+        summary: "Too much may be landing on you at once.",
+        underneath: "Too many open loops, too much demand, or too many decisions stacked together.",
+        questions: [
+          "What is the one thing that matters first?",
+          "What can I stop carrying right now?",
+          "What is making this feel bigger than I can hold?"
+        ],
+        move: "Reduce it to one next step and cut everything nonessential.",
+        meaningStarter: "I felt overwhelmed. Demand may be exceeding my current usable clarity."
+      },
+      conflicted: {
+        label: "Conflicted",
+        summary: "Two pulls may be active at the same time.",
+        underneath: "Competing values, competing wants, or fear of choosing wrong.",
+        questions: [
+          "What am I protecting on each side?",
+          "What tradeoff am I avoiding naming?",
+          "What would make this decision simpler?"
+        ],
+        move: "Name the tradeoff before trying to force a clean answer.",
+        meaningStarter: "I felt conflicted. Two competing pulls may be active at the same time."
+      },
+      bracing: {
+        label: "Bracing",
+        summary: "You may already be preparing for strain, impact, or bad news.",
+        underneath: "Expectation of stress, guardedness, or waiting for something difficult.",
+        questions: [
+          "What am I preparing myself for?",
+          "What outcome am I already assuming?",
+          "Is the threat here yet or am I bracing for it?"
+        ],
+        move: "Check whether the strain is real now or only anticipated.",
+        meaningStarter: "I felt braced. I may already be preparing for strain before it fully arrives."
+      },
+      doubtful: {
+        label: "Doubtful",
+        summary: "Trust in your read may be low right now.",
+        underneath: "Unclear evidence, fear of being wrong, or shaky self-trust.",
+        questions: [
+          "What would make this clearer?",
+          "What exactly am I doubting?",
+          "Do I need more information or more courage?"
+        ],
+        move: "Do not force confidence. Get one more useful piece of information.",
+        meaningStarter: "I felt doubtful. Trust in my own read may be low right now."
+      },
+      uncertain: {
+        label: "Uncertain",
+        summary: "You may not have enough clarity to commit yet.",
+        underneath: "Missing information, mixed signals, or not enough confidence in the next move.",
+        questions: [
+          "What am I missing?",
+          "What needs to be clearer before I decide?",
+          "What would reduce uncertainty here?"
+        ],
+        move: "Clarify the unknown before trying to settle the whole thing.",
+        meaningStarter: "I felt uncertain. I may need more clarity before I can move cleanly."
+      },
+      scanning: {
+        label: "Scanning",
+        summary: "Your attention may be searching for threat, risk, or something off.",
+        underneath: "Unease, alertness, doubt, or waiting for something to go wrong.",
+        questions: [
+          "What am I watching for?",
+          "What risk am I trying to catch early?",
+          "Is there real danger here or just vigilance?"
+        ],
+        move: "Name the feared outcome and check whether it is actually present.",
+        meaningStarter: "I felt on alert. My attention may be scanning for risk or something off."
+      },
+      unclear: {
+        label: "Unclear",
+        summary: "You probably do not have a clean picture yet.",
+        underneath: "Missing information, mixed signals, or too many thoughts at once.",
+        questions: [
+          "What exactly is unclear here?",
+          "Which part do I not understand yet?",
+          "What would make the picture cleaner?"
+        ],
+        move: "Slow down and name the part you do not understand yet.",
+        meaningStarter: "I felt unclear. I may not have a clean enough picture yet."
+      },
+      unsettled: {
+        label: "Unsettled",
+        summary: "Something may feel off, but not fully defined yet.",
+        underneath: "Low certainty, low safety, emotional carryover, or unresolved tension.",
+        questions: [
+          "What feels off about this?",
+          "What has not settled yet?",
+          "What would help me feel more stable?"
+        ],
+        move: "Do not rush to label it. Stay with what feels off and make it more specific.",
+        meaningStarter: "I felt unsettled. Something feels off, but I have not named it clearly yet."
+      },
+      overloaded: {
+        label: "Overloaded",
+        summary: "There may be too much demand on your system right now.",
+        underneath: "Excess tasks, emotional load, pressure stacking, or too little room to recover.",
+        questions: [
+          "What is too much right now?",
+          "What can I remove or delay?",
+          "What is adding load that does not need to?"
+        ],
+        move: "Cut the load before trying to perform through it.",
+        meaningStarter: "I felt overloaded. There may be more demand on me than I can carry cleanly right now."
+      }
     };
 
     function nowTs() {
@@ -636,6 +1031,9 @@
     function defaultState() {
       return {
         page: "home",
+        question_set: "default",
+        interpreter_simple: null,
+        interpreter_refined: null,
         wake_ts: null,
         nap_start_ts: null,
         nap_wake_ts: null,
@@ -1024,9 +1422,28 @@
       });
     }
 
+    function renderQuestionSetChips() {
+      const state = loadState();
+      const wrap = document.getElementById("questionSetChips");
+      wrap.innerHTML = "";
+
+      Object.keys(QUESTION_BANKS).forEach(key => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (state.question_set === key ? " active" : "");
+        btn.textContent = QUESTION_SET_LABELS[key] || key;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.question_set = key;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
     function renderQuestions() {
       const state = loadState();
-      const type = document.getElementById("questionSetSelect").value;
+      const type = state.question_set || "default";
       const base = QUESTION_BANKS[type] || QUESTION_BANKS.default;
       const all = [...base, ...state.custom_questions];
       const wrap = document.getElementById("questionList");
@@ -1050,6 +1467,114 @@
         });
         wrap.appendChild(box);
       });
+    }
+
+    function renderInterpreterQuestionFeed() {
+      const state = loadState();
+      const wrap = document.getElementById("interpreterQuestionList");
+      wrap.innerHTML = "";
+
+      const refined = state.interpreter_refined;
+      if (!refined || !REFINED_BANK[refined]) {
+        wrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a refined state in Interpreter to load matching questions here.</div></div>`;
+        return;
+      }
+
+      REFINED_BANK[refined].questions.forEach(q => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${q}</div>
+            <div class="tag">Matched</div>
+          </div>
+          <button class="btn btn-ghost">Use this</button>
+        `;
+        box.querySelector("button").addEventListener("click", () => {
+          const s = loadState();
+          s.selected_question = q;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(box);
+      });
+    }
+
+    function renderInterpreter() {
+      const state = loadState();
+
+      const simpleWrap = document.getElementById("simpleStateGrid");
+      simpleWrap.innerHTML = "";
+
+      Object.keys(SIMPLE_TO_REFINED).forEach(key => {
+        const btn = document.createElement("button");
+        btn.className = "state-btn" + (state.interpreter_simple === key ? " active" : "");
+        btn.textContent = SIMPLE_LABELS[key] || key;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.interpreter_simple = key;
+          s.interpreter_refined = null;
+          saveState(s);
+          render();
+        });
+        simpleWrap.appendChild(btn);
+      });
+
+      const refinedWrap = document.getElementById("refinedStateGrid");
+      refinedWrap.innerHTML = "";
+
+      const options = state.interpreter_simple ? SIMPLE_TO_REFINED[state.interpreter_simple] || [] : [];
+      options.forEach(key => {
+        const info = REFINED_BANK[key];
+        const btn = document.createElement("button");
+        btn.className = "state-btn" + (state.interpreter_refined === key ? " active" : "");
+        btn.textContent = info ? info.label : key;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.interpreter_refined = key;
+          saveState(s);
+          render();
+        });
+        refinedWrap.appendChild(btn);
+      });
+
+      if (!options.length) {
+        refinedWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a quick word first to see better options.</div></div>`;
+      }
+
+      const refined = state.interpreter_refined;
+      const selected = refined ? REFINED_BANK[refined] : null;
+
+      document.getElementById("interpSummary").textContent = selected ? selected.summary : "Pick a quick word above.";
+      document.getElementById("interpUnderneath").textContent = selected ? selected.underneath : "The likely structure will show here.";
+      document.getElementById("interpMove").textContent = selected ? selected.move : "A usable next move will show here.";
+      document.getElementById("interpMeaningStarter").textContent = selected ? selected.meaningStarter : "A suggested starter will show here.";
+
+      const qWrap = document.getElementById("interpQuestions");
+      qWrap.innerHTML = "";
+      if (!selected) {
+        qWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Three matching questions will show here.</div></div>`;
+      } else {
+        selected.questions.forEach(q => {
+          const box = document.createElement("div");
+          box.className = "mini-box";
+          box.innerHTML = `
+            <div class="mini-title-row">
+              <div class="mini-title">${q}</div>
+              <div class="tag">Matched</div>
+            </div>
+            <button class="btn btn-ghost">Send to Questions</button>
+          `;
+          box.querySelector("button").addEventListener("click", () => {
+            const s = loadState();
+            s.selected_question = q;
+            s.page = "questions";
+            saveState(s);
+            render();
+          });
+          qWrap.appendChild(box);
+        });
+      }
     }
 
     function renderMeaningLogs() {
@@ -1103,7 +1628,7 @@
           sorted.forEach(([k,v]) => {
             const box = document.createElement("div");
             box.className = "mini-box";
-            box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${k}</div><div class="tag">${v}x</div></div><div class="mini-text">This assigned meaning keeps returning.</div>`;
+            box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${k}</div><div class="tag">${v}x</div></div><div class="mini-text">This meaning keeps coming back.</div>`;
             meaningWrap.appendChild(box);
           });
         }
@@ -1122,7 +1647,7 @@
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">Personal baseline, not generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -1212,7 +1737,6 @@
         });
       }
 
-      const whyItems = core.notes.slice(0, 4);
       const windowText = estimateWindowText(phaseName, effAwake, phaseExtension);
       const baselineDays = core.baseline_days;
       const confidenceText =
@@ -1262,11 +1786,10 @@
         patternsWrap.appendChild(div);
       });
 
-      document.getElementById("wakeInput").value = "";
-      document.getElementById("napStartValue")?.textContent;
-      document.getElementById("napWakeValue")?.textContent;
-
+      renderQuestionSetChips();
       renderQuestions();
+      renderInterpreterQuestionFeed();
+      renderInterpreter();
       renderMeaningLogs();
       renderPatternPages(state);
       renderBaselineRead(core);
@@ -1368,8 +1891,6 @@
 
     document.getElementById("refreshBtn").addEventListener("click", render);
 
-    document.getElementById("loadQuestionsBtn").addEventListener("click", renderQuestions);
-
     document.getElementById("saveCustomQuestionBtn").addEventListener("click", () => {
       const input = document.getElementById("customQuestionInput");
       const q = (input.value || "").trim();
@@ -1404,22 +1925,54 @@
       render();
     });
 
-    document.getElementById("exportStateBtn").addEventListener("click", () => {
-      document.getElementById("importBox").value = JSON.stringify(loadState(), null, 2);
+    document.getElementById("useMeaningStarterBtn").addEventListener("click", () => {
+      const s = loadState();
+      const refined = s.interpreter_refined;
+      if (!refined || !REFINED_BANK[refined]) return;
+
+      const info = REFINED_BANK[refined];
+      document.getElementById("eventInput").value = document.getElementById("eventInput").value || "Interpreter state";
+      document.getElementById("meaningInput").value = info.meaningStarter;
+      document.getElementById("emotionInput").value = info.label;
+      s.page = "meaning";
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("exportStateBtn").addEventListener("click", async () => {
+      const json = JSON.stringify(loadState(), null, 2);
+      const box = document.getElementById("importBox");
+      box.value = json;
+
+      try {
+        await navigator.clipboard.writeText(json);
+        alert("App data exported and copied to clipboard.");
+      } catch {
+        alert("App data exported into the box. Copy it from there.");
+      }
     });
 
     document.getElementById("importStateBtn").addEventListener("click", () => {
+      const raw = document.getElementById("importBox").value.trim();
+
+      if (!raw) {
+        alert("Paste exported JSON into the box first.");
+        return;
+      }
+
       try {
-        const parsed = JSON.parse(document.getElementById("importBox").value);
+        const parsed = JSON.parse(raw);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+        alert("App data imported.");
         render();
       } catch {
-        alert("Import JSON is invalid.");
+        alert("That text is not valid exported JSON.");
       }
     });
 
     document.getElementById("clearStateBtn").addEventListener("click", () => {
       localStorage.removeItem(STORAGE_KEY);
+      alert("All local app data cleared.");
       render();
     });
 
