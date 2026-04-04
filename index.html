@@ -399,6 +399,17 @@
       color: #e8eef7;
     }
 
+    .question-card {
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.12s ease;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .question-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.14);
+    }
+
     @media (max-width: 800px) {
       .state-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -457,7 +468,8 @@
 
       <div class="grid-2">
         <div class="card">
-          <div class="section-title">Today</div>
+          <div class="section-title">Start of day</div>
+
           <div class="grid-2">
             <div class="metric">
               <div class="metric-label">Wake time</div>
@@ -478,12 +490,33 @@
               <div class="metric-sub">Added to your stronger window</div>
             </div>
           </div>
+
+          <div class="muted">Set your wake time here first. Energy inputs stay on the Energy page.</div>
+
+          <div class="two" style="margin-top:12px;">
+            <input id="wakeInput" placeholder="Wake 0930 or 09:30">
+            <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
+          </div>
+
+          <details>
+            <summary>Nap controls</summary>
+            <div class="two">
+              <input id="napStartInput" placeholder="Start 1130 or 11:30">
+              <input id="napWakeInput" placeholder="Wake 1225 or 12:25">
+            </div>
+
+            <div class="row">
+              <button class="btn btn-ghost" id="saveNapManualBtn" type="button">Save Nap Time</button>
+              <button class="btn btn-primary" id="napWakeBtn" type="button">End Nap</button>
+              <button class="btn btn-danger" id="napClearBtn" type="button">Clear Nap</button>
+            </div>
+          </details>
         </div>
 
         <div class="card">
           <div class="section-title">System loop</div>
           <div class="text">Your energy affects how you interpret things. The meaning you assign affects what you do next. Good questions help stop bad loops before they get expensive.</div>
-          <div class="muted">This works best when you stay simple and honest with the inputs.</div>
+          <div class="muted">Home is for wake, state, and live rhythm. Energy is where you feed the engine.</div>
         </div>
       </div>
 
@@ -537,34 +570,10 @@
         </details>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <div class="section-title">Wake + nap</div>
-
-          <div class="two">
-            <input id="wakeInput" placeholder="Wake 0930 or 09:30">
-            <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
-          </div>
-
-          <details>
-            <summary>Nap controls</summary>
-            <div class="two">
-              <input id="napStartInput" placeholder="Start 1130 or 11:30">
-              <input id="napWakeInput" placeholder="Wake 1225 or 12:25">
-            </div>
-
-            <div class="row">
-              <button class="btn btn-ghost" id="saveNapManualBtn" type="button">Save Nap Time</button>
-              <button class="btn btn-primary" id="napWakeBtn" type="button">End Nap</button>
-              <button class="btn btn-danger" id="napClearBtn" type="button">Clear Nap</button>
-            </div>
-          </details>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Latest baseline read</div>
-          <div id="baselineReadWrap" class="list"></div>
-        </div>
+      <div class="card">
+        <div class="section-title">Latest baseline read</div>
+        <div class="muted">Your recent personal baseline lives here. This is your pattern, not a generic standard.</div>
+        <div id="baselineReadWrap" class="list"></div>
       </div>
     </section>
 
@@ -640,6 +649,11 @@
         </div>
 
         <div class="output-block">
+          <div class="output-label">Intensity</div>
+          <div class="chip-row" id="intensityChips"></div>
+        </div>
+
+        <div class="output-block">
           <div class="output-label">What this may be</div>
           <div class="output-text" id="interpSummary">Pick a quick word above.</div>
         </div>
@@ -660,10 +674,10 @@
         </div>
 
         <div class="output-block">
-          <div class="output-label">Suggested meaning starter</div>
+          <div class="output-label">Suggested meaning</div>
           <div class="output-text" id="interpMeaningStarter">A suggested starter will show here.</div>
           <div class="row">
-            <button class="btn btn-ghost" id="useMeaningStarterBtn" type="button">Send this into Meaning</button>
+            <button class="btn btn-primary" id="useMeaningStarterBtn" type="button">Continue into Meaning</button>
           </div>
         </div>
       </div>
@@ -712,7 +726,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = "icy_natural_os_v3";
+    const STORAGE_KEY = "icy_natural_os_v4";
 
     const QUESTION_BANKS = {
       default: [
@@ -759,7 +773,7 @@
       stressed: ["pressured", "overwhelmed", "conflicted", "bracing"],
       anxious: ["doubtful", "pressured", "uncertain", "scanning"],
       off: ["unclear", "disconnected", "scattered", "unsettled"],
-      low: ["heavy", "flat", "disconnected", "drained"],
+      low: ["heavy", "flat", "disconnected", "low_recovery"],
       frustrated: ["irritated", "blocked", "pressured", "overloaded"],
       confused: ["unclear", "conflicted", "doubtful", "scattered"]
     };
@@ -776,6 +790,12 @@
       confused: "Confused"
     };
 
+    const INTENSITY_LABELS = {
+      low: "Low",
+      medium: "Medium",
+      high: "High"
+    };
+
     const REFINED_BANK = {
       heavy: {
         label: "Heavy",
@@ -786,7 +806,7 @@
           "What can I stop carrying today?",
           "What actually needs my energy right now?"
         ],
-        move: "Lower the bar for today and remove extra pressure.",
+        move: "Lower the bar for today. Remove one pressure source in the next 10 minutes.",
         meaningStarter: "Something felt heavy. I may be carrying more than I can process cleanly right now."
       },
       disconnected: {
@@ -798,7 +818,7 @@
           "What am I no longer connected to?",
           "What would help me feel more present?"
         ],
-        move: "Do one thing that reconnects you to what matters.",
+        move: "Do one thing in the next 10 minutes that increases connection.",
         meaningStarter: "I felt disconnected. It may not be the situation alone. I may be low on involvement or closeness."
       },
       let_down: {
@@ -822,7 +842,7 @@
           "What feels dull right now?",
           "What would wake me up a little?"
         ],
-        move: "Pick one simple thing that brings some life back into the day.",
+        move: "Pick one simple thing in the next 10 minutes that adds some life back into the day.",
         meaningStarter: "I felt flat. I may be low on energy, interest, or emotional lift."
       },
       irritated: {
@@ -846,7 +866,7 @@
           "What can wait?",
           "Is this real urgency or just felt urgency?"
         ],
-        move: "Separate the real deadline from the emotional rush.",
+        move: "Separate the real deadline from the emotional rush. Cut one false urgency now.",
         meaningStarter: "I felt pressured. The urgency may be shaping my reaction more than the facts are."
       },
       blocked: {
@@ -894,7 +914,7 @@
           "What can I scale down today?",
           "What would help recovery instead of draining it?"
         ],
-        move: "Work with the lower capacity instead of arguing with it.",
+        move: "Work with the lower capacity instead of arguing with it. Reduce one demand now.",
         meaningStarter: "I may be low on recovery. This could be more about restoration than mindset."
       },
       scattered: {
@@ -1034,6 +1054,7 @@
         question_set: "default",
         interpreter_simple: null,
         interpreter_refined: null,
+        interpreter_intensity: null,
         wake_ts: null,
         nap_start_ts: null,
         nap_wake_ts: null,
@@ -1451,15 +1472,15 @@
 
       all.forEach(q => {
         const box = document.createElement("div");
-        box.className = "mini-box";
+        box.className = "mini-box question-card";
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${q}</div>
             <div class="tag">Question</div>
           </div>
-          <button class="btn btn-ghost">Use this</button>
+          <div class="mini-text">Tap to use this as your current question.</div>
         `;
-        box.querySelector("button").addEventListener("click", () => {
+        box.addEventListener("click", () => {
           const s = loadState();
           s.selected_question = q;
           saveState(s);
@@ -1482,15 +1503,15 @@
 
       REFINED_BANK[refined].questions.forEach(q => {
         const box = document.createElement("div");
-        box.className = "mini-box";
+        box.className = "mini-box question-card";
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${q}</div>
             <div class="tag">Matched</div>
           </div>
-          <button class="btn btn-ghost">Use this</button>
+          <div class="mini-text">Tap to use this as your current question.</div>
         `;
-        box.querySelector("button").addEventListener("click", () => {
+        box.addEventListener("click", () => {
           const s = loadState();
           s.selected_question = q;
           saveState(s);
@@ -1514,6 +1535,7 @@
           const s = loadState();
           s.interpreter_simple = key;
           s.interpreter_refined = null;
+          s.interpreter_intensity = null;
           saveState(s);
           render();
         });
@@ -1532,6 +1554,7 @@
         btn.addEventListener("click", () => {
           const s = loadState();
           s.interpreter_refined = key;
+          if (!s.interpreter_intensity) s.interpreter_intensity = "medium";
           saveState(s);
           render();
         });
@@ -1542,13 +1565,32 @@
         refinedWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a quick word first to see better options.</div></div>`;
       }
 
+      const intensityWrap = document.getElementById("intensityChips");
+      intensityWrap.innerHTML = "";
+
+      ["low", "medium", "high"].forEach(level => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (state.interpreter_intensity === level ? " active" : "");
+        btn.textContent = INTENSITY_LABELS[level];
+        btn.disabled = !state.interpreter_refined;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.interpreter_intensity = level;
+          saveState(s);
+          render();
+        });
+        intensityWrap.appendChild(btn);
+      });
+
       const refined = state.interpreter_refined;
       const selected = refined ? REFINED_BANK[refined] : null;
 
       document.getElementById("interpSummary").textContent = selected ? selected.summary : "Pick a quick word above.";
       document.getElementById("interpUnderneath").textContent = selected ? selected.underneath : "The likely structure will show here.";
       document.getElementById("interpMove").textContent = selected ? selected.move : "A usable next move will show here.";
-      document.getElementById("interpMeaningStarter").textContent = selected ? selected.meaningStarter : "A suggested starter will show here.";
+
+      const intensityText = state.interpreter_intensity ? ` Intensity looks ${INTENSITY_LABELS[state.interpreter_intensity].toLowerCase()}.` : "";
+      document.getElementById("interpMeaningStarter").textContent = selected ? (selected.meaningStarter + intensityText) : "A suggested starter will show here.";
 
       const qWrap = document.getElementById("interpQuestions");
       qWrap.innerHTML = "";
@@ -1557,18 +1599,17 @@
       } else {
         selected.questions.forEach(q => {
           const box = document.createElement("div");
-          box.className = "mini-box";
+          box.className = "mini-box question-card";
           box.innerHTML = `
             <div class="mini-title-row">
               <div class="mini-title">${q}</div>
               <div class="tag">Matched</div>
             </div>
-            <button class="btn btn-ghost">Send to Questions</button>
+            <div class="mini-text">Tap to make this your current question.</div>
           `;
-          box.querySelector("button").addEventListener("click", () => {
+          box.addEventListener("click", () => {
             const s = loadState();
             s.selected_question = q;
-            s.page = "questions";
             saveState(s);
             render();
           });
@@ -1928,12 +1969,29 @@
     document.getElementById("useMeaningStarterBtn").addEventListener("click", () => {
       const s = loadState();
       const refined = s.interpreter_refined;
+      const intensity = s.interpreter_intensity;
       if (!refined || !REFINED_BANK[refined]) return;
 
       const info = REFINED_BANK[refined];
-      document.getElementById("eventInput").value = document.getElementById("eventInput").value || "Interpreter state";
+      const matchedQuestions = info.questions.join("\n- ");
+
+      document.getElementById("eventInput").value = document.getElementById("eventInput").value || "Selected state";
       document.getElementById("meaningInput").value = info.meaningStarter;
-      document.getElementById("emotionInput").value = info.label;
+      document.getElementById("emotionInput").value = intensity ? `${info.label} (${INTENSITY_LABELS[intensity].toLowerCase()})` : info.label;
+      document.getElementById("meaningNotesInput").value =
+`Matched questions:
+- ${matchedQuestions}
+
+What may be underneath:
+${info.underneath}
+
+Best move:
+${info.move}`;
+
+      if (info.questions && info.questions.length) {
+        s.selected_question = info.questions[0];
+      }
+
       s.page = "meaning";
       saveState(s);
       render();
