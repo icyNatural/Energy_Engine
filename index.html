@@ -384,6 +384,57 @@
       margin-top: 12px;
     }
 
+    .state-stack {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .state-stack-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .state-stack-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #93a7c2;
+      margin-bottom: 6px;
+    }
+
+    .state-stack-value {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: #f8fafc;
+    }
+
+    .state-stack-sub {
+      font-size: 15px;
+      line-height: 1.45;
+      color: #dbe4ef;
+    }
+
+    .secondary-chip-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .secondary-chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
     .output-label {
       font-size: 12px;
       font-weight: 800;
@@ -654,8 +705,23 @@
         </div>
 
         <div class="output-block">
-          <div class="output-label">What this may be</div>
-          <div class="output-text" id="interpSummary">Pick a quick word above.</div>
+          <div class="output-label">State read</div>
+
+          <div class="state-stack">
+            <div class="state-stack-card">
+              <div class="state-stack-label">Primary</div>
+              <div class="state-stack-value" id="interpPrimaryState">Not set</div>
+            </div>
+
+            <div class="state-stack-card">
+              <div class="state-stack-label">Also present</div>
+              <div class="secondary-chip-row" id="interpSecondaryStates">
+                <div class="secondary-chip">None selected</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="output-text" id="interpSummary" style="margin-top:12px;">Pick a quick word above.</div>
         </div>
 
         <div class="output-block">
@@ -1585,7 +1651,41 @@
       const refined = state.interpreter_refined;
       const selected = refined ? REFINED_BANK[refined] : null;
 
-      document.getElementById("interpSummary").textContent = selected ? selected.summary : "Pick a quick word above.";
+      const primaryEl = document.getElementById("interpPrimaryState");
+      const secondaryEl = document.getElementById("interpSecondaryStates");
+
+      const primaryLabel = selected
+        ? selected.label
+        : (state.interpreter_simple ? (SIMPLE_LABELS[state.interpreter_simple] || state.interpreter_simple) : "Not set");
+
+      primaryEl.textContent = primaryLabel;
+
+      secondaryEl.innerHTML = "";
+      const secondaryStates = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+
+      if (!secondaryStates.length) {
+        secondaryEl.innerHTML = '<div class="secondary-chip">None selected</div>';
+      } else {
+        secondaryStates.forEach(key => {
+          const info = REFINED_BANK[key];
+          const chip = document.createElement("div");
+          chip.className = "secondary-chip";
+          chip.textContent = info ? info.label : key;
+          secondaryEl.appendChild(chip);
+        });
+      }
+
+      let summaryText = "Pick a quick word above.";
+      if (selected) {
+        if (secondaryStates.length) {
+          const names = secondaryStates.map(key => REFINED_BANK[key] ? REFINED_BANK[key].label : key);
+          summaryText = `${selected.label} is primary, with ${names.join(", ")} also present. ${selected.summary}`;
+        } else {
+          summaryText = `${selected.label} is primary. ${selected.summary}`;
+        }
+      }
+
+      document.getElementById("interpSummary").textContent = summaryText;
       document.getElementById("interpUnderneath").textContent = selected ? selected.underneath : "The likely structure will show here.";
       document.getElementById("interpMove").textContent = selected ? selected.move : "A usable next move will show here.";
 
@@ -2051,4 +2151,5 @@ ${info.move}`;
   </script>
 </body>
 </html>
+
 
