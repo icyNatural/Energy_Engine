@@ -470,7 +470,14 @@
         <div class="card">
           <div class="section-title">Start of day</div>
 
-          <div class="grid-2">
+          <div class="muted">Set your wake time first. That starts the day and anchors the energy bar.</div>
+
+          <div class="two" style="margin-top:12px;">
+            <input id="wakeInput" placeholder="Wake 0930 or 09:30">
+            <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
+          </div>
+
+          <div class="grid-2" style="margin-top:14px;">
             <div class="metric">
               <div class="metric-label">Wake time</div>
               <div class="metric-value" id="wakeValue">Not set</div>
@@ -489,13 +496,6 @@
               <div class="metric-value" id="phaseExtensionValue">+0m</div>
               <div class="metric-sub">Added to your stronger window</div>
             </div>
-          </div>
-
-          <div class="muted">Set your wake time here first. Energy inputs stay on the Energy page.</div>
-
-          <div class="two" style="margin-top:12px;">
-            <input id="wakeInput" placeholder="Wake 0930 or 09:30">
-            <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
           </div>
 
           <details>
@@ -580,14 +580,14 @@
     <section id="page-meaning" class="page hidden">
       <div class="card">
         <div class="section-title">Meaning engine</div>
-        <div class="muted">Log what happened, what you made it mean, what you felt, what you did, and what it cost.</div>
+        <div class="muted">Log what happened, what you made it mean, what you felt, what you did, and what it led to.</div>
 
         <div class="list">
-          <input id="eventInput" placeholder="What happened?">
+          <input id="eventInput" placeholder="What happened or what state are you checking in on?">
           <input id="meaningInput" placeholder="What meaning did you assign to it?">
           <input id="emotionInput" placeholder="What did it make you feel or become?">
-          <input id="actionInput" placeholder="What did you do next?">
-          <input id="costInput" placeholder="What did that cost you?">
+          <input id="actionInput" placeholder="What did you do or want to do next?">
+          <input id="costInput" placeholder="What did this lead to in energy, time, mood, or focus?">
           <textarea id="meaningNotesInput" placeholder="Extra notes"></textarea>
         </div>
 
@@ -707,20 +707,20 @@
         <div class="section-title">Settings</div>
 
         <div class="two">
-          <button class="btn btn-ghost" id="exportStateBtn" type="button">Export app data</button>
+          <button class="btn btn-ghost" id="downloadBackupBtn" type="button">Download backup file</button>
           <button class="btn btn-danger" id="clearStateBtn" type="button">Clear all app data</button>
         </div>
 
         <details>
-          <summary>Import app data</summary>
-          <textarea id="importBox" placeholder="Export first, then paste that JSON here to restore your data"></textarea>
+          <summary>Restore from backup file</summary>
+          <input id="backupFileInput" type="file" accept=".json,application/json">
           <div class="row">
-            <button class="btn btn-ghost" id="importStateBtn" type="button">Import data</button>
+            <button class="btn btn-ghost" id="restoreBackupBtn" type="button">Restore backup</button>
           </div>
-          <div class="muted">Export creates the JSON. Import restores it later on this browser or another device.</div>
+          <div class="muted">Download creates a real JSON backup file. Restore reads that file back into the app.</div>
         </details>
 
-        <div class="tiny mono">Static version. Data is stored in this browser only.</div>
+        <div class="tiny mono">Live data stays in this browser. Backup files let you move it anywhere.</div>
       </div>
     </section>
   </div>
@@ -807,7 +807,7 @@
           "What actually needs my energy right now?"
         ],
         move: "Lower the bar for today. Remove one pressure source in the next 10 minutes.",
-        meaningStarter: "Something felt heavy. I may be carrying more than I can process cleanly right now."
+        meaningStarter: "I felt heavy. Something may be weighing on me more than I can carry cleanly right now."
       },
       disconnected: {
         label: "Disconnected",
@@ -1640,7 +1640,7 @@
           <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
           <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
           <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
-          <div class="mini-text"><b>Cost:</b> ${item.cost || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -1975,7 +1975,7 @@
       const info = REFINED_BANK[refined];
       const matchedQuestions = info.questions.join("\n- ");
 
-      document.getElementById("eventInput").value = document.getElementById("eventInput").value || "Selected state";
+      document.getElementById("eventInput").value = document.getElementById("eventInput").value || "State translation";
       document.getElementById("meaningInput").value = info.meaningStarter;
       document.getElementById("emotionInput").value = intensity ? `${info.label} (${INTENSITY_LABELS[intensity].toLowerCase()})` : info.label;
       document.getElementById("meaningNotesInput").value =
@@ -1997,34 +1997,46 @@ ${info.move}`;
       render();
     });
 
-    document.getElementById("exportStateBtn").addEventListener("click", async () => {
-      const json = JSON.stringify(loadState(), null, 2);
-      const box = document.getElementById("importBox");
-      box.value = json;
+    document.getElementById("downloadBackupBtn").addEventListener("click", () => {
+      const state = loadState();
+      const json = JSON.stringify(state, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
 
-      try {
-        await navigator.clipboard.writeText(json);
-        alert("App data exported and copied to clipboard.");
-      } catch {
-        alert("App data exported into the box. Copy it from there.");
-      }
+      const stamp = new Date();
+      const yyyy = stamp.getFullYear();
+      const mm = String(stamp.getMonth() + 1).padStart(2, "0");
+      const dd = String(stamp.getDate()).padStart(2, "0");
+      const hh = String(stamp.getHours()).padStart(2, "0");
+      const mi = String(stamp.getMinutes()).padStart(2, "0");
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `icy-natural-os-backup-${yyyy}${mm}${dd}-${hh}${mi}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
     });
 
-    document.getElementById("importStateBtn").addEventListener("click", () => {
-      const raw = document.getElementById("importBox").value.trim();
+    document.getElementById("restoreBackupBtn").addEventListener("click", async () => {
+      const fileInput = document.getElementById("backupFileInput");
+      const file = fileInput.files && fileInput.files[0];
 
-      if (!raw) {
-        alert("Paste exported JSON into the box first.");
+      if (!file) {
+        alert("Choose a backup file first.");
         return;
       }
 
       try {
+        const raw = await file.text();
         const parsed = JSON.parse(raw);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-        alert("App data imported.");
+        alert("Backup restored.");
         render();
       } catch {
-        alert("That text is not valid exported JSON.");
+        alert("That backup file is not valid JSON.");
       }
     });
 
