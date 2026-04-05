@@ -1,0 +1,2053 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Icy Natural OS v1</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 18px;
+      background: radial-gradient(circle at top, #12213f 0%, #081225 48%, #06101f 100%);
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .wrap { max-width: 980px; margin: 0 auto; }
+
+    .app-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+
+    .app-sub {
+      color: #9fb0c8;
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .nav-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      background: white;
+      color: #081225;
+    }
+
+    .page.hidden { display: none; }
+
+    .card {
+      background: rgba(12,24,48,0.90);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 28px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.24);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 22px 20px 20px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.66);
+      margin-bottom: 10px;
+    }
+
+    .phase-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .emoji { font-size: 34px; }
+
+    .phase {
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .phase-quote {
+      color: #dce5f1;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .energy-state {
+      margin-top: 18px;
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .energy-meaning {
+      margin-top: 8px;
+      font-size: 18px;
+      color: #e5edf7;
+      line-height: 1.4;
+    }
+
+    .energy-action {
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .window {
+      margin-top: 10px;
+      color: #aebed3;
+      font-size: 14px;
+    }
+
+    .bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    .fill {
+      width: 0%;
+      height: 12px;
+      border-radius: 999px;
+      background: #38bdf8;
+      transition: width 0.2s ease;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-actions, .grid-2, .grid-3, .two, .three, .chip-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-actions, .grid-3, .three { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .two { grid-template-columns: repeat(2, 1fr); }
+
+    .metric {
+      background: rgba(255,255,255,0.035);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .metric-sub {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #93a7c2;
+    }
+
+    .text {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #dbe4ef;
+    }
+
+    .big {
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .muted {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-primary { background: white; color: #081225; }
+    .btn-ghost { background: rgba(255,255,255,0.08); color: white; }
+    .btn-soft { background: rgba(255,255,255,0.04); color: white; }
+    .btn-danger { background: rgba(127,29,29,0.55); color: white; }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    details {
+      margin-top: 12px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: white;
+    }
+
+    .mini-box {
+      background: rgba(255,255,255,0.035);
+      border-radius: 18px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    .mini-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .mini-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .mini-text {
+      font-size: 14px;
+      color: #dbe4ef;
+      line-height: 1.45;
+    }
+
+    .tag {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      font-size: 12px;
+      font-weight: 800;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .chip-row {
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 12px;
+    }
+
+    .chip {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .chip.active {
+      background: white;
+      color: #081225;
+      border-color: white;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .tiny {
+      margin-top: 8px;
+      color: #93a7c2;
+      font-size: 12px;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 13px;
+    }
+
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .state-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px 10px;
+      background: rgba(255,255,255,0.04);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .state-btn.active {
+      background: white;
+      color: #081225;
+    }
+
+    .output-block {
+      background: rgba(255,255,255,0.035);
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .output-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #93a7c2;
+      margin-bottom: 8px;
+    }
+
+    .output-text {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #e8eef7;
+    }
+
+    .question-card {
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.12s ease;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .question-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    @media (max-width: 800px) {
+      .state-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .hero-actions, .grid-2, .grid-3, .two, .three, .chip-row {
+        grid-template-columns: 1fr;
+      }
+
+      .phase { font-size: 40px; }
+      .energy-state { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="app-title">Icy Natural OS</div>
+    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
+
+    <div class="nav">
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="energy">Energy</button>
+      <button class="nav-btn" data-page="meaning">Meaning</button>
+      <button class="nav-btn" data-page="questions">Questions</button>
+      <button class="nav-btn" data-page="interpreter">Interpreter</button>
+      <button class="nav-btn" data-page="patterns">Patterns</button>
+      <button class="nav-btn" data-page="settings">Settings</button>
+    </div>
+
+    <section id="page-home" class="page">
+      <div class="card hero">
+        <div class="hero-inner">
+          <div class="eyebrow">Your state right now</div>
+
+          <div class="phase-row">
+            <div class="emoji" id="phaseIcon">⏳</div>
+            <div class="phase" id="phaseName">Untracked</div>
+          </div>
+
+          <div class="phase-quote" id="phaseQuote">Set your wake time to begin.</div>
+
+          <div class="energy-state" id="energyState">Low</div>
+          <div class="energy-meaning" id="energyMeaning">Energy is limited right now</div>
+          <div class="energy-action" id="energyAction">Keep things light and avoid pressure</div>
+          <div class="window" id="windowText">Signal is still gathering.</div>
+
+          <div class="bar"><div class="fill" id="energyFill"></div></div>
+
+          <div class="hero-actions" style="margin-top:18px;">
+            <button class="btn btn-primary" id="wakeNowBtn" type="button">Set Wake Now</button>
+            <button class="btn btn-ghost" id="napStartBtn" type="button">Start Nap</button>
+            <button class="btn btn-soft" id="refreshBtn" type="button">Refresh</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Start of day</div>
+
+          <div class="muted">Set your wake time first. That starts the day and anchors the energy bar.</div>
+
+          <div class="two" style="margin-top:12px;">
+            <input id="wakeInput" placeholder="Wake 0930 or 09:30">
+            <button class="btn btn-ghost" id="saveWakeBtn" type="button">Save Wake Time</button>
+          </div>
+
+          <div class="grid-2" style="margin-top:14px;">
+            <div class="metric">
+              <div class="metric-label">Wake time</div>
+              <div class="metric-value" id="wakeValue">Not set</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Time awake</div>
+              <div class="metric-value" id="awakeValue">Not set</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Nap credit</div>
+              <div class="metric-value" id="napCreditValue">0m</div>
+              <div class="metric-sub">Energy back from nap recovery</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Phase extension</div>
+              <div class="metric-value" id="phaseExtensionValue">+0m</div>
+              <div class="metric-sub">Added to your stronger window</div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Nap controls</summary>
+            <div class="two">
+              <input id="napStartInput" placeholder="Start 1130 or 11:30">
+              <input id="napWakeInput" placeholder="Wake 1225 or 12:25">
+            </div>
+
+            <div class="row">
+              <button class="btn btn-ghost" id="saveNapManualBtn" type="button">Save Nap Time</button>
+              <button class="btn btn-primary" id="napWakeBtn" type="button">End Nap</button>
+              <button class="btn btn-danger" id="napClearBtn" type="button">Clear Nap</button>
+            </div>
+          </details>
+        </div>
+
+        <div class="card">
+          <div class="section-title">System loop</div>
+          <div class="text">Your energy affects how you interpret things. The meaning you assign affects what you do next. Good questions help stop bad loops before they get expensive.</div>
+          <div class="muted">Home is for wake, state, and live rhythm. Energy is where you feed the engine.</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Recovery</div>
+          <div class="big" id="recoveryState">Rebuilding</div>
+          <div class="text" id="recoveryMeaning">Your body needs more recovery</div>
+          <div class="muted" id="recoveryGuidance">Slow down and give yourself space</div>
+          <div class="muted" id="recoveryScoreText">Recovery score 50/100</div>
+          <div class="muted" id="confidenceText">Still learning your baseline.</div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Pattern watch</div>
+          <div class="text" id="patternsIntro">Nothing to watch right now.</div>
+          <div id="patternsWrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-energy" class="page hidden">
+      <div class="card">
+        <div class="section-title">Core energy inputs</div>
+        <div class="three">
+          <input id="sleepMinutesInput" placeholder="Sleep minutes">
+          <input id="sleepHrInput" placeholder="Sleep heart rate">
+          <input id="hrvInput" placeholder="HRV">
+        </div>
+
+        <div class="row">
+          <button class="btn btn-ghost" id="saveFastBtn" type="button">Save core energy inputs</button>
+        </div>
+
+        <details>
+          <summary>Add more detail</summary>
+          <div class="three">
+            <input id="deepMinutesInput" placeholder="Deep sleep minutes">
+            <input id="remMinutesInput" placeholder="REM minutes">
+            <input id="respRateInput" placeholder="Respiratory rate">
+          </div>
+
+          <div class="two" style="margin-top:10px;">
+            <input id="activityMinutesInput" placeholder="Activity minutes">
+            <input id="sleepEffInput" placeholder="Sleep efficiency percent">
+          </div>
+
+          <div class="row">
+            <button class="btn btn-ghost" id="saveAdvancedBtn" type="button">Save expanded energy inputs</button>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Latest baseline read</div>
+        <div class="muted">Your recent personal baseline lives here. This is your pattern, not a generic standard.</div>
+        <div id="baselineReadWrap" class="list"></div>
+      </div>
+    </section>
+
+    <section id="page-meaning" class="page hidden">
+      <div class="card">
+        <div class="section-title">Meaning engine</div>
+        <div class="muted">Log what happened, what you made it mean, what you felt, what you did, and what it led to.</div>
+
+        <div class="list">
+          <input id="eventInput" placeholder="What happened or what state are you checking in on?">
+          <input id="meaningInput" placeholder="What meaning did you assign to it?">
+          <input id="emotionInput" placeholder="What did it make you feel or become?">
+          <input id="actionInput" placeholder="What did you do or want to do next?">
+          <input id="costInput" placeholder="What did this lead to in energy, time, mood, or focus?">
+          <textarea id="meaningNotesInput" placeholder="Extra notes"></textarea>
+        </div>
+
+        <div class="row">
+          <button class="btn btn-ghost" id="saveMeaningBtn" type="button">Save meaning loop</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Recent meaning loops</div>
+        <div id="meaningList" class="list"></div>
+      </div>
+    </section>
+
+    <section id="page-questions" class="page hidden">
+      <div class="card">
+        <div class="section-title">Questions</div>
+        <div class="muted">These are meant to help you think clearly, not confuse you more.</div>
+
+        <div class="chip-row" id="questionSetChips"></div>
+        <div class="list" id="questionList"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Current question</div>
+        <div class="big" id="selectedQuestionDisplay">No question selected yet.</div>
+        <div class="muted">Pick a question you can actually answer in plain language.</div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Interpreter matched questions</div>
+        <div id="interpreterQuestionList" class="list"></div>
+      </div>
+
+      <div class="card">
+        <details>
+          <summary>Add your own question</summary>
+          <div class="two">
+            <input id="customQuestionInput" placeholder="Write your own question">
+            <button class="btn btn-ghost" id="saveCustomQuestionBtn" type="button">Save question</button>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="page-interpreter" class="page hidden">
+      <div class="card">
+        <div class="section-title">Interpreter</div>
+        <div class="muted">Start with the quick word you would actually use. Then pick the clearer version that fits best.</div>
+
+        <div class="output-block">
+          <div class="output-label">How it feels at first</div>
+          <div class="state-grid" id="simpleStateGrid"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">A clearer read might be</div>
+          <div class="state-grid" id="refinedStateGrid"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Intensity</div>
+          <div class="chip-row" id="intensityChips"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">What this may be</div>
+          <div class="output-text" id="interpSummary">Pick a quick word above.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">What may be underneath</div>
+          <div class="output-text" id="interpUnderneath">The likely structure will show here.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Good questions right now</div>
+          <div id="interpQuestions" class="list"></div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Best move</div>
+          <div class="output-text" id="interpMove">A usable next move will show here.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Suggested meaning</div>
+          <div class="output-text" id="interpMeaningStarter">A suggested starter will show here.</div>
+          <div class="row">
+            <button class="btn btn-primary" id="useMeaningStarterBtn" type="button">Continue into Meaning</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-patterns" class="page hidden">
+      <div class="card">
+        <div class="section-title">Patterns</div>
+        <div class="text">This page watches repeated meaning loops and repeated energy conditions.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Meaning patterns</div>
+          <div id="meaningPatternList" class="list"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Energy patterns</div>
+          <div id="energyPatternList" class="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-settings" class="page hidden">
+      <div class="card">
+        <div class="section-title">Settings</div>
+
+        <div class="two">
+          <button class="btn btn-ghost" id="downloadBackupBtn" type="button">Download backup file</button>
+          <button class="btn btn-danger" id="clearStateBtn" type="button">Clear all app data</button>
+        </div>
+
+        <details>
+          <summary>Restore from backup file</summary>
+          <input id="backupFileInput" type="file" accept=".json,application/json">
+          <div class="row">
+            <button class="btn btn-ghost" id="restoreBackupBtn" type="button">Restore backup</button>
+          </div>
+          <div class="muted">Download creates a real JSON backup file. Restore reads that file back into the app.</div>
+        </details>
+
+        <div class="tiny mono">Live data stays in this browser. Backup files let you move it anywhere.</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "icy_natural_os_v4";
+
+    const QUESTION_BANKS = {
+      default: [
+        "What actually happened?",
+        "What am I telling myself about it?",
+        "What part is fact and what part is assumption?",
+        "What matters most right now?",
+        "What would help instead of spiral?"
+      ],
+      direct: [
+        "What is the real problem here?",
+        "What am I avoiding?",
+        "What needs to happen next?",
+        "What am I making bigger than it is?",
+        "What is the clean move?"
+      ],
+      calm: [
+        "What would feel simpler here?",
+        "What can I let go of right now?",
+        "What does not need my energy?",
+        "What can wait?",
+        "What would make today easier?"
+      ],
+      grounded: [
+        "What do I know for sure?",
+        "What do I need before deciding?",
+        "What would I say if I were being honest?",
+        "What is worth doing today?",
+        "What can I finish cleanly?"
+      ]
+    };
+
+    const QUESTION_SET_LABELS = {
+      default: "Clear thinking",
+      direct: "Direct",
+      calm: "Calm down",
+      grounded: "Grounded"
+    };
+
+    const SIMPLE_TO_REFINED = {
+      sad: ["heavy", "disconnected", "let_down", "flat"],
+      mad: ["irritated", "pressured", "blocked", "disrespected"],
+      tired: ["heavy", "foggy", "low_recovery", "scattered"],
+      stressed: ["pressured", "overwhelmed", "conflicted", "bracing"],
+      anxious: ["doubtful", "pressured", "uncertain", "scanning"],
+      off: ["unclear", "disconnected", "scattered", "unsettled"],
+      low: ["heavy", "flat", "disconnected", "low_recovery"],
+      frustrated: ["irritated", "blocked", "pressured", "overloaded"],
+      confused: ["unclear", "conflicted", "doubtful", "scattered"]
+    };
+
+    const SIMPLE_LABELS = {
+      sad: "Sad",
+      mad: "Mad",
+      tired: "Tired",
+      stressed: "Stressed",
+      anxious: "Anxious",
+      off: "Off",
+      low: "Low",
+      frustrated: "Frustrated",
+      confused: "Confused"
+    };
+
+    const INTENSITY_LABELS = {
+      low: "Low",
+      medium: "Medium",
+      high: "High"
+    };
+
+    const REFINED_BANK = {
+      heavy: {
+        label: "Heavy",
+        summary: "Everything may feel slower and harder than it should.",
+        underneath: "Low recovery, emotional weight, drag, or too much unresolved load.",
+        questions: [
+          "What is making everything feel heavier?",
+          "What can I stop carrying today?",
+          "What actually needs my energy right now?"
+        ],
+        move: "Lower the bar for today. Remove one pressure source in the next 10 minutes.",
+        meaningStarter: "I felt heavy. Something may be weighing on me more than I can carry cleanly right now."
+      },
+      disconnected: {
+        label: "Disconnected",
+        summary: "You may be moving without real involvement.",
+        underneath: "Low engagement, emotional distance, fatigue, or meaning loss.",
+        questions: [
+          "What feels far away from me right now?",
+          "What am I no longer connected to?",
+          "What would help me feel more present?"
+        ],
+        move: "Do one thing in the next 10 minutes that increases connection.",
+        meaningStarter: "I felt disconnected. It may not be the situation alone. I may be low on involvement or closeness."
+      },
+      let_down: {
+        label: "Let down",
+        summary: "Something may have fallen short of what you hoped for.",
+        underneath: "Expectation loss, disappointment, or a gap between what you wanted and what happened.",
+        questions: [
+          "What did I hope would happen?",
+          "What feels missing right now?",
+          "What part of this is disappointment?"
+        ],
+        move: "Name the loss clearly before trying to move past it.",
+        meaningStarter: "I felt let down. Something did not meet the expectation I had in mind."
+      },
+      flat: {
+        label: "Flat",
+        summary: "Your system may be low on energy, involvement, or emotional lift.",
+        underneath: "Low recovery, low stimulation, or not enough meaningful engagement.",
+        questions: [
+          "Am I low on energy or low on interest?",
+          "What feels dull right now?",
+          "What would wake me up a little?"
+        ],
+        move: "Pick one simple thing in the next 10 minutes that adds some life back into the day.",
+        meaningStarter: "I felt flat. I may be low on energy, interest, or emotional lift."
+      },
+      irritated: {
+        label: "Irritated",
+        summary: "Something feels like friction or disrespect.",
+        underneath: "Boundary strain, overload, blocked momentum, or small things stacking up.",
+        questions: [
+          "What exactly is bothering me?",
+          "What has been rubbing me the wrong way?",
+          "Is this one thing or many small things stacked together?"
+        ],
+        move: "Name the friction clearly before reacting from it.",
+        meaningStarter: "I felt irritated. Something felt like friction, strain, or low-level disrespect."
+      },
+      pressured: {
+        label: "Pressured",
+        summary: "Urgency may be distorting the way this feels.",
+        underneath: "Time pressure, social pressure, or internal pressure to resolve too fast.",
+        questions: [
+          "What actually needs to happen now?",
+          "What can wait?",
+          "Is this real urgency or just felt urgency?"
+        ],
+        move: "Separate the real deadline from the emotional rush. Cut one false urgency now.",
+        meaningStarter: "I felt pressured. The urgency may be shaping my reaction more than the facts are."
+      },
+      blocked: {
+        label: "Blocked",
+        summary: "You may know what you want, but something is stopping movement.",
+        underneath: "Resistance, external obstacles, fear of failure, or unclear next steps.",
+        questions: [
+          "What is stopping movement here?",
+          "What part feels blocked?",
+          "What would open this up a little?"
+        ],
+        move: "Find the exact point of friction and solve that first.",
+        meaningStarter: "I felt blocked. Movement felt interrupted by friction, resistance, or uncertainty."
+      },
+      disrespected: {
+        label: "Disrespected",
+        summary: "Something may have landed as dismissive, careless, or beneath what you expected.",
+        underneath: "Boundary sensitivity, unmet standards, or feeling unseen.",
+        questions: [
+          "What felt disrespectful about it?",
+          "Was it intent, tone, or carelessness?",
+          "What boundary feels crossed?"
+        ],
+        move: "Name what felt off before deciding what it means.",
+        meaningStarter: "I felt disrespected. Something about the tone, care, or behavior landed wrong."
+      },
+      foggy: {
+        label: "Foggy",
+        summary: "Your thinking may be slow, blurry, or hard to organize.",
+        underneath: "Low recovery, poor clarity, overload, or not enough mental energy.",
+        questions: [
+          "What feels unclear right now?",
+          "Am I missing sleep, space, or information?",
+          "What would make this easier to sort?"
+        ],
+        move: "Reduce complexity and handle one clear thing at a time.",
+        meaningStarter: "I felt foggy. My clarity may be low from low recovery or too much mental load."
+      },
+      low_recovery: {
+        label: "Low recovery",
+        summary: "Your system may simply not be restored enough yet.",
+        underneath: "Sleep debt, stress carryover, overload, or not enough reset.",
+        questions: [
+          "What signs show that I am not fully restored?",
+          "What can I scale down today?",
+          "What would help recovery instead of draining it?"
+        ],
+        move: "Work with the lower capacity instead of arguing with it. Reduce one demand now.",
+        meaningStarter: "I may be low on recovery. This could be more about restoration than mindset."
+      },
+      scattered: {
+        label: "Scattered",
+        summary: "Your attention is split in too many directions.",
+        underneath: "Too many open loops, poor focus, or low usable clarity.",
+        questions: [
+          "What deserves my attention first?",
+          "What is splitting my focus right now?",
+          "What can I close or mute?"
+        ],
+        move: "Pick one lane and stay there until something is closed.",
+        meaningStarter: "I felt scattered. My attention may be split across too many things at once."
+      },
+      overwhelmed: {
+        label: "Overwhelmed",
+        summary: "Too much may be landing on you at once.",
+        underneath: "Too many open loops, too much demand, or too many decisions stacked together.",
+        questions: [
+          "What is the one thing that matters first?",
+          "What can I stop carrying right now?",
+          "What is making this feel bigger than I can hold?"
+        ],
+        move: "Reduce it to one next step and cut everything nonessential.",
+        meaningStarter: "I felt overwhelmed. Demand may be exceeding my current usable clarity."
+      },
+      conflicted: {
+        label: "Conflicted",
+        summary: "Two pulls may be active at the same time.",
+        underneath: "Competing values, competing wants, or fear of choosing wrong.",
+        questions: [
+          "What am I protecting on each side?",
+          "What tradeoff am I avoiding naming?",
+          "What would make this decision simpler?"
+        ],
+        move: "Name the tradeoff before trying to force a clean answer.",
+        meaningStarter: "I felt conflicted. Two competing pulls may be active at the same time."
+      },
+      bracing: {
+        label: "Bracing",
+        summary: "You may already be preparing for strain, impact, or bad news.",
+        underneath: "Expectation of stress, guardedness, or waiting for something difficult.",
+        questions: [
+          "What am I preparing myself for?",
+          "What outcome am I already assuming?",
+          "Is the threat here yet or am I bracing for it?"
+        ],
+        move: "Check whether the strain is real now or only anticipated.",
+        meaningStarter: "I felt braced. I may already be preparing for strain before it fully arrives."
+      },
+      doubtful: {
+        label: "Doubtful",
+        summary: "Trust in your read may be low right now.",
+        underneath: "Unclear evidence, fear of being wrong, or shaky self-trust.",
+        questions: [
+          "What would make this clearer?",
+          "What exactly am I doubting?",
+          "Do I need more information or more courage?"
+        ],
+        move: "Do not force confidence. Get one more useful piece of information.",
+        meaningStarter: "I felt doubtful. Trust in my own read may be low right now."
+      },
+      uncertain: {
+        label: "Uncertain",
+        summary: "You may not have enough clarity to commit yet.",
+        underneath: "Missing information, mixed signals, or not enough confidence in the next move.",
+        questions: [
+          "What am I missing?",
+          "What needs to be clearer before I decide?",
+          "What would reduce uncertainty here?"
+        ],
+        move: "Clarify the unknown before trying to settle the whole thing.",
+        meaningStarter: "I felt uncertain. I may need more clarity before I can move cleanly."
+      },
+      scanning: {
+        label: "Scanning",
+        summary: "Your attention may be searching for threat, risk, or something off.",
+        underneath: "Unease, alertness, doubt, or waiting for something to go wrong.",
+        questions: [
+          "What am I watching for?",
+          "What risk am I trying to catch early?",
+          "Is there real danger here or just vigilance?"
+        ],
+        move: "Name the feared outcome and check whether it is actually present.",
+        meaningStarter: "I felt on alert. My attention may be scanning for risk or something off."
+      },
+      unclear: {
+        label: "Unclear",
+        summary: "You probably do not have a clean picture yet.",
+        underneath: "Missing information, mixed signals, or too many thoughts at once.",
+        questions: [
+          "What exactly is unclear here?",
+          "Which part do I not understand yet?",
+          "What would make the picture cleaner?"
+        ],
+        move: "Slow down and name the part you do not understand yet.",
+        meaningStarter: "I felt unclear. I may not have a clean enough picture yet."
+      },
+      unsettled: {
+        label: "Unsettled",
+        summary: "Something may feel off, but not fully defined yet.",
+        underneath: "Low certainty, low safety, emotional carryover, or unresolved tension.",
+        questions: [
+          "What feels off about this?",
+          "What has not settled yet?",
+          "What would help me feel more stable?"
+        ],
+        move: "Do not rush to label it. Stay with what feels off and make it more specific.",
+        meaningStarter: "I felt unsettled. Something feels off, but I have not named it clearly yet."
+      },
+      overloaded: {
+        label: "Overloaded",
+        summary: "There may be too much demand on your system right now.",
+        underneath: "Excess tasks, emotional load, pressure stacking, or too little room to recover.",
+        questions: [
+          "What is too much right now?",
+          "What can I remove or delay?",
+          "What is adding load that does not need to?"
+        ],
+        move: "Cut the load before trying to perform through it.",
+        meaningStarter: "I felt overloaded. There may be more demand on me than I can carry cleanly right now."
+      }
+    };
+
+    function nowTs() {
+      return Math.floor(Date.now() / 1000);
+    }
+
+    function todayIso() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    function defaultState() {
+      return {
+        page: "home",
+        question_set: "default",
+        interpreter_simple: null,
+        interpreter_refined: null,
+        interpreter_intensity: null,
+        wake_ts: null,
+        nap_start_ts: null,
+        nap_wake_ts: null,
+        nap_duration_m: 0,
+        last_updated_ts: null,
+        selected_question: null,
+        custom_questions: [],
+        daily: {
+          actual_sleep_minutes: null,
+          deep_minutes: null,
+          rem_minutes: null,
+          sleep_hr: null,
+          hrv: null,
+          respiratory_rate: null,
+          activity_minutes: null,
+          sleep_eff: null
+        },
+        history: [],
+        meaning_logs: []
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        const base = defaultState();
+        return {
+          ...base,
+          ...parsed,
+          daily: { ...base.daily, ...(parsed.daily || {}) },
+          history: Array.isArray(parsed.history) ? parsed.history : [],
+          meaning_logs: Array.isArray(parsed.meaning_logs) ? parsed.meaning_logs : [],
+          custom_questions: Array.isArray(parsed.custom_questions) ? parsed.custom_questions : []
+        };
+      } catch {
+        return defaultState();
+      }
+    }
+
+    function saveState(state) {
+      state.last_updated_ts = nowTs();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function safeNum(v) {
+      if (v === null || v === undefined || v === "") return null;
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function clamp(x, lo=-1, hi=1) {
+      return Math.max(lo, Math.min(hi, x));
+    }
+
+    function clamp100(x) {
+      return Math.max(0, Math.min(100, x));
+    }
+
+    function fmtTimeFromTs(ts) {
+      if (!ts) return "Not set";
+      const d = new Date(ts * 1000);
+      return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+    }
+
+    function minsSince(ts) {
+      if (!ts) return null;
+      return Math.floor((nowTs() - ts) / 60);
+    }
+
+    function humanMins(mins) {
+      if (mins === null || mins === undefined) return "Not set";
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${h}h ${m}m`;
+    }
+
+    function parseHhmmToTs(hhmm) {
+      hhmm = (hhmm || "").trim();
+      if (!hhmm) return null;
+
+      let hh, mm;
+      if (hhmm.includes(":")) {
+        const parts = hhmm.split(":");
+        if (parts.length !== 2) return null;
+        [hh, mm] = parts;
+      } else {
+        if (hhmm.length !== 4 || !/^\d+$/.test(hhmm)) return null;
+        hh = hhmm.slice(0, 2);
+        mm = hhmm.slice(2);
+      }
+
+      hh = Number(hh);
+      mm = Number(mm);
+      if (!Number.isInteger(hh) || !Number.isInteger(mm)) return null;
+      if (hh < 0 || hh > 23 || mm < 0 || mm > 59) return null;
+
+      const now = new Date();
+      const dt = new Date(now);
+      dt.setHours(hh, mm, 0, 0);
+      if (dt.getTime() > Date.now()) dt.setDate(dt.getDate() - 1);
+      return Math.floor(dt.getTime() / 1000);
+    }
+
+    function computeNapDuration(state) {
+      const startTs = state.nap_start_ts;
+      const wakeTs = state.nap_wake_ts;
+      if (startTs && wakeTs && wakeTs >= startTs) return Math.floor((wakeTs - startTs) / 60);
+      return 0;
+    }
+
+    function median(values) {
+      const vals = values.filter(v => v !== null && v !== undefined).sort((a,b)=>a-b);
+      if (!vals.length) return null;
+      const mid = Math.floor(vals.length / 2);
+      return vals.length % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2;
+    }
+
+    function robustScale(values, minScale, fallback) {
+      const vals = values.filter(v => v !== null && v !== undefined);
+      if (vals.length < 3) return Math.max(minScale, fallback);
+      const m = median(vals);
+      const absDevs = vals.map(v => Math.abs(v - m));
+      const mad = median(absDevs);
+      return Math.max(minScale, mad > 0 ? mad : fallback);
+    }
+
+    function napCreditMinutes(n) {
+      if (!n || n <= 0) return 0;
+      let credit;
+      if (n <= 20) credit = Math.round(n * 0.55);
+      else if (n <= 45) credit = Math.round(11 + (n - 20) * 0.9);
+      else if (n <= 90) credit = Math.round(34 + (n - 45) * 1.1);
+      else credit = Math.round(84 + (n - 90) * 0.55);
+      return Math.min(credit, 140);
+    }
+
+    function phaseExtensionMinutes(n) {
+      if (!n || n <= 0) return 0;
+      let extension;
+      if (n <= 20) extension = Math.round(n * 0.2);
+      else if (n <= 45) extension = Math.round(4 + (n - 20) * 0.35);
+      else if (n <= 90) extension = Math.round(13 + (n - 45) * 0.45);
+      else extension = Math.round(33 + (n - 90) * 0.2);
+      return Math.min(extension, 45);
+    }
+
+    function phaseFromEffectiveAwake(effectiveAwakeMin, extensionMin = 0) {
+      if (effectiveAwakeMin === null || effectiveAwakeMin === undefined) {
+        return ["⏳", "Untracked", "Set your wake time to begin."];
+      }
+
+      const recoveryEnd = 4 * 60;
+      const flowEnd = 10 * 60 + extensionMin;
+      const radianceEnd = 14 * 60 + extensionMin;
+      const surgeEnd = 18 * 60 + Math.round(extensionMin * 0.6);
+
+      if (effectiveAwakeMin < recoveryEnd) return ["🌑", "Recovery", "Take it slow. You are still warming up."];
+      if (effectiveAwakeMin < flowEnd) return ["🌊", "Flow", "Things should feel smooth right now."];
+      if (effectiveAwakeMin < radianceEnd) return ["☀️", "Radiance", "This is your strongest window."];
+      if (effectiveAwakeMin < surgeEnd) return ["⚡", "Surge", "Energy is high. Do not waste it."];
+      return ["🌙", "Settle", "Start slowing things down."];
+    }
+
+    function phaseColor(name) {
+      return {
+        Recovery: "#64748b",
+        Flow: "#38bdf8",
+        Radiance: "#f59e0b",
+        Surge: "#a855f7",
+        Settle: "#94a3b8",
+        Untracked: "#6b7280"
+      }[name] || "#38bdf8";
+    }
+
+    function upsertHistoryForToday(state) {
+      const d = state.daily || {};
+      let hist = Array.isArray(state.history) ? state.history : [];
+
+      const snapshot = {
+        date: todayIso(),
+        actual_sleep_minutes: safeNum(d.actual_sleep_minutes),
+        deep_minutes: safeNum(d.deep_minutes),
+        rem_minutes: safeNum(d.rem_minutes),
+        sleep_hr: safeNum(d.sleep_hr),
+        hrv: safeNum(d.hrv),
+        respiratory_rate: safeNum(d.respiratory_rate),
+        activity_minutes: safeNum(d.activity_minutes),
+        sleep_eff: safeNum(d.sleep_eff)
+      };
+
+      let updated = false;
+      for (const row of hist) {
+        if (row.date === snapshot.date) {
+          Object.assign(row, snapshot);
+          updated = true;
+          break;
+        }
+      }
+
+      if (!updated) hist.push(snapshot);
+
+      hist.sort((a,b)=>(a.date || "").localeCompare(b.date || ""));
+      state.history = hist.slice(-30);
+    }
+
+    function uniqueRecentDays(state, n=7) {
+      const hist = Array.isArray(state.history) ? state.history : [];
+      const byDate = {};
+      for (const row of hist) {
+        if (row.date) byDate[row.date] = row;
+      }
+      const uniqueRows = Object.keys(byDate).sort().map(k => byDate[k]);
+      return uniqueRows.slice(-n);
+    }
+
+    function collect(rows, key) {
+      const vals = [];
+      for (const r of rows) {
+        const v = safeNum(r[key]);
+        if (v !== null) vals.push(v);
+      }
+      return vals;
+    }
+
+    function baselineBundle(rows) {
+      const fields = ["sleep_hr","hrv","sleep_eff","actual_sleep_minutes","deep_minutes","rem_minutes","respiratory_rate","activity_minutes"];
+      const out = {};
+      for (const f of fields) {
+        const vals = collect(rows, f);
+        out[f] = vals.length ? median(vals) : null;
+      }
+      return out;
+    }
+
+    function scoreV1(state) {
+      const d = state.daily || {};
+      const rows = uniqueRecentDays(state, 7);
+      const base = baselineBundle(rows);
+
+      const hrVals = collect(rows, "sleep_hr");
+      const hrvVals = collect(rows, "hrv");
+      const effVals = collect(rows, "sleep_eff");
+      const sleepVals = collect(rows, "actual_sleep_minutes");
+      const deepVals = collect(rows, "deep_minutes");
+      const remVals = collect(rows, "rem_minutes");
+      const rrVals = collect(rows, "respiratory_rate");
+      const actVals = collect(rows, "activity_minutes");
+
+      const hr = safeNum(d.sleep_hr);
+      const hrv = safeNum(d.hrv);
+      const eff = safeNum(d.sleep_eff);
+      const sleepMin = safeNum(d.actual_sleep_minutes);
+      const deep = safeNum(d.deep_minutes);
+      const rem = safeNum(d.rem_minutes);
+      const rr = safeNum(d.respiratory_rate);
+      const act = safeNum(d.activity_minutes);
+
+      const hrScale = robustScale(hrVals, 1.0, 2.0);
+      const hrvScale = robustScale(hrvVals, 5.0, 10.0);
+      const effScale = robustScale(effVals, 2.0, 5.0);
+      const sleepScale = robustScale(sleepVals, 30.0, 60.0);
+      const deepScale = robustScale(deepVals, 10.0, 20.0);
+      const remScale = robustScale(remVals, 10.0, 20.0);
+      const rrScale = robustScale(rrVals, 0.3, 0.6);
+      const actScale = robustScale(actVals, 20.0, 40.0);
+
+      const scores = {};
+      const notes = [];
+
+      if (hr !== null && base.sleep_hr !== null) {
+        const dHr = hr - base.sleep_hr;
+        scores.sleep_hr = clamp((-dHr) / hrScale);
+        notes.push(`Sleep heart rate is ${dHr >= 0 ? "+" : ""}${dHr.toFixed(1)} from your baseline`);
+      } else scores.sleep_hr = null;
+
+      if (hrv !== null && base.hrv !== null) {
+        const dHrv = hrv - base.hrv;
+        scores.hrv = clamp((dHrv) / hrvScale);
+        notes.push(`HRV is ${dHrv >= 0 ? "+" : ""}${dHrv.toFixed(1)} from your baseline`);
+      } else scores.hrv = null;
+
+      if (eff !== null && base.sleep_eff !== null) {
+        const dEff = eff - base.sleep_eff;
+        scores.sleep_eff = clamp(dEff / effScale);
+        notes.push(`Sleep efficiency is ${dEff >= 0 ? "+" : ""}${dEff.toFixed(1)} from your baseline`);
+      } else scores.sleep_eff = null;
+
+      if (sleepMin !== null && base.actual_sleep_minutes !== null) {
+        const dSleep = sleepMin - base.actual_sleep_minutes;
+        scores.actual_sleep_minutes = clamp(dSleep / sleepScale);
+        notes.push(`Sleep time is ${dSleep >= 0 ? "+" : ""}${dSleep.toFixed(1)} minutes from your baseline`);
+      } else scores.actual_sleep_minutes = null;
+
+      if (deep !== null && base.deep_minutes !== null) {
+        const dDeep = deep - base.deep_minutes;
+        scores.deep_minutes = clamp(dDeep / deepScale);
+        notes.push(`Deep sleep is ${dDeep >= 0 ? "+" : ""}${dDeep.toFixed(1)} minutes from your baseline`);
+      } else scores.deep_minutes = null;
+
+      if (rem !== null && base.rem_minutes !== null) {
+        const dRem = rem - base.rem_minutes;
+        scores.rem_minutes = clamp(dRem / remScale);
+        notes.push(`REM sleep is ${dRem >= 0 ? "+" : ""}${dRem.toFixed(1)} minutes from your baseline`);
+      } else scores.rem_minutes = null;
+
+      if (rr !== null && base.respiratory_rate !== null) {
+        const dRr = rr - base.respiratory_rate;
+        scores.respiratory_rate = clamp((-dRr) / rrScale);
+        notes.push(`Respiratory rate is ${dRr >= 0 ? "+" : ""}${dRr.toFixed(2)} from your baseline`);
+      } else scores.respiratory_rate = null;
+
+      if (act !== null && base.activity_minutes !== null && base.activity_minutes > 0) {
+        const ratio = act / base.activity_minutes;
+        const dist = Math.abs(ratio - 1.0);
+        scores.activity_minutes = -clamp(dist / Math.max(actScale / Math.max(base.activity_minutes, 1), 0.25));
+        notes.push(`Activity landed at ${ratio.toFixed(2)} times your usual level`);
+      } else scores.activity_minutes = null;
+
+      const pick = (name, fallback = 0) => scores[name] !== null && scores[name] !== undefined ? scores[name] : fallback;
+
+      let readiness =
+        0.24 * pick("sleep_hr") +
+        0.24 * pick("hrv") +
+        0.12 * pick("sleep_eff") +
+        0.14 * pick("actual_sleep_minutes") +
+        0.10 * pick("deep_minutes") +
+        0.06 * pick("rem_minutes") +
+        0.06 * pick("respiratory_rate") +
+        0.04 * pick("activity_minutes");
+
+      readiness = clamp(readiness);
+
+      return { baseline_days: rows.length, baseline: base, scores, readiness, notes };
+    }
+
+    function bandFromEnergy(score100) {
+      if (score100 >= 78) return ["Open", "You feel sharp and ready", "Use this window for something important"];
+      if (score100 >= 55) return ["Steady", "You have energy but not endless", "Move forward but stay controlled"];
+      return ["Low", "Energy is limited right now", "Keep things light and avoid pressure"];
+    }
+
+    function bandFromRecovery(score100) {
+      if (score100 >= 75) return ["Recovered", "Your body is in a good place", "You can move without forcing anything"];
+      if (score100 >= 58) return ["Steady", "You are holding steady", "Stay smooth and avoid pushing too hard"];
+      return ["Rebuilding", "Your body needs more recovery", "Slow down and give yourself space"];
+    }
+
+    function estimateWindowText(phaseName, effAwake, phaseExtension) {
+      if (effAwake === null || effAwake === undefined) return "Set your wake time to begin.";
+
+      if (phaseName === "Recovery") {
+        const minsLeft = Math.max(0, (4 * 60) - effAwake);
+        return `Clarity is still gathering. Next rise in ~${humanMins(minsLeft)}.`;
+      }
+
+      if (phaseName === "Flow") {
+        const minsLeft = Math.max(0, (10 * 60 + phaseExtension) - effAwake);
+        return `Usable momentum is here. Window holds for ~${humanMins(minsLeft)}.`;
+      }
+
+      if (phaseName === "Radiance") {
+        const minsLeft = Math.max(0, (14 * 60 + phaseExtension) - effAwake);
+        return `Clarity is fully online. Peak holds for ~${humanMins(minsLeft)}.`;
+      }
+
+      if (phaseName === "Surge") {
+        const minsLeft = Math.max(0, (18 * 60 + Math.round(phaseExtension * 0.6)) - effAwake);
+        return `Extra capacity is live. Strong push for ~${humanMins(minsLeft)}.`;
+      }
+
+      return "The window is thinning.";
+    }
+
+    function switchPage(pageName) {
+      const state = loadState();
+      state.page = pageName;
+      saveState(state);
+
+      document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+      document.getElementById(`page-${pageName}`).classList.remove("hidden");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.page === pageName);
+      });
+    }
+
+    function renderQuestionSetChips() {
+      const state = loadState();
+      const wrap = document.getElementById("questionSetChips");
+      wrap.innerHTML = "";
+
+      Object.keys(QUESTION_BANKS).forEach(key => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (state.question_set === key ? " active" : "");
+        btn.textContent = QUESTION_SET_LABELS[key] || key;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.question_set = key;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    function renderQuestions() {
+      const state = loadState();
+      const type = state.question_set || "default";
+      const base = QUESTION_BANKS[type] || QUESTION_BANKS.default;
+      const all = [...base, ...state.custom_questions];
+      const wrap = document.getElementById("questionList");
+      wrap.innerHTML = "";
+
+      all.forEach(q => {
+        const box = document.createElement("div");
+        box.className = "mini-box question-card";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${q}</div>
+            <div class="tag">Question</div>
+          </div>
+          <div class="mini-text">Tap to use this as your current question.</div>
+        `;
+        box.addEventListener("click", () => {
+          const s = loadState();
+          s.selected_question = q;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(box);
+      });
+    }
+
+    function renderInterpreterQuestionFeed() {
+      const state = loadState();
+      const wrap = document.getElementById("interpreterQuestionList");
+      wrap.innerHTML = "";
+
+      const refined = state.interpreter_refined;
+      if (!refined || !REFINED_BANK[refined]) {
+        wrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a refined state in Interpreter to load matching questions here.</div></div>`;
+        return;
+      }
+
+      REFINED_BANK[refined].questions.forEach(q => {
+        const box = document.createElement("div");
+        box.className = "mini-box question-card";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${q}</div>
+            <div class="tag">Matched</div>
+          </div>
+          <div class="mini-text">Tap to use this as your current question.</div>
+        `;
+        box.addEventListener("click", () => {
+          const s = loadState();
+          s.selected_question = q;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(box);
+      });
+    }
+
+    function renderInterpreter() {
+      const state = loadState();
+
+      const simpleWrap = document.getElementById("simpleStateGrid");
+      simpleWrap.innerHTML = "";
+
+      Object.keys(SIMPLE_TO_REFINED).forEach(key => {
+        const btn = document.createElement("button");
+        btn.className = "state-btn" + (state.interpreter_simple === key ? " active" : "");
+        btn.textContent = SIMPLE_LABELS[key] || key;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.interpreter_simple = key;
+          s.interpreter_refined = null;
+          s.interpreter_intensity = null;
+          saveState(s);
+          render();
+        });
+        simpleWrap.appendChild(btn);
+      });
+
+      const refinedWrap = document.getElementById("refinedStateGrid");
+      refinedWrap.innerHTML = "";
+
+      const options = state.interpreter_simple ? SIMPLE_TO_REFINED[state.interpreter_simple] || [] : [];
+      options.forEach(key => {
+        const info = REFINED_BANK[key];
+        const btn = document.createElement("button");
+        btn.className = "state-btn" + (state.interpreter_refined === key ? " active" : "");
+        btn.textContent = info ? info.label : key;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.interpreter_refined = key;
+          if (!s.interpreter_intensity) s.interpreter_intensity = "medium";
+          saveState(s);
+          render();
+        });
+        refinedWrap.appendChild(btn);
+      });
+
+      if (!options.length) {
+        refinedWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a quick word first to see better options.</div></div>`;
+      }
+
+      const intensityWrap = document.getElementById("intensityChips");
+      intensityWrap.innerHTML = "";
+
+      ["low", "medium", "high"].forEach(level => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (state.interpreter_intensity === level ? " active" : "");
+        btn.textContent = INTENSITY_LABELS[level];
+        btn.disabled = !state.interpreter_refined;
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.interpreter_intensity = level;
+          saveState(s);
+          render();
+        });
+        intensityWrap.appendChild(btn);
+      });
+
+      const refined = state.interpreter_refined;
+      const selected = refined ? REFINED_BANK[refined] : null;
+
+      document.getElementById("interpSummary").textContent = selected ? selected.summary : "Pick a quick word above.";
+      document.getElementById("interpUnderneath").textContent = selected ? selected.underneath : "The likely structure will show here.";
+      document.getElementById("interpMove").textContent = selected ? selected.move : "A usable next move will show here.";
+
+      const intensityText = state.interpreter_intensity ? ` Intensity looks ${INTENSITY_LABELS[state.interpreter_intensity].toLowerCase()}.` : "";
+      document.getElementById("interpMeaningStarter").textContent = selected ? (selected.meaningStarter + intensityText) : "A suggested starter will show here.";
+
+      const qWrap = document.getElementById("interpQuestions");
+      qWrap.innerHTML = "";
+      if (!selected) {
+        qWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Three matching questions will show here.</div></div>`;
+      } else {
+        selected.questions.forEach(q => {
+          const box = document.createElement("div");
+          box.className = "mini-box question-card";
+          box.innerHTML = `
+            <div class="mini-title-row">
+              <div class="mini-title">${q}</div>
+              <div class="tag">Matched</div>
+            </div>
+            <div class="mini-text">Tap to make this your current question.</div>
+          `;
+          box.addEventListener("click", () => {
+            const s = loadState();
+            s.selected_question = q;
+            saveState(s);
+            render();
+          });
+          qWrap.appendChild(box);
+        });
+      }
+    }
+
+    function renderMeaningLogs() {
+      const state = loadState();
+      const wrap = document.getElementById("meaningList");
+      wrap.innerHTML = "";
+
+      const items = [...state.meaning_logs].reverse().slice(0, 8);
+      if (!items.length) {
+        wrap.innerHTML = `<div class="mini-box"><div class="mini-text">No meaning loops logged yet.</div></div>`;
+        return;
+      }
+
+      items.forEach(item => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${item.event || "Untitled event"}</div>
+            <div class="tag">${item.date}</div>
+          </div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
+        `;
+        wrap.appendChild(box);
+      });
+    }
+
+    function renderPatternPages(state) {
+      const meaningWrap = document.getElementById("meaningPatternList");
+      const energyWrap = document.getElementById("energyPatternList");
+      meaningWrap.innerHTML = "";
+      energyWrap.innerHTML = "";
+
+      const meaningLogs = state.meaning_logs || [];
+      if (!meaningLogs.length) {
+        meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No meaning patterns detected yet.</div></div>`;
+      } else {
+        const meaningCount = {};
+        meaningLogs.forEach(x => {
+          const key = (x.meaning || "").trim().toLowerCase();
+          if (key) meaningCount[key] = (meaningCount[key] || 0) + 1;
+        });
+
+        const sorted = Object.entries(meaningCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+        if (!sorted.length) {
+          meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No repeated meaning assignments yet.</div></div>`;
+        } else {
+          sorted.forEach(([k,v]) => {
+            const box = document.createElement("div");
+            box.className = "mini-box";
+            box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${k}</div><div class="tag">${v}x</div></div><div class="mini-text">This meaning keeps coming back.</div>`;
+            meaningWrap.appendChild(box);
+          });
+        }
+      }
+
+      const recent = uniqueRecentDays(state, 7);
+      if (!recent.length) {
+        energyWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No energy history yet.</div></div>`;
+      } else {
+        const base = baselineBundle(recent);
+        [
+          ["Sleep HR baseline", base.sleep_hr],
+          ["HRV baseline", base.hrv],
+          ["Sleep minutes baseline", base.actual_sleep_minutes],
+          ["Activity baseline", base.activity_minutes]
+        ].forEach(([label, val]) => {
+          const box = document.createElement("div");
+          box.className = "mini-box";
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          energyWrap.appendChild(box);
+        });
+      }
+    }
+
+    function renderBaselineRead(core) {
+      const wrap = document.getElementById("baselineReadWrap");
+      wrap.innerHTML = "";
+      const base = core.baseline || {};
+      [
+        ["Sleep HR", base.sleep_hr],
+        ["HRV", base.hrv],
+        ["Sleep min", base.actual_sleep_minutes],
+        ["Deep", base.deep_minutes],
+        ["REM", base.rem_minutes],
+        ["Respiratory", base.respiratory_rate],
+        ["Activity", base.activity_minutes],
+        ["Sleep eff", base.sleep_eff]
+      ].forEach(([label, val]) => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
+        wrap.appendChild(box);
+      });
+    }
+
+    function render() {
+      const state = loadState();
+
+      const wakeTs = state.wake_ts;
+      const minsAwake = minsSince(wakeTs);
+      const napDur = computeNapDuration(state);
+
+      if (state.nap_duration_m !== napDur) {
+        state.nap_duration_m = napDur;
+        saveState(state);
+      }
+
+      const napCredit = napCreditMinutes(napDur);
+      const phaseExtension = phaseExtensionMinutes(napDur);
+
+      let effAwake, phaseIcon, phaseName, phaseQuote;
+      if (minsAwake === null) {
+        effAwake = null;
+        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
+      } else {
+        effAwake = Math.max(0, minsAwake - napCredit);
+        [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
+      }
+
+      const color = phaseColor(phaseName);
+      const core = scoreV1(state);
+      const readiness = core.readiness;
+      const recoveryScore = Math.round(((readiness + 1) / 2) * 1000) / 10;
+
+      let energyScore;
+      if (effAwake === null) {
+        energyScore = 0;
+      } else {
+        const wakeDrag = Math.min((effAwake / 60) * 3, 45);
+        const napBonus = Math.min(napCredit * 0.35 + phaseExtension * 0.5, 22);
+        energyScore = clamp100(Math.round((readiness * 50 + 50 + napBonus - wakeDrag - 5) * 10) / 10);
+      }
+
+      const [energyState, energyMeaning, energyAction] = bandFromEnergy(energyScore);
+      const [recoveryState, recoveryMeaning, recoveryGuidance] = bandFromRecovery(recoveryScore);
+
+      const d = state.daily || {};
+      const base = core.baseline || {};
+      const patternItems = [];
+
+      if (d.actual_sleep_minutes !== null && base.actual_sleep_minutes !== null) {
+        if (safeNum(d.actual_sleep_minutes) < base.actual_sleep_minutes) {
+          patternItems.push({
+            title: "Short sleep",
+            label: "Watch",
+            meaning: "You may be running a little low on rest."
+          });
+        }
+      }
+
+      if (napDur > 0) {
+        patternItems.push({
+          title: "Nap boost",
+          label: "Active",
+          meaning: `That nap gave you ${napCredit} minutes back and opened a little more time.`
+        });
+      }
+
+      const windowText = estimateWindowText(phaseName, effAwake, phaseExtension);
+      const baselineDays = core.baseline_days;
+      const confidenceText =
+        baselineDays < 3 ? "Still learning your baseline."
+        : baselineDays < 7 ? "Getting a better read on your rhythm."
+        : "Baseline confidence is getting solid.";
+
+      document.getElementById("phaseIcon").textContent = phaseIcon;
+      document.getElementById("phaseName").textContent = phaseName;
+      document.getElementById("phaseQuote").textContent = phaseQuote;
+      document.getElementById("energyState").textContent = energyState;
+      document.getElementById("energyMeaning").textContent = energyMeaning;
+      document.getElementById("energyAction").textContent = energyAction;
+      document.getElementById("windowText").textContent = windowText;
+
+      const fill = document.getElementById("energyFill");
+      fill.style.width = `${energyScore}%`;
+      fill.style.background = color;
+
+      document.getElementById("wakeValue").textContent = fmtTimeFromTs(wakeTs);
+      document.getElementById("awakeValue").textContent = humanMins(effAwake);
+      document.getElementById("napCreditValue").textContent = `${napCredit}m`;
+      document.getElementById("phaseExtensionValue").textContent = `+${phaseExtension}m`;
+
+      document.getElementById("recoveryState").textContent = recoveryState;
+      document.getElementById("recoveryMeaning").textContent = recoveryMeaning;
+      document.getElementById("recoveryGuidance").textContent = recoveryGuidance;
+      document.getElementById("recoveryScoreText").textContent = `Recovery score ${recoveryScore}/100`;
+      document.getElementById("confidenceText").textContent = confidenceText;
+
+      document.getElementById("sleepMinutesInput").value = d.actual_sleep_minutes ?? "";
+      document.getElementById("sleepHrInput").value = d.sleep_hr ?? "";
+      document.getElementById("hrvInput").value = d.hrv ?? "";
+      document.getElementById("deepMinutesInput").value = d.deep_minutes ?? "";
+      document.getElementById("remMinutesInput").value = d.rem_minutes ?? "";
+      document.getElementById("respRateInput").value = d.respiratory_rate ?? "";
+      document.getElementById("activityMinutesInput").value = d.activity_minutes ?? "";
+      document.getElementById("sleepEffInput").value = d.sleep_eff ?? "";
+
+      document.getElementById("patternsIntro").textContent = patternItems.length ? "A few things are worth watching." : "Nothing to watch right now.";
+      const patternsWrap = document.getElementById("patternsWrap");
+      patternsWrap.innerHTML = "";
+      patternItems.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "mini-box";
+        div.innerHTML = `<div class="mini-title-row"><div class="mini-title">${p.title}</div><div class="tag">${p.label}</div></div><div class="mini-text">${p.meaning}</div>`;
+        patternsWrap.appendChild(div);
+      });
+
+      renderQuestionSetChips();
+      renderQuestions();
+      renderInterpreterQuestionFeed();
+      renderInterpreter();
+      renderMeaningLogs();
+      renderPatternPages(state);
+      renderBaselineRead(core);
+
+      document.getElementById("selectedQuestionDisplay").textContent = state.selected_question || "No question selected yet.";
+
+      switchPage(state.page || "home");
+    }
+
+    function initNav() {
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          switchPage(btn.dataset.page);
+        });
+      });
+    }
+
+    document.getElementById("wakeNowBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.wake_ts = nowTs();
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("saveWakeBtn").addEventListener("click", () => {
+      const ts = parseHhmmToTs(document.getElementById("wakeInput").value);
+      if (!ts) return;
+      const s = loadState();
+      s.wake_ts = ts;
+      saveState(s);
+      document.getElementById("wakeInput").value = "";
+      render();
+    });
+
+    document.getElementById("saveFastBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.daily.actual_sleep_minutes = safeNum(document.getElementById("sleepMinutesInput").value);
+      s.daily.sleep_hr = safeNum(document.getElementById("sleepHrInput").value);
+      s.daily.hrv = safeNum(document.getElementById("hrvInput").value);
+      upsertHistoryForToday(s);
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("saveAdvancedBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.daily.deep_minutes = safeNum(document.getElementById("deepMinutesInput").value);
+      s.daily.rem_minutes = safeNum(document.getElementById("remMinutesInput").value);
+      s.daily.respiratory_rate = safeNum(document.getElementById("respRateInput").value);
+      s.daily.activity_minutes = safeNum(document.getElementById("activityMinutesInput").value);
+      s.daily.sleep_eff = safeNum(document.getElementById("sleepEffInput").value);
+      upsertHistoryForToday(s);
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("napStartBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.nap_start_ts = nowTs();
+      s.nap_wake_ts = null;
+      s.nap_duration_m = 0;
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("napWakeBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.nap_wake_ts = nowTs();
+      s.nap_duration_m = computeNapDuration(s);
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("napClearBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.nap_start_ts = null;
+      s.nap_wake_ts = null;
+      s.nap_duration_m = 0;
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("saveNapManualBtn").addEventListener("click", () => {
+      const startTs = parseHhmmToTs(document.getElementById("napStartInput").value);
+      let wakeTs = parseHhmmToTs(document.getElementById("napWakeInput").value);
+
+      if (startTs && wakeTs) {
+        if (wakeTs < startTs) wakeTs += 24 * 60 * 60;
+        const s = loadState();
+        s.nap_start_ts = startTs;
+        s.nap_wake_ts = wakeTs;
+        s.nap_duration_m = computeNapDuration(s);
+        saveState(s);
+        document.getElementById("napStartInput").value = "";
+        document.getElementById("napWakeInput").value = "";
+        render();
+      }
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", render);
+
+    document.getElementById("saveCustomQuestionBtn").addEventListener("click", () => {
+      const input = document.getElementById("customQuestionInput");
+      const q = (input.value || "").trim();
+      if (!q) return;
+      const s = loadState();
+      s.custom_questions.push(q);
+      saveState(s);
+      input.value = "";
+      render();
+    });
+
+    document.getElementById("saveMeaningBtn").addEventListener("click", () => {
+      const s = loadState();
+      s.meaning_logs.push({
+        date: todayIso(),
+        event: document.getElementById("eventInput").value.trim(),
+        meaning: document.getElementById("meaningInput").value.trim(),
+        emotion: document.getElementById("emotionInput").value.trim(),
+        action: document.getElementById("actionInput").value.trim(),
+        cost: document.getElementById("costInput").value.trim(),
+        notes: document.getElementById("meaningNotesInput").value.trim()
+      });
+      s.meaning_logs = s.meaning_logs.slice(-100);
+      saveState(s);
+
+      document.getElementById("eventInput").value = "";
+      document.getElementById("meaningInput").value = "";
+      document.getElementById("emotionInput").value = "";
+      document.getElementById("actionInput").value = "";
+      document.getElementById("costInput").value = "";
+      document.getElementById("meaningNotesInput").value = "";
+      render();
+    });
+
+    document.getElementById("useMeaningStarterBtn").addEventListener("click", () => {
+      const s = loadState();
+      const refined = s.interpreter_refined;
+      const intensity = s.interpreter_intensity;
+      if (!refined || !REFINED_BANK[refined]) return;
+
+      const info = REFINED_BANK[refined];
+      const matchedQuestions = info.questions.join("\n- ");
+
+      document.getElementById("eventInput").value = document.getElementById("eventInput").value || "State translation";
+      document.getElementById("meaningInput").value = info.meaningStarter;
+      document.getElementById("emotionInput").value = intensity ? `${info.label} (${INTENSITY_LABELS[intensity].toLowerCase()})` : info.label;
+      document.getElementById("meaningNotesInput").value =
+`Matched questions:
+- ${matchedQuestions}
+
+What may be underneath:
+${info.underneath}
+
+Best move:
+${info.move}`;
+
+      if (info.questions && info.questions.length) {
+        s.selected_question = info.questions[0];
+      }
+
+      s.page = "meaning";
+      saveState(s);
+      render();
+    });
+
+    document.getElementById("downloadBackupBtn").addEventListener("click", () => {
+      const state = loadState();
+      const json = JSON.stringify(state, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const stamp = new Date();
+      const yyyy = stamp.getFullYear();
+      const mm = String(stamp.getMonth() + 1).padStart(2, "0");
+      const dd = String(stamp.getDate()).padStart(2, "0");
+      const hh = String(stamp.getHours()).padStart(2, "0");
+      const mi = String(stamp.getMinutes()).padStart(2, "0");
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `icy-natural-os-backup-${yyyy}${mm}${dd}-${hh}${mi}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("restoreBackupBtn").addEventListener("click", async () => {
+      const fileInput = document.getElementById("backupFileInput");
+      const file = fileInput.files && fileInput.files[0];
+
+      if (!file) {
+        alert("Choose a backup file first.");
+        return;
+      }
+
+      try {
+        const raw = await file.text();
+        const parsed = JSON.parse(raw);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+        alert("Backup restored.");
+        render();
+      } catch {
+        alert("That backup file is not valid JSON.");
+      }
+    });
+
+    document.getElementById("clearStateBtn").addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      alert("All local app data cleared.");
+      render();
+    });
+
+    initNav();
+    render();
+  </script>
+</body>
+</html>
