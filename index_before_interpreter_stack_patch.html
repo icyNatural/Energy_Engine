@@ -384,57 +384,6 @@
       margin-top: 12px;
     }
 
-    .state-stack {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .state-stack-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .state-stack-label {
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #93a7c2;
-      margin-bottom: 6px;
-    }
-
-    .state-stack-value {
-      font-size: 22px;
-      font-weight: 900;
-      line-height: 1.15;
-      color: #f8fafc;
-    }
-
-    .state-stack-sub {
-      font-size: 15px;
-      line-height: 1.45;
-      color: #dbe4ef;
-    }
-
-    .secondary-chip-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .secondary-chip {
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: white;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
     .output-label {
       font-size: 12px;
       font-weight: 800;
@@ -656,13 +605,7 @@
     <section id="page-questions" class="page hidden">
       <div class="card">
         <div class="section-title">Questions</div>
-        <div class="muted">The system recommends a thinking mode based on the state you selected.</div>
-
-        <div class="output-block">
-          <div class="output-label">Recommended approach</div>
-          <div class="chip-row" id="recommendedModeChips"></div>
-          <div class="tiny">Pick how you want to approach the state right now.</div>
-        </div>
+        <div class="muted">These are meant to help you think clearly, not confuse you more.</div>
 
         <div class="chip-row" id="questionSetChips"></div>
         <div class="list" id="questionList"></div>
@@ -703,13 +646,6 @@
         <div class="output-block">
           <div class="output-label">A clearer read might be</div>
           <div class="state-grid" id="refinedStateGrid"></div>
-          <div class="tiny">Pick one main refined state.</div>
-        </div>
-
-        <div class="output-block">
-          <div class="output-label">Also present</div>
-          <div class="state-grid" id="secondaryStateGrid"></div>
-          <div class="tiny">Optional. Pick up to two extra states that are also present.</div>
         </div>
 
         <div class="output-block">
@@ -718,23 +654,8 @@
         </div>
 
         <div class="output-block">
-          <div class="output-label">State read</div>
-
-          <div class="state-stack">
-            <div class="state-stack-card">
-              <div class="state-stack-label">Primary</div>
-              <div class="state-stack-value" id="interpPrimaryState">Not set</div>
-            </div>
-
-            <div class="state-stack-card">
-              <div class="state-stack-label">Also present</div>
-              <div class="secondary-chip-row" id="interpSecondaryStates">
-                <div class="secondary-chip">None selected</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="output-text" id="interpSummary" style="margin-top:12px;">Pick a quick word above.</div>
+          <div class="output-label">What this may be</div>
+          <div class="output-text" id="interpSummary">Pick a quick word above.</div>
         </div>
 
         <div class="output-block">
@@ -808,41 +729,41 @@
     const STORAGE_KEY = "icy_natural_os_v4";
 
     const QUESTION_BANKS = {
-      grounded: [
-        "What actually needs my energy right now?",
-        "What can wait without damage?",
-        "What would make this feel 20% lighter?",
-        "What am I carrying that does not need to be carried right now?",
-        "What is the smallest stable move?"
-      ],
-      clear: [
-        "What do I know for sure?",
-        "What am I assuming?",
-        "What part is still unclear?",
-        "What detail would make this simpler?",
-        "What is the real issue under the noise?"
+      default: [
+        "What actually happened?",
+        "What am I telling myself about it?",
+        "What part is fact and what part is assumption?",
+        "What matters most right now?",
+        "What would help instead of spiral?"
       ],
       direct: [
+        "What is the real problem here?",
         "What am I avoiding?",
-        "What truth am I softening?",
         "What needs to happen next?",
-        "What am I pretending I do not already know?",
+        "What am I making bigger than it is?",
         "What is the clean move?"
       ],
-      reframe: [
-        "What else could this mean?",
-        "Am I reading this in the harshest possible way?",
-        "What meaning am I attaching that may not be solid?",
-        "What would this look like without the story around it?",
-        "What interpretation gives me more room to move?"
+      calm: [
+        "What would feel simpler here?",
+        "What can I let go of right now?",
+        "What does not need my energy?",
+        "What can wait?",
+        "What would make today easier?"
+      ],
+      grounded: [
+        "What do I know for sure?",
+        "What do I need before deciding?",
+        "What would I say if I were being honest?",
+        "What is worth doing today?",
+        "What can I finish cleanly?"
       ]
     };
 
     const QUESTION_SET_LABELS = {
-      grounded: "Grounded",
-      clear: "Clear",
+      default: "Clear thinking",
       direct: "Direct",
-      reframe: "Reframe"
+      calm: "Calm down",
+      grounded: "Grounded"
     };
 
     const SIMPLE_TO_REFINED = {
@@ -875,52 +796,6 @@
       high: "High"
     };
 
-    const STATE_TO_MODES = {
-      heavy: ["grounded", "clear"],
-      foggy: ["grounded", "clear"],
-      low_recovery: ["grounded", "clear"],
-      overwhelmed: ["grounded", "clear"],
-
-      conflicted: ["clear", "grounded"],
-      unclear: ["clear", "grounded"],
-      doubtful: ["clear", "grounded"],
-      uncertain: ["clear", "grounded"],
-      scattered: ["clear", "grounded"],
-
-      blocked: ["direct", "clear"],
-      irritated: ["direct", "clear"],
-      pressured: ["direct", "clear"],
-      overloaded: ["direct", "clear"],
-      disrespected: ["direct", "clear"],
-
-      let_down: ["reframe", "grounded"],
-      disconnected: ["reframe", "grounded"],
-      flat: ["reframe", "grounded"],
-      unsettled: ["reframe", "grounded"],
-      bracing: ["reframe", "grounded"],
-
-      clear: ["direct", "clear"],
-      steady: ["direct", "clear"],
-      locked_in: ["direct", "clear"]
-    };
-
-    function getRecommendedModes(primaryKey, secondaryKeys) {
-      const scores = { grounded: 0, clear: 0, direct: 0, reframe: 0 };
-      const keys = [primaryKey, ...(Array.isArray(secondaryKeys) ? secondaryKeys : [])].filter(Boolean);
-
-      keys.forEach(key => {
-        const modes = STATE_TO_MODES[key] || ["clear", "grounded"];
-        modes.forEach((mode, idx) => {
-          scores[mode] += idx === 0 ? 2 : 1;
-        });
-      });
-
-      return Object.entries(scores)
-        .sort((a, b) => b[1] - a[1])
-        .map(x => x[0])
-        .filter(x => scores[x] > 0)
-        .slice(0, 3);
-    }
     const REFINED_BANK = {
       heavy: {
         label: "Heavy",
@@ -1176,10 +1051,9 @@
     function defaultState() {
       return {
         page: "home",
-        question_set: "clear",
+        question_set: "default",
         interpreter_simple: null,
         interpreter_refined: null,
-        interpreter_secondary: [],
         interpreter_intensity: null,
         wake_ts: null,
         nap_start_ts: null,
@@ -1588,35 +1462,6 @@
       });
     }
 
-    function renderRecommendedModeChips() {
-      const state = loadState();
-      const wrap = document.getElementById("recommendedModeChips");
-      if (!wrap) return;
-      wrap.innerHTML = "";
-
-      const primary = state.interpreter_refined;
-      const secondaries = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
-      const modes = getRecommendedModes(primary, secondaries);
-
-      if (!modes.length) {
-        wrap.innerHTML = '<div class="mini-box"><div class="mini-text">Pick a state in Interpreter to get a recommended question mode.</div></div>';
-        return;
-      }
-
-      modes.forEach((mode, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "chip" + (state.question_set === mode ? " active" : "");
-        btn.textContent = idx === 0 ? `${QUESTION_SET_LABELS[mode]} · recommended` : QUESTION_SET_LABELS[mode];
-        btn.addEventListener("click", () => {
-          const s = loadState();
-          s.question_set = mode;
-          saveState(s);
-          render();
-        });
-        wrap.appendChild(btn);
-      });
-    }
-
     function renderQuestions() {
       const state = loadState();
       const type = state.question_set || "default";
@@ -1676,22 +1521,6 @@
       });
     }
 
-    function toggleSecondaryState(key) {
-      const s = loadState();
-      if (!Array.isArray(s.interpreter_secondary)) s.interpreter_secondary = [];
-
-      if (s.interpreter_secondary.includes(key)) {
-        s.interpreter_secondary = s.interpreter_secondary.filter(x => x !== key);
-      } else {
-        if (s.interpreter_secondary.length >= 2) return;
-        if (s.interpreter_refined === key) return;
-        s.interpreter_secondary.push(key);
-      }
-
-      saveState(s);
-      render();
-    }
-
     function renderInterpreter() {
       const state = loadState();
 
@@ -1716,12 +1545,7 @@
       const refinedWrap = document.getElementById("refinedStateGrid");
       refinedWrap.innerHTML = "";
 
-      const secondaryWrap = document.getElementById("secondaryStateGrid");
-      secondaryWrap.innerHTML = "";
-
       const options = state.interpreter_simple ? SIMPLE_TO_REFINED[state.interpreter_simple] || [] : [];
-      const secondaryStatesCurrent = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
-
       options.forEach(key => {
         const info = REFINED_BANK[key];
         const btn = document.createElement("button");
@@ -1730,8 +1554,6 @@
         btn.addEventListener("click", () => {
           const s = loadState();
           s.interpreter_refined = key;
-          if (!Array.isArray(s.interpreter_secondary)) s.interpreter_secondary = [];
-          s.interpreter_secondary = s.interpreter_secondary.filter(x => x !== key);
           if (!s.interpreter_intensity) s.interpreter_intensity = "medium";
           saveState(s);
           render();
@@ -1739,19 +1561,8 @@
         refinedWrap.appendChild(btn);
       });
 
-      options.forEach(key => {
-        const info = REFINED_BANK[key];
-        const btn = document.createElement("button");
-        btn.className = "state-btn" + (secondaryStatesCurrent.includes(key) ? " active" : "");
-        btn.textContent = info ? info.label : key;
-        btn.disabled = state.interpreter_refined === key;
-        btn.addEventListener("click", () => toggleSecondaryState(key));
-        secondaryWrap.appendChild(btn);
-      });
-
       if (!options.length) {
         refinedWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a quick word first to see better options.</div></div>`;
-        secondaryWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Secondary states will show here after you pick a quick word.</div></div>`;
       }
 
       const intensityWrap = document.getElementById("intensityChips");
@@ -1774,41 +1585,7 @@
       const refined = state.interpreter_refined;
       const selected = refined ? REFINED_BANK[refined] : null;
 
-      const primaryEl = document.getElementById("interpPrimaryState");
-      const secondaryEl = document.getElementById("interpSecondaryStates");
-
-      const primaryLabel = selected
-        ? selected.label
-        : (state.interpreter_simple ? (SIMPLE_LABELS[state.interpreter_simple] || state.interpreter_simple) : "Not set");
-
-      primaryEl.textContent = primaryLabel;
-
-      secondaryEl.innerHTML = "";
-      const secondaryStates = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
-
-      if (!secondaryStates.length) {
-        secondaryEl.innerHTML = '<div class="secondary-chip">None selected</div>';
-      } else {
-        secondaryStates.forEach(key => {
-          const info = REFINED_BANK[key];
-          const chip = document.createElement("div");
-          chip.className = "secondary-chip";
-          chip.textContent = info ? info.label : key;
-          secondaryEl.appendChild(chip);
-        });
-      }
-
-      let summaryText = "Pick a quick word above.";
-      if (selected) {
-        if (secondaryStates.length) {
-          const names = secondaryStates.map(key => REFINED_BANK[key] ? REFINED_BANK[key].label : key);
-          summaryText = `${selected.label} is primary, with ${names.join(", ")} also present. ${selected.summary}`;
-        } else {
-          summaryText = `${selected.label} is primary. ${selected.summary}`;
-        }
-      }
-
-      document.getElementById("interpSummary").textContent = summaryText;
+      document.getElementById("interpSummary").textContent = selected ? selected.summary : "Pick a quick word above.";
       document.getElementById("interpUnderneath").textContent = selected ? selected.underneath : "The likely structure will show here.";
       document.getElementById("interpMove").textContent = selected ? selected.move : "A usable next move will show here.";
 
@@ -1820,19 +1597,7 @@
       if (!selected) {
         qWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Three matching questions will show here.</div></div>`;
       } else {
-        const secondaryKeys = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
-        let mergedQuestions = [...selected.questions];
-
-        secondaryKeys.forEach(key => {
-          const info = REFINED_BANK[key];
-          if (info && Array.isArray(info.questions)) {
-            mergedQuestions = mergedQuestions.concat(info.questions);
-          }
-        });
-
-        const uniqueQuestions = [...new Set(mergedQuestions)].slice(0, 6);
-
-        uniqueQuestions.forEach(q => {
+        selected.questions.forEach(q => {
           const box = document.createElement("div");
           box.className = "mini-box question-card";
           box.innerHTML = `
@@ -2062,19 +1827,7 @@
         patternsWrap.appendChild(div);
       });
 
-      if ((!state.question_set || !QUESTION_BANKS[state.question_set]) && state.interpreter_refined) {
-        const recommended = getRecommendedModes(
-          state.interpreter_refined,
-          Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : []
-        );
-        if (recommended.length) {
-          state.question_set = recommended[0];
-          saveState(state);
-        }
-      }
-
       renderQuestionSetChips();
-      renderRecommendedModeChips();
       renderQuestions();
       renderInterpreterQuestionFeed();
       renderInterpreter();
@@ -2298,7 +2051,4 @@ ${info.move}`;
   </script>
 </body>
 </html>
-
-
-
 
