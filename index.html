@@ -656,7 +656,13 @@
     <section id="page-questions" class="page hidden">
       <div class="card">
         <div class="section-title">Questions</div>
-        <div class="muted">These are meant to help you think clearly, not confuse you more.</div>
+        <div class="muted">The system recommends a thinking mode based on the state you selected.</div>
+
+        <div class="output-block">
+          <div class="output-label">Recommended approach</div>
+          <div class="chip-row" id="recommendedModeChips"></div>
+          <div class="tiny">Pick how you want to approach the state right now.</div>
+        </div>
 
         <div class="chip-row" id="questionSetChips"></div>
         <div class="list" id="questionList"></div>
@@ -802,41 +808,41 @@
     const STORAGE_KEY = "icy_natural_os_v4";
 
     const QUESTION_BANKS = {
-      default: [
-        "What actually happened?",
-        "What am I telling myself about it?",
-        "What part is fact and what part is assumption?",
-        "What matters most right now?",
-        "What would help instead of spiral?"
+      grounded: [
+        "What actually needs my energy right now?",
+        "What can wait without damage?",
+        "What would make this feel 20% lighter?",
+        "What am I carrying that does not need to be carried right now?",
+        "What is the smallest stable move?"
+      ],
+      clear: [
+        "What do I know for sure?",
+        "What am I assuming?",
+        "What part is still unclear?",
+        "What detail would make this simpler?",
+        "What is the real issue under the noise?"
       ],
       direct: [
-        "What is the real problem here?",
         "What am I avoiding?",
+        "What truth am I softening?",
         "What needs to happen next?",
-        "What am I making bigger than it is?",
+        "What am I pretending I do not already know?",
         "What is the clean move?"
       ],
-      calm: [
-        "What would feel simpler here?",
-        "What can I let go of right now?",
-        "What does not need my energy?",
-        "What can wait?",
-        "What would make today easier?"
-      ],
-      grounded: [
-        "What do I know for sure?",
-        "What do I need before deciding?",
-        "What would I say if I were being honest?",
-        "What is worth doing today?",
-        "What can I finish cleanly?"
+      reframe: [
+        "What else could this mean?",
+        "Am I reading this in the harshest possible way?",
+        "What meaning am I attaching that may not be solid?",
+        "What would this look like without the story around it?",
+        "What interpretation gives me more room to move?"
       ]
     };
 
     const QUESTION_SET_LABELS = {
-      default: "Clear thinking",
+      grounded: "Grounded",
+      clear: "Clear",
       direct: "Direct",
-      calm: "Calm down",
-      grounded: "Grounded"
+      reframe: "Reframe"
     };
 
     const SIMPLE_TO_REFINED = {
@@ -869,6 +875,52 @@
       high: "High"
     };
 
+    const STATE_TO_MODES = {
+      heavy: ["grounded", "clear"],
+      foggy: ["grounded", "clear"],
+      low_recovery: ["grounded", "clear"],
+      overwhelmed: ["grounded", "clear"],
+
+      conflicted: ["clear", "grounded"],
+      unclear: ["clear", "grounded"],
+      doubtful: ["clear", "grounded"],
+      uncertain: ["clear", "grounded"],
+      scattered: ["clear", "grounded"],
+
+      blocked: ["direct", "clear"],
+      irritated: ["direct", "clear"],
+      pressured: ["direct", "clear"],
+      overloaded: ["direct", "clear"],
+      disrespected: ["direct", "clear"],
+
+      let_down: ["reframe", "grounded"],
+      disconnected: ["reframe", "grounded"],
+      flat: ["reframe", "grounded"],
+      unsettled: ["reframe", "grounded"],
+      bracing: ["reframe", "grounded"],
+
+      clear: ["direct", "clear"],
+      steady: ["direct", "clear"],
+      locked_in: ["direct", "clear"]
+    };
+
+    function getRecommendedModes(primaryKey, secondaryKeys) {
+      const scores = { grounded: 0, clear: 0, direct: 0, reframe: 0 };
+      const keys = [primaryKey, ...(Array.isArray(secondaryKeys) ? secondaryKeys : [])].filter(Boolean);
+
+      keys.forEach(key => {
+        const modes = STATE_TO_MODES[key] || ["clear", "grounded"];
+        modes.forEach((mode, idx) => {
+          scores[mode] += idx === 0 ? 2 : 1;
+        });
+      });
+
+      return Object.entries(scores)
+        .sort((a, b) => b[1] - a[1])
+        .map(x => x[0])
+        .filter(x => scores[x] > 0)
+        .slice(0, 3);
+    }
     const REFINED_BANK = {
       heavy: {
         label: "Heavy",
@@ -1124,7 +1176,7 @@
     function defaultState() {
       return {
         page: "home",
-        question_set: "default",
+        question_set: "clear",
         interpreter_simple: null,
         interpreter_refined: null,
         interpreter_secondary: [],
@@ -1529,6 +1581,35 @@
         btn.addEventListener("click", () => {
           const s = loadState();
           s.question_set = key;
+          saveState(s);
+          render();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    function renderRecommendedModeChips() {
+      const state = loadState();
+      const wrap = document.getElementById("recommendedModeChips");
+      if (!wrap) return;
+      wrap.innerHTML = "";
+
+      const primary = state.interpreter_refined;
+      const secondaries = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+      const modes = getRecommendedModes(primary, secondaries);
+
+      if (!modes.length) {
+        wrap.innerHTML = '<div class="mini-box"><div class="mini-text">Pick a state in Interpreter to get a recommended question mode.</div></div>';
+        return;
+      }
+
+      modes.forEach((mode, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "chip" + (state.question_set === mode ? " active" : "");
+        btn.textContent = idx === 0 ? `${QUESTION_SET_LABELS[mode]} · recommended` : QUESTION_SET_LABELS[mode];
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.question_set = mode;
           saveState(s);
           render();
         });
@@ -1981,7 +2062,19 @@
         patternsWrap.appendChild(div);
       });
 
+      if ((!state.question_set || !QUESTION_BANKS[state.question_set]) && state.interpreter_refined) {
+        const recommended = getRecommendedModes(
+          state.interpreter_refined,
+          Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : []
+        );
+        if (recommended.length) {
+          state.question_set = recommended[0];
+          saveState(state);
+        }
+      }
+
       renderQuestionSetChips();
+      renderRecommendedModeChips();
       renderQuestions();
       renderInterpreterQuestionFeed();
       renderInterpreter();
@@ -2205,6 +2298,7 @@ ${info.move}`;
   </script>
 </body>
 </html>
+
 
 
 
