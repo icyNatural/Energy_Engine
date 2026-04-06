@@ -748,6 +748,13 @@
         <div class="output-block">
           <div class="output-label">A clearer read might be</div>
           <div class="state-grid" id="refinedStateGrid"></div>
+          <div class="tiny">Pick one main refined state.</div>
+        </div>
+
+        <div class="output-block">
+          <div class="output-label">Also present</div>
+          <div class="state-grid" id="secondaryStateGrid"></div>
+          <div class="tiny">Optional. Pick up to two extra states that are also present.</div>
         </div>
 
         <div class="output-block">
@@ -1171,6 +1178,7 @@
         question_set: "default",
         interpreter_simple: null,
         interpreter_refined: null,
+        interpreter_secondary: [],
         interpreter_intensity: null,
         wake_ts: null,
         nap_start_ts: null,
@@ -1638,6 +1646,22 @@
       });
     }
 
+    function toggleSecondaryState(key) {
+      const s = loadState();
+      if (!Array.isArray(s.interpreter_secondary)) s.interpreter_secondary = [];
+
+      if (s.interpreter_secondary.includes(key)) {
+        s.interpreter_secondary = s.interpreter_secondary.filter(x => x !== key);
+      } else {
+        if (s.interpreter_secondary.length >= 2) return;
+        if (s.interpreter_refined === key) return;
+        s.interpreter_secondary.push(key);
+      }
+
+      saveState(s);
+      render();
+    }
+
     function renderInterpreter() {
       const state = loadState();
 
@@ -1662,7 +1686,12 @@
       const refinedWrap = document.getElementById("refinedStateGrid");
       refinedWrap.innerHTML = "";
 
+      const secondaryWrap = document.getElementById("secondaryStateGrid");
+      secondaryWrap.innerHTML = "";
+
       const options = state.interpreter_simple ? SIMPLE_TO_REFINED[state.interpreter_simple] || [] : [];
+      const secondaryStatesCurrent = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+
       options.forEach(key => {
         const info = REFINED_BANK[key];
         const btn = document.createElement("button");
@@ -1671,6 +1700,8 @@
         btn.addEventListener("click", () => {
           const s = loadState();
           s.interpreter_refined = key;
+          if (!Array.isArray(s.interpreter_secondary)) s.interpreter_secondary = [];
+          s.interpreter_secondary = s.interpreter_secondary.filter(x => x !== key);
           if (!s.interpreter_intensity) s.interpreter_intensity = "medium";
           saveState(s);
           render();
@@ -1678,8 +1709,19 @@
         refinedWrap.appendChild(btn);
       });
 
+      options.forEach(key => {
+        const info = REFINED_BANK[key];
+        const btn = document.createElement("button");
+        btn.className = "state-btn" + (secondaryStatesCurrent.includes(key) ? " active" : "");
+        btn.textContent = info ? info.label : key;
+        btn.disabled = state.interpreter_refined === key;
+        btn.addEventListener("click", () => toggleSecondaryState(key));
+        secondaryWrap.appendChild(btn);
+      });
+
       if (!options.length) {
         refinedWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a quick word first to see better options.</div></div>`;
+        secondaryWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Secondary states will show here after you pick a quick word.</div></div>`;
       }
 
       const intensityWrap = document.getElementById("intensityChips");
@@ -1748,7 +1790,19 @@
       if (!selected) {
         qWrap.innerHTML = `<div class="mini-box"><div class="mini-text">Three matching questions will show here.</div></div>`;
       } else {
-        selected.questions.forEach(q => {
+        const secondaryKeys = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+        let mergedQuestions = [...selected.questions];
+
+        secondaryKeys.forEach(key => {
+          const info = REFINED_BANK[key];
+          if (info && Array.isArray(info.questions)) {
+            mergedQuestions = mergedQuestions.concat(info.questions);
+          }
+        });
+
+        const uniqueQuestions = [...new Set(mergedQuestions)].slice(0, 6);
+
+        uniqueQuestions.forEach(q => {
           const box = document.createElement("div");
           box.className = "mini-box question-card";
           box.innerHTML = `
@@ -2202,5 +2256,6 @@ ${info.move}`;
   </script>
 </body>
 </html>
+
 
 
