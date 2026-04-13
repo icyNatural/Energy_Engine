@@ -2632,9 +2632,228 @@ Move:
     }
   };
 })();
+/* ============================
+   ICY PATTERN LAYER PATCH
+   (Stage labels + expandable history)
+============================ */
+
+(function () {
+  console.log("ICY PATTERN LAYER PATCH LOADED");
+
+  function titleCaseText(text) {
+    return String(text || "")
+      .replace(/_/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function getPatternStage(count) {
+    if (count <= 1) return "Seen once";
+    if (count <= 3) return "Emerging";
+    if (count <= 6) return "Recurring";
+    return "Established";
+  }
+
+  function getPatternTrend(entries) {
+    if (!entries || entries.length < 2) return "→ steady";
+
+    const sorted = [...entries].sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+    const split = Math.ceil(sorted.length / 2);
+    const firstHalf = sorted.slice(0, split).length;
+    const secondHalf = sorted.slice(split).length;
+
+    if (secondHalf > firstHalf) return "↑ rising";
+    if (secondHalf < firstHalf) return "↓ fading";
+    return "→ steady";
+  }
+
+  function buildPatternCard(title, entries, type) {
+    const count = entries.length;
+    const stage = getPatternStage(count);
+    const trend = getPatternTrend(entries);
+
+    const box = document.createElement("details");
+    box.className = "mini-box";
+
+    const summary = document.createElement("summary");
+    summary.innerHTML = `
+      <div class="mini-title-row" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <div class="mini-title">${title}</div>
+        <div class="tag">${stage}</div>
+      </div>
+    `;
+    box.appendChild(summary);
+
+    const meta = document.createElement("div");
+    meta.className = "mini-text";
+    meta.style.marginTop = "8px";
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} • ${trend}`;
+    box.appendChild(meta);
+
+    const list = document.createElement("div");
+    list.className = "list";
+    list.style.marginTop = "10px";
+
+    [...entries]
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+      .forEach(item => {
+        const row = document.createElement("div");
+        row.className = "mini-box";
+
+        const lineA =
+          type === "meaning"
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>`;
+
+        row.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${item.event || "Logged entry"}</div>
+            <div class="tag">${item.date || "—"}</div>
+          </div>
+          ${lineA}
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
+        `;
+        list.appendChild(row);
+      });
+
+    box.appendChild(list);
+    return box;
+  }
+
+  const originalRenderPatternPages = window.renderPatternPages;
+
+  window.renderPatternPages = function(state) {
+    const meaningWrap = document.getElementById("meaningPatternList");
+    const energyWrap = document.getElementById("energyPatternList");
+
+    if (!meaningWrap || !energyWrap) {
+      if (typeof originalRenderPatternPages === "function") {
+        return originalRenderPatternPages(state);
+      }
+      return;
+    }
+
+    meaningWrap.innerHTML = "";
+    energyWrap.innerHTML = "";
+
+    const meaningLogs = Array.isArray(state.meaning_logs) ? state.meaning_logs : [];
+
+    if (!meaningLogs.length) {
+      meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No meaning patterns detected yet.</div></div>`;
+    } else {
+      const meaningGroups = {};
+      const emotionGroups = {};
+
+      meaningLogs.forEach(item => {
+        const meaningKey = (item.meaning || "").trim().toLowerCase();
+        const emotionKey = (item.emotion || "").trim().toLowerCase();
+
+        if (meaningKey) {
+          if (!meaningGroups[meaningKey]) meaningGroups[meaningKey] = [];
+          meaningGroups[meaningKey].push(item);
+        }
+
+        if (emotionKey) {
+          if (!emotionGroups[emotionKey]) emotionGroups[emotionKey] = [];
+          emotionGroups[emotionKey].push(item);
+        }
+      });
+
+      const meaningEntries = Object.entries(meaningGroups)
+        .sort((a, b) => b[1].length - a[1].length)
+        .slice(0, 6);
+
+      if (!meaningEntries.length) {
+        meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No repeated meaning assignments yet.</div></div>`;
+      } else {
+        const intro = document.createElement("div");
+        intro.className = "mini-box";
+        intro.innerHTML = `
+          <div class="mini-title">Meaning patterns</div>
+          <div class="mini-text">These are the interpretations you have logged more than once.</div>
+        `;
+        meaningWrap.appendChild(intro);
+
+        meaningEntries.forEach(([key, entries]) => {
+          meaningWrap.appendChild(buildPatternCard(titleCaseText(key), entries, "meaning"));
+        });
+      }
+
+      const stateIntro = document.createElement("div");
+      stateIntro.className = "mini-box";
+      stateIntro.innerHTML = `
+        <div class="mini-title">State patterns</div>
+        <div class="mini-text">These are the states that have shown up in saved meaning loops.</div>
+      `;
+      meaningWrap.appendChild(stateIntro);
+
+      const stateEntries = Object.entries(emotionGroups)
+        .sort((a, b) => b[1].length - a[1].length)
+        .slice(0, 6);
+
+      if (!stateEntries.length) {
+        const empty = document.createElement("div");
+        empty.className = "mini-box";
+        empty.innerHTML = `<div class="mini-text">No repeated states yet.</div>`;
+        meaningWrap.appendChild(empty);
+      } else {
+        stateEntries.forEach(([key, entries]) => {
+          meaningWrap.appendChild(buildPatternCard(titleCaseText(key), entries, "state"));
+        });
+      }
+    }
+
+    const recent = uniqueRecentDays(state, 7);
+
+    if (!recent.length) {
+      energyWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No energy history yet.</div></div>`;
+    } else {
+      const core = scoreV1(state);
+
+      const daysBox = document.createElement("div");
+      daysBox.className = "mini-box";
+      daysBox.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">Baseline window</div>
+          <div class="tag">${core.baseline_days} day${core.baseline_days === 1 ? "" : "s"}</div>
+        </div>
+        <div class="mini-text">
+          ${core.baseline_days < 3 ? "Still learning your baseline."
+            : core.baseline_days < 7 ? "Getting a better read on your rhythm."
+            : "Baseline confidence is getting solid."}
+        </div>
+      `;
+      energyWrap.appendChild(daysBox);
+
+      const base = core.baseline || {};
+      [
+        ["Sleep HR baseline", base.sleep_hr],
+        ["HRV baseline", base.hrv],
+        ["Sleep minutes baseline", base.actual_sleep_minutes],
+        ["Activity baseline", base.activity_minutes],
+        ["Deep sleep baseline", base.deep_minutes],
+        ["REM baseline", base.rem_minutes]
+      ].forEach(([label, val]) => {
+        const box = document.createElement("div");
+        box.className = "mini-box";
+        box.innerHTML = `
+          <div class="mini-title-row">
+            <div class="mini-title">${label}</div>
+            <div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div>
+          </div>
+          <div class="mini-text">This is built from your recent saved energy entries.</div>
+        `;
+        energyWrap.appendChild(box);
+      });
+    }
+  };
+})();
 </script>
 </body>
 </html>
+
 
 
 
