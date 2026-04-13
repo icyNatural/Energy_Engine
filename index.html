@@ -629,7 +629,8 @@
           <div class="text" id="recoveryMeaning">Your body needs more recovery</div>
           <div class="muted" id="recoveryGuidance">Slow down and give yourself space</div>
           <div class="muted" id="recoveryScoreText">Recovery score 50/100</div>
-          <div class="muted" id="confidenceText">Still learning your baseline.</div>
+                    <div class="muted" id="confidenceText">Still learning your baseline.</div>
+          <div class="muted" id="baselineDaysText">Baseline: 0 days</div>
         </div>
 
         <div class="card">
@@ -674,7 +675,8 @@
 
       <div class="card">
         <div class="section-title">Latest baseline read</div>
-        <div class="muted">Your recent personal baseline lives here. This is your pattern, not a generic standard.</div>
+                <div class="muted">Your recent personal baseline lives here. This is your pattern, not a generic standard.</div>
+        <div class="muted" id="energyBaselineDaysText">Baseline: 0 days</div>
         <div id="baselineReadWrap" class="list"></div>
       </div>
     </section>
@@ -899,7 +901,10 @@
       off: ["unclear", "disconnected", "scattered", "unsettled"],
       low: ["heavy", "flat", "disconnected", "low_recovery"],
       frustrated: ["irritated", "blocked", "pressured", "overloaded"],
-      confused: ["unclear", "conflicted", "doubtful", "scattered"]
+      confused: ["unclear", "conflicted", "doubtful", "scattered"],
+      good: ["clear", "steady", "open", "engaged"],
+      focused: ["locked_in", "clear", "steady", "engaged"],
+      calm: ["steady", "clear", "open", "engaged"]
     };
 
     const SIMPLE_LABELS = {
@@ -911,7 +916,10 @@
       off: "Off",
       low: "Low",
       frustrated: "Frustrated",
-      confused: "Confused"
+      confused: "Confused",
+      good: "Good",
+      focused: "Focused",
+      calm: "Calm"
     };
 
     const INTENSITY_LABELS = {
@@ -1148,6 +1156,66 @@
         ],
         move: "Do not rush to label it. Stay with what feels off and make it more specific.",
         meaningStarter: "I felt unsettled. Something feels off, but I have not named it clearly yet."
+      },
+      clear: {
+        label: "Clear",
+        summary: "Your picture feels clean enough to move on.",
+        underneath: "Good clarity, lower inner noise, and enough usable certainty.",
+        questions: [
+          "What is worth using this clarity on?",
+          "What can I finish cleanly right now?",
+          "What deserves direct attention?"
+        ],
+        move: "Use the clarity while it is here. Pick one meaningful thing and move on it.",
+        meaningStarter: "I felt clear. My picture felt clean enough to move without forcing."
+      },
+      steady: {
+        label: "Steady",
+        summary: "Your system feels balanced and workable.",
+        underneath: "Lower friction, usable energy, and enough emotional stability to act cleanly.",
+        questions: [
+          "What can I keep moving steadily?",
+          "What should I handle while things feel stable?",
+          "What would preserve this state?"
+        ],
+        move: "Do clean work while the system is stable.",
+        meaningStarter: "I felt steady. Things felt workable without excess friction."
+      },
+      open: {
+        label: "Open",
+        summary: "Capacity feels available right now.",
+        underneath: "Good usable range, less drag, and more room for output or connection.",
+        questions: [
+          "What is worth doing with this open capacity?",
+          "What would be best to express or finish now?",
+          "Where should I use this range?"
+        ],
+        move: "Use the extra room deliberately before the window shifts.",
+        meaningStarter: "I felt open. My system had more range available than usual."
+      },
+      engaged: {
+        label: "Engaged",
+        summary: "You feel connected enough to what you are doing.",
+        underneath: "Attention, involvement, and meaning are lining up well enough to create traction.",
+        questions: [
+          "What is holding my attention well right now?",
+          "What should I stay connected to a little longer?",
+          "What is giving this traction?"
+        ],
+        move: "Stay with what has traction instead of scattering it.",
+        meaningStarter: "I felt engaged. My attention and involvement were lining up in a useful way."
+      },
+      locked_in: {
+        label: "Locked in",
+        summary: "Your attention feels directed and stable.",
+        underneath: "Good focus, cleaner filtering, and enough control to stay on one line.",
+        questions: [
+          "What should I finish while I am locked in?",
+          "What deserves full focus right now?",
+          "What can I complete cleanly in this window?"
+        ],
+        move: "Protect the focus window and finish something real.",
+        meaningStarter: "I felt locked in. My attention felt stable and directed enough to do real work."
       },
       overloaded: {
         label: "Overloaded",
@@ -2462,9 +2530,112 @@ Move:
   }
 
 })();
+/* ============================
+   ICY NEXT LAYER PATCH
+   (Positive states + baseline visibility + balanced hero language)
+============================ */
+
+(function () {
+  console.log("ICY NEXT LAYER PATCH LOADED");
+
+  function getHeroGuidancePack(energyScore, recoveryScore, phaseName) {
+    if (energyScore >= 82 && recoveryScore >= 70) {
+      return {
+        state: "Open",
+        meaning: "Capacity looks available right now",
+        action: "Use this window for focused work, decisions, or expression"
+      };
+    }
+
+    if (energyScore >= 62) {
+      return {
+        state: "Steady",
+        meaning: "You have usable range right now",
+        action: "Make clean progress while the window is stable"
+      };
+    }
+
+    if (recoveryScore >= 72 && energyScore < 62) {
+      return {
+        state: "Narrow",
+        meaning: "Recovery looks decent, but the current window is smaller",
+        action: "Use what is available deliberately before the window thins further"
+      };
+    }
+
+    if (phaseName === "Recovery") {
+      return {
+        state: "Low",
+        meaning: "Your system is still coming online",
+        action: "Keep pressure low until clarity gathers more fully"
+      };
+    }
+
+    return {
+      state: "Low",
+      meaning: "Energy is limited right now",
+      action: "Keep things light and reduce unnecessary friction"
+    };
+  }
+
+  const oldRender = window.render;
+  window.render = function () {
+    if (typeof oldRender === "function") oldRender();
+
+    const state = loadState();
+    const core = scoreV1(state);
+    const readiness = core.readiness;
+    const recoveryScore = Math.round(((readiness + 1) / 2) * 1000) / 10;
+
+    const wakeTs = state.wake_ts;
+    const minsAwake = minsSince(wakeTs);
+    const napDur = computeNapDuration(state);
+    const napCredit = napCreditMinutes(napDur);
+    const phaseExtension = phaseExtensionMinutes(napDur);
+
+    let effAwake, phaseName;
+    if (minsAwake === null) {
+      effAwake = null;
+      phaseName = "Untracked";
+    } else {
+      effAwake = Math.max(0, minsAwake - napCredit);
+      phaseName = phaseFromEffectiveAwake(effAwake, phaseExtension)[1];
+    }
+
+    let energyScore;
+    if (effAwake === null) {
+      energyScore = 0;
+    } else {
+      const wakeDrag = Math.min((effAwake / 60) * 3, 45);
+      const napBonus = Math.min(napCredit * 0.35 + phaseExtension * 0.5, 22);
+      energyScore = clamp100(Math.round((readiness * 50 + 50 + napBonus - wakeDrag - 5) * 10) / 10);
+    }
+
+    const hero = getHeroGuidancePack(energyScore, recoveryScore, phaseName);
+
+    const energyStateEl = document.getElementById("energyState");
+    const energyMeaningEl = document.getElementById("energyMeaning");
+    const energyActionEl = document.getElementById("energyAction");
+    const baselineDaysEl = document.getElementById("baselineDaysText");
+    const energyBaselineDaysEl = document.getElementById("energyBaselineDaysText");
+
+    if (energyStateEl) energyStateEl.textContent = hero.state;
+    if (energyMeaningEl) energyMeaningEl.textContent = hero.meaning;
+    if (energyActionEl) energyActionEl.textContent = hero.action;
+
+    if (baselineDaysEl) {
+      baselineDaysEl.textContent = `Baseline: ${core.baseline_days} day${core.baseline_days === 1 ? "" : "s"}`;
+    }
+
+    if (energyBaselineDaysEl) {
+      energyBaselineDaysEl.textContent = `Baseline: ${core.baseline_days} day${core.baseline_days === 1 ? "" : "s"}`;
+    }
+  };
+})();
 </script>
 </body>
 </html>
+
 
 
 
