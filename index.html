@@ -2253,9 +2253,219 @@ ${info.move}`;
 
     initNav();
     render();
-  </script>
+  /* ============================
+   ICY OS OVERRIDE PATCH v1
+   (Patterns + Questions + Meaning Bridge)
+   Drop-in only. No edits required above.
+============================ */
+
+(function () {
+
+  console.log("ICY PATCH LOADED");
+
+  /* -------------------------
+     HELPERS
+  ------------------------- */
+
+  function getPatternStage(count) {
+    if (count <= 1) return "Seen once";
+    if (count <= 3) return "Emerging";
+    if (count <= 6) return "Recurring";
+    return "Established";
+  }
+
+  function titleCase(str) {
+    return (str || "")
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function getModeFromState(state) {
+    const r = state.interpreter_refined;
+
+    if (!r) return "default";
+
+    if (["heavy","flat","foggy","low_recovery"].includes(r)) return "calm";
+    if (["irritated","blocked","disrespected","pressured"].includes(r)) return "direct";
+    if (["conflicted","uncertain","scattered"].includes(r)) return "grounded";
+
+    return "default";
+  }
+
+  function getCombinedQuestions(state) {
+    const refined = state.interpreter_refined;
+    const secondaries = state.interpreter_secondary || [];
+
+    let q = [];
+
+    if (window.REFINED_BANK?.[refined]) {
+      q.push(...(REFINED_BANK[refined].questions || []));
+    }
+
+    secondaries.forEach(s => {
+      if (REFINED_BANK[s]) {
+        q.push(...(REFINED_BANK[s].questions || []));
+      }
+    });
+
+    const mode = getModeFromState(state);
+    q.push(...(QUESTION_BANKS[mode] || []));
+
+    return [...new Set(q)].slice(0, 6);
+  }
+
+  /* -------------------------
+     PATCH: PATTERNS PAGE
+  ------------------------- */
+
+  const originalRenderPatterns = window.renderPatternPages;
+
+  window.renderPatternPages = function(state) {
+
+    const meaningWrap = document.getElementById("meaningPatternList");
+    if (!meaningWrap) return originalRenderPatterns?.(state);
+
+    meaningWrap.innerHTML = "";
+
+    const logs = state.meaning_logs || [];
+
+    if (!logs.length) {
+      meaningWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No patterns yet.</div></div>`;
+      return;
+    }
+
+    const groups = {};
+
+    logs.forEach(x => {
+      const key = (x.meaning || "").toLowerCase().trim();
+      if (!key) return;
+
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(x);
+    });
+
+    Object.entries(groups)
+      .sort((a,b) => b[1].length - a[1].length)
+      .slice(0,5)
+      .forEach(([k, list]) => {
+
+        const stage = getPatternStage(list.length);
+
+        const el = document.createElement("details");
+        el.className = "mini-box";
+
+        el.innerHTML = `
+          <summary style="display:flex;justify-content:space-between;">
+            <b>${titleCase(k)}</b>
+            <span class="tag">${stage}</span>
+          </summary>
+          <div style="margin-top:8px;" class="mini-text">
+            ${list.length} time${list.length>1?"s":""}
+          </div>
+        `;
+
+        meaningWrap.appendChild(el);
+      });
+  };
+
+  /* -------------------------
+     PATCH: QUESTIONS PAGE
+  ------------------------- */
+
+  const originalRenderQuestions = window.renderQuestions;
+
+  window.renderQuestions = function() {
+
+    const state = loadState();
+    const wrap = document.getElementById("questionList");
+
+    if (!wrap) return originalRenderQuestions?.();
+
+    wrap.innerHTML = "";
+
+    const mode = getModeFromState(state);
+    const qs = getCombinedQuestions(state);
+
+    const top = document.createElement("div");
+    top.className = "mini-box";
+    top.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Recommended</div>
+        <div class="tag">${mode}</div>
+      </div>
+    `;
+    wrap.appendChild(top);
+
+    qs.forEach(q => {
+      const el = document.createElement("div");
+      el.className = "mini-box question-card";
+      el.innerHTML = `<div class="mini-title">${q}</div>`;
+      el.onclick = () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = mode;
+        saveState(s);
+        render();
+      };
+      wrap.appendChild(el);
+    });
+  };
+
+  /* -------------------------
+     PATCH: INTERPRETER → MEANING
+  ------------------------- */
+
+  const btn = document.getElementById("useMeaningStarterBtn");
+
+  if (btn) {
+    btn.onclick = function() {
+
+      const s = loadState();
+
+      const refined = s.interpreter_refined;
+      const secondaries = s.interpreter_secondary || [];
+
+      if (!refined || !REFINED_BANK[refined]) return;
+
+      const primary = REFINED_BANK[refined];
+      const secondaryLabels = secondaries.map(x => REFINED_BANK[x]?.label).filter(Boolean);
+
+      const combinedState =
+        secondaryLabels.length
+          ? `${primary.label} with ${secondaryLabels.join(", ")}`
+          : primary.label;
+
+      const qs = getCombinedQuestions(s);
+
+      document.getElementById("meaningInput").value =
+        primary.meaningStarter + (secondaryLabels.length ? " + layered states present." : "");
+
+      document.getElementById("emotionInput").value = combinedState;
+
+      document.getElementById("meaningNotesInput").value =
+`Matched questions:
+- ${qs.join("\n- ")}
+
+Underneath:
+- ${primary.underneath}
+
+Move:
+- ${primary.move}`;
+
+      s.selected_question = qs[0];
+      s.question_set = getModeFromState(s);
+      s.page = "meaning";
+
+      saveState(s);
+      render();
+    };
+  }
+
+})();
+</script>
 </body>
 </html>
+
 
 
 
