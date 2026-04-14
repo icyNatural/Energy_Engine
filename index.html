@@ -535,7 +535,6 @@
       <button class="nav-btn active" data-page="home">Home</button>
       <button class="nav-btn" data-page="energy">Energy</button>
       <button class="nav-btn" data-page="meaning">Meaning</button>
-      <button class="nav-btn" data-page="questions">Questions</button>
       <button class="nav-btn" data-page="interpreter">Interpreter</button>
       <button class="nav-btn" data-page="patterns">Patterns</button>
       <button class="nav-btn" data-page="settings">Settings</button>
@@ -3204,9 +3203,118 @@ Best move:
   }
 
 })();
+/* ============================
+   ICY MERGE QUESTIONS INTO INTERPRETER PATCH
+   (Questions page folded into Interpreter)
+============================ */
+
+(function () {
+  console.log("ICY MERGE QUESTIONS INTO INTERPRETER PATCH LOADED");
+
+  function ensureInterpreterQuestionMerge() {
+    const host = document.getElementById("interpreterMergedQuestionsInner");
+    if (!host) return null;
+    host.innerHTML = "";
+    return host;
+  }
+
+  function getMergedQuestionBundle(state) {
+    if (typeof getInterpreterQuestionBundleV2 === "function") {
+      return getInterpreterQuestionBundleV2(state);
+    }
+
+    const mode = state.question_set || "default";
+    const qs = (window.QUESTION_BANKS?.[mode] || []).slice(0, 6);
+    return {
+      recommendedMode: mode,
+      reason: "These questions fit your current state.",
+      questions: qs
+    };
+  }
+
+  function renderInterpreterMergedQuestions() {
+    const state = loadState();
+    const host = ensureInterpreterQuestionMerge();
+    if (!host) return;
+
+    if (!state.interpreter_refined) {
+      host.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a refined state to load questions here.</div></div>`;
+      return;
+    }
+
+    const bundle = getMergedQuestionBundle(state);
+
+    const top = document.createElement("div");
+    top.className = "mini-box";
+    top.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Recommended mode</div>
+        <div class="tag">${bundle.recommendedMode}</div>
+      </div>
+      <div class="mini-text">${bundle.reason || "These questions were shaped by your state."}</div>
+    `;
+    host.appendChild(top);
+
+    if (!bundle.questions || !bundle.questions.length) {
+      const empty = document.createElement("div");
+      empty.className = "mini-box";
+      empty.innerHTML = `<div class="mini-text">No matched questions loaded yet.</div>`;
+      host.appendChild(empty);
+      return;
+    }
+
+    bundle.questions.forEach(q => {
+      const box = document.createElement("div");
+      box.className = "mini-box question-card";
+      box.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">Matched</div>
+        </div>
+        <div class="mini-text">Tap to make this your current question.</div>
+      `;
+      box.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = bundle.recommendedMode || s.question_set || "default";
+        saveState(s);
+        render();
+      });
+      host.appendChild(box);
+    });
+  }
+
+  const oldRender = window.render;
+  window.render = function () {
+    if (typeof oldRender === "function") oldRender();
+
+    const state = loadState();
+
+    // Safety: if page somehow stayed on removed tab, move back to interpreter
+    if (state.page === "questions") {
+      state.page = "interpreter";
+      saveState(state);
+      if (typeof oldRender === "function") oldRender();
+    }
+
+    renderInterpreterMergedQuestions();
+  };
+
+  // If nav code looks for existing buttons, this keeps it calm
+  const oldInitNav = window.initNav;
+  window.initNav = function () {
+    if (typeof oldInitNav === "function") oldInitNav();
+
+    const questionPage = document.getElementById("page-questions");
+    if (questionPage) {
+      questionPage.style.display = "none";
+    }
+  };
+})();
 </script>
 </body>
 </html>
+
 
 
 
