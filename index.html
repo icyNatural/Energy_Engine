@@ -2850,9 +2850,364 @@ Move:
     }
   };
 })();
+/* ============================
+   ICY MODE BRIDGE PATCH
+   (Interpreter -> Questions -> Meaning)
+============================ */
+
+(function () {
+  console.log("ICY MODE BRIDGE PATCH LOADED");
+
+  function getRecommendedQuestionMode(state) {
+    const refined = state.interpreter_refined;
+    const secondaries = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+    const keys = [refined, ...secondaries].filter(Boolean);
+
+    if (!keys.length) return "default";
+
+    const calmKeys = ["heavy","flat","foggy","low_recovery","overwhelmed","unsettled"];
+    const directKeys = ["irritated","blocked","disrespected","pressured","overloaded"];
+    const groundedKeys = ["conflicted","uncertain","doubtful","unclear","scanning","scattered","bracing"];
+
+    let calm = 0, direct = 0, grounded = 0, clear = 0;
+
+    keys.forEach(k => {
+      if (calmKeys.includes(k)) calm += 2;
+      else if (directKeys.includes(k)) direct += 2;
+      else if (groundedKeys.includes(k)) grounded += 2;
+      else clear += 1;
+    });
+
+    const scores = [
+      ["calm", calm],
+      ["direct", direct],
+      ["grounded", grounded],
+      ["default", clear]
+    ].sort((a,b) => b[1] - a[1]);
+
+    return scores[0][0] || "default";
+  }
+
+  function getModeReasonText(state, mode) {
+    const refined = state.interpreter_refined;
+    const secondaries = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+    const names = [refined, ...secondaries]
+      .filter(Boolean)
+      .map(x => window.REFINED_BANK?.[x]?.label || x);
+
+    const stateText = names.length ? names.join(", ") : "your current state";
+
+    if (mode === "calm") {
+      return `Your state points to overload or lower recovery. Slower thinking will help more than pressure right now.`;
+    }
+
+    if (mode === "direct") {
+      return `Your state points to friction or avoidance. A cleaner, more direct line of thinking will help.`;
+    }
+
+    if (mode === "grounded") {
+      return `Your state points to uncertainty or mixed signals. Grounding the picture first will help you think better.`;
+    }
+
+    return `Your state points to a need for clearer thinking. Sort what is real before adding more story.`;
+  }
+
+  function getInterpreterQuestionBundleV2(state) {
+    const refined = state.interpreter_refined;
+    const secondaries = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+    const recommendedMode = getRecommendedQuestionMode(state);
+
+    let questions = [];
+
+    if (refined && window.REFINED_BANK?.[refined]) {
+      questions = questions.concat(REFINED_BANK[refined].questions || []);
+    }
+
+    secondaries.forEach(key => {
+      if (window.REFINED_BANK?.[key]) {
+        questions = questions.concat(REFINED_BANK[key].questions || []);
+      }
+    });
+
+    questions = questions.concat((window.QUESTION_BANKS?.[recommendedMode]) || []);
+    questions = [...new Set(questions)];
+
+    return {
+      recommendedMode,
+      questions: questions.slice(0, 8),
+      reason: getModeReasonText(state, recommendedMode)
+    };
+  }
+
+  function ensureQuestionsModeBox() {
+    const page = document.getElementById("page-questions");
+    if (!page) return;
+
+    const firstCard = page.querySelector(".card");
+    if (!firstCard) return;
+
+    if (document.getElementById("recommendedModeBox")) return;
+
+    const box = document.createElement("div");
+    box.className = "output-block";
+    box.id = "recommendedModeBox";
+    box.innerHTML = `
+      <div class="output-label">Recommended approach</div>
+      <div class="mini-title-row">
+        <div class="mini-title" id="recommendedModeLabel">Clear thinking</div>
+        <div class="tag" id="recommendedModeTag">default</div>
+      </div>
+      <div class="mini-text" id="recommendedModeReason">Pick a state in Interpreter to get a recommended question mode.</div>
+    `;
+
+    const sectionTitle = firstCard.querySelector(".section-title");
+    if (sectionTitle) {
+      sectionTitle.parentNode.insertBefore(box, sectionTitle.nextSibling.nextSibling);
+    } else {
+      firstCard.insertBefore(box, firstCard.firstChild);
+    }
+  }
+
+  function renderRecommendedModeBox(state) {
+    ensureQuestionsModeBox();
+
+    const labelEl = document.getElementById("recommendedModeLabel");
+    const tagEl = document.getElementById("recommendedModeTag");
+    const reasonEl = document.getElementById("recommendedModeReason");
+
+    if (!labelEl || !tagEl || !reasonEl) return;
+
+    const bundle = getInterpreterQuestionBundleV2(state);
+    const mode = bundle.recommendedMode;
+
+    const labelMap = {
+      default: "Clear thinking",
+      direct: "Direct",
+      calm: "Calm down",
+      grounded: "Grounded"
+    };
+
+    labelEl.textContent = labelMap[mode] || mode;
+    tagEl.textContent = mode;
+    reasonEl.textContent = bundle.reason;
+  }
+
+  const originalRenderQuestions = window.renderQuestions;
+  window.renderQuestions = function() {
+    const state = loadState();
+    const wrap = document.getElementById("questionList");
+
+    if (!wrap) {
+      if (typeof originalRenderQuestions === "function") originalRenderQuestions();
+      return;
+    }
+
+    renderRecommendedModeBox(state);
+
+    wrap.innerHTML = "";
+
+    const bundle = getInterpreterQuestionBundleV2(state);
+    const recommendedMode = bundle.recommendedMode;
+    const matchedQuestions = bundle.questions.slice(0, 5);
+
+    const topBox = document.createElement("div");
+    topBox.className = "mini-box";
+    topBox.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Matched questions</div>
+        <div class="tag">${recommendedMode}</div>
+      </div>
+      <div class="mini-text">These were shaped by your interpreted state.</div>
+    `;
+    wrap.appendChild(topBox);
+
+    matchedQuestions.forEach(q => {
+      const box = document.createElement("div");
+      box.className = "mini-box question-card";
+      box.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">Matched</div>
+        </div>
+        <div class="mini-text">Tap to use this as your current question.</div>
+      `;
+      box.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = recommendedMode;
+        saveState(s);
+        render();
+      });
+      wrap.appendChild(box);
+    });
+
+    const manualTitle = document.createElement("div");
+    manualTitle.className = "mini-box";
+    manualTitle.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">All questions in current mode</div>
+        <div class="tag">${state.question_set || "default"}</div>
+      </div>
+      <div class="mini-text">You can still override the recommended mode manually.</div>
+    `;
+    wrap.appendChild(manualTitle);
+
+    const base = (window.QUESTION_BANKS?.[state.question_set || "default"]) || (window.QUESTION_BANKS?.default) || [];
+    const all = [...base, ...(state.custom_questions || [])];
+
+    all.forEach(q => {
+      const box = document.createElement("div");
+      box.className = "mini-box question-card";
+      box.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">Question</div>
+        </div>
+        <div class="mini-text">Tap to use this as your current question.</div>
+      `;
+      box.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        saveState(s);
+        render();
+      });
+      wrap.appendChild(box);
+    });
+  };
+
+  const originalRenderInterpreterQuestionFeed = window.renderInterpreterQuestionFeed;
+  window.renderInterpreterQuestionFeed = function() {
+    const state = loadState();
+    const wrap = document.getElementById("interpreterQuestionList");
+
+    if (!wrap) {
+      if (typeof originalRenderInterpreterQuestionFeed === "function") originalRenderInterpreterQuestionFeed();
+      return;
+    }
+
+    wrap.innerHTML = "";
+
+    if (!state.interpreter_refined) {
+      wrap.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a refined state in Interpreter to load matching questions here.</div></div>`;
+      return;
+    }
+
+    const bundle = getInterpreterQuestionBundleV2(state);
+
+    const modeBox = document.createElement("div");
+    modeBox.className = "mini-box";
+    modeBox.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Recommended question mode</div>
+        <div class="tag">${bundle.recommendedMode}</div>
+      </div>
+      <div class="mini-text">${bundle.reason}</div>
+    `;
+    wrap.appendChild(modeBox);
+
+    bundle.questions.slice(0, 5).forEach(q => {
+      const box = document.createElement("div");
+      box.className = "mini-box question-card";
+      box.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">Matched</div>
+        </div>
+        <div class="mini-text">Tap to use this as your current question.</div>
+      `;
+      box.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = bundle.recommendedMode;
+        saveState(s);
+        render();
+      });
+      wrap.appendChild(box);
+    });
+  };
+
+  const meaningBtn = document.getElementById("useMeaningStarterBtn");
+  if (meaningBtn) {
+    meaningBtn.onclick = function() {
+      const s = loadState();
+      const refined = s.interpreter_refined;
+      const intensity = s.interpreter_intensity;
+      const secondaries = Array.isArray(s.interpreter_secondary) ? s.interpreter_secondary : [];
+
+      if (!refined || !window.REFINED_BANK?.[refined]) return;
+
+      const primaryInfo = REFINED_BANK[refined];
+      const secondaryInfos = secondaries.map(key => REFINED_BANK[key]).filter(Boolean);
+      const bundle = getInterpreterQuestionBundleV2(s);
+
+      const primaryLabel = primaryInfo.label;
+      const secondaryLabels = secondaryInfos.map(x => x.label);
+      const intensityLabel = intensity ? (window.INTENSITY_LABELS?.[intensity] || intensity).toLowerCase() : null;
+
+      const stateLine =
+        secondaryLabels.length
+          ? `${primaryLabel}${intensityLabel ? ` (${intensityLabel})` : ""}, with ${secondaryLabels.join(", ")} also present`
+          : `${primaryLabel}${intensityLabel ? ` (${intensityLabel})` : ""}`;
+
+      const underneathLines = [
+        primaryInfo.underneath,
+        ...secondaryInfos.map(x => x.underneath)
+      ];
+
+      const moveLines = [
+        primaryInfo.move,
+        ...secondaryInfos.map(x => x.move)
+      ];
+
+      const summaryMeaning =
+        secondaryLabels.length
+          ? `${primaryInfo.meaningStarter} Also present: ${secondaryLabels.join(", ")}.`
+          : primaryInfo.meaningStarter;
+
+      const eventInput = document.getElementById("eventInput");
+      const meaningInput = document.getElementById("meaningInput");
+      const emotionInput = document.getElementById("emotionInput");
+      const actionInput = document.getElementById("actionInput");
+      const costInput = document.getElementById("costInput");
+      const notesInput = document.getElementById("meaningNotesInput");
+
+      if (eventInput) eventInput.value = eventInput.value || "State translation";
+      if (meaningInput) meaningInput.value = summaryMeaning;
+      if (emotionInput) emotionInput.value = stateLine;
+      if (actionInput) actionInput.value = actionInput.value || "";
+      if (costInput) costInput.value = costInput.value || "";
+
+      if (notesInput) {
+        notesInput.value =
+`Recommended mode:
+- ${bundle.recommendedMode}
+
+Matched questions:
+- ${bundle.questions.join("\n- ")}
+
+What may be underneath:
+- ${underneathLines.join("\n- ")}
+
+Best move:
+- ${moveLines.join("\n- ")}`;
+      }
+
+      if (bundle.questions.length) {
+        s.selected_question = bundle.questions[0];
+        s.question_set = bundle.recommendedMode;
+      }
+
+      s.page = "meaning";
+      saveState(s);
+      render();
+    };
+  }
+
+})();
 </script>
 </body>
 </html>
+
 
 
 
