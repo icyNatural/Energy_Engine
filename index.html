@@ -1,4 +1,4 @@
-<!doctype html>
+Ôªø<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -1917,10 +1917,10 @@
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "ó"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "ó"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "ó"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "ó"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "‚Äî"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "‚Äî"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "‚Äî"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "‚Äî"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -1968,7 +1968,7 @@
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "ó" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "‚Äî" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -1990,7 +1990,7 @@
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "ó" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "‚Äî" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -2695,7 +2695,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} ï ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} ‚Ä¢ ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -2710,17 +2710,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "ó"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "ó"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "‚Äî"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "‚Äî"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "ó"}</div>
+            <div class="tag">${item.date || "‚Äî"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "ó"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "ó"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "‚Äî"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "‚Äî"}</div>
         `;
         list.appendChild(row);
       });
@@ -2848,7 +2848,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "ó" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "‚Äî" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -3319,9 +3319,42 @@ Best move:
     }
   };
 })();
+/* ============================
+   ICY EMOJI FIX PATCH
+============================ */
+
+(function () {
+  console.log("ICY EMOJI FIX PATCH LOADED");
+
+  function getPhaseEmojiSafe(phaseName) {
+    const map = {
+      "Recovery": "üåë",
+      "Flow": "üåä",
+      "Radiance": "‚òÄÔ∏è",
+      "Surge": "‚ö°",
+      "Settle": "üåô",
+      "Untracked": "‚è≥"
+    };
+    return map[phaseName] || "‚è≥";
+  }
+
+  const oldRenderEmojiFix = window.render;
+  window.render = function () {
+    if (typeof oldRenderEmojiFix === "function") oldRenderEmojiFix();
+
+    const phaseEl = document.getElementById("phaseName");
+    const emojiEl = document.getElementById("phaseEmoji");
+
+    if (!phaseEl || !emojiEl) return;
+
+    const phaseName = (phaseEl.textContent || "").trim();
+    emojiEl.textContent = getPhaseEmojiSafe(phaseName);
+  };
+})();
 </script>
 </body>
 </html>
+
 
 
 
