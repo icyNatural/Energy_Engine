@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -525,17 +525,25 @@
       .energy-state { font-size: 30px; }
     }
   </style>
+<style>
+.subtle-note {
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+</style>
 </head>
 <body>
   <div class="wrap">
     <div class="app-title">Icy Natural OS</div>
-    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
+    <div class="app-sub">One core app. Multiple modules. State ? meaning ? questions ? patterns.</div>
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
       <button class="nav-btn" data-page="energy">Energy</button>
-      <button class="nav-btn" data-page="meaning">Meaning</button>
-      <button class="nav-btn" data-page="interpreter">Interpreter</button>
+      <button class="nav-btn" data-page="interpreter">Interpreter</button><button class="nav-btn" data-page="meaning">Meaning</button>
+      
       <button class="nav-btn" data-page="patterns">Patterns</button>
       <button class="nav-btn" data-page="settings">Settings</button>
     </div>
@@ -546,7 +554,7 @@
           <div class="eyebrow">Your state right now</div>
 
           <div class="phase-row">
-            <div class="emoji" id="phaseIcon">⏳</div>
+            <div class="emoji" id="phaseIcon">?</div>
             <div class="phase" id="phaseName">Untracked</div>
           </div>
 
@@ -1397,7 +1405,7 @@
 
     function phaseFromEffectiveAwake(effectiveAwakeMin, extensionMin = 0) {
       if (effectiveAwakeMin === null || effectiveAwakeMin === undefined) {
-        return ["⏳", "Untracked", "Set your wake time to begin."];
+        return ["?", "Untracked", "Set your wake time to begin."];
       }
 
       const recoveryEnd = 4 * 60;
@@ -1405,11 +1413,11 @@
       const radianceEnd = 14 * 60 + extensionMin;
       const surgeEnd = 18 * 60 + Math.round(extensionMin * 0.6);
 
-      if (effectiveAwakeMin < recoveryEnd) return ["🌑", "Recovery", "Take it slow. You are still warming up."];
-      if (effectiveAwakeMin < flowEnd) return ["🌊", "Flow", "Things should feel smooth right now."];
-      if (effectiveAwakeMin < radianceEnd) return ["☀️", "Radiance", "This is your strongest window."];
-      if (effectiveAwakeMin < surgeEnd) return ["⚡", "Surge", "Energy is high. Do not waste it."];
-      return ["🌙", "Settle", "Start slowing things down."];
+      if (effectiveAwakeMin < recoveryEnd) return ["??", "Recovery", "Take it slow. You are still warming up."];
+      if (effectiveAwakeMin < flowEnd) return ["??", "Flow", "Things should feel smooth right now."];
+      if (effectiveAwakeMin < radianceEnd) return ["??", "Radiance", "This is your strongest window."];
+      if (effectiveAwakeMin < surgeEnd) return ["?", "Surge", "Energy is high. Do not waste it."];
+      return ["??", "Settle", "Start slowing things down."];
     }
 
     function phaseColor(name) {
@@ -1909,10 +1917,10 @@
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -1960,7 +1968,7 @@
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -1982,7 +1990,7 @@
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -2005,7 +2013,7 @@
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -2479,7 +2487,7 @@ ${info.move}`;
   };
 
   /* -------------------------
-     PATCH: INTERPRETER → MEANING
+     PATCH: INTERPRETER ? MEANING
   ------------------------- */
 
   const btn = document.getElementById("useMeaningStarterBtn");
@@ -2655,16 +2663,16 @@ Move:
   }
 
   function getPatternTrend(entries) {
-    if (!entries || entries.length < 2) return "→ steady";
+    if (!entries || entries.length < 2) return "? steady";
 
     const sorted = [...entries].sort((a, b) => (a.date || "").localeCompare(b.date || ""));
     const split = Math.ceil(sorted.length / 2);
     const firstHalf = sorted.slice(0, split).length;
     const secondHalf = sorted.slice(split).length;
 
-    if (secondHalf > firstHalf) return "↑ rising";
-    if (secondHalf < firstHalf) return "↓ fading";
-    return "→ steady";
+    if (secondHalf > firstHalf) return "? rising";
+    if (secondHalf < firstHalf) return "? fading";
+    return "? steady";
   }
 
   function buildPatternCard(title, entries, type) {
@@ -2687,7 +2695,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} • ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} � ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -2702,17 +2710,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "—"}</div>
+            <div class="tag">${item.date || "�"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
         `;
         list.appendChild(row);
       });
@@ -2840,7 +2848,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -3314,6 +3322,7 @@ Best move:
 </script>
 </body>
 </html>
+
 
 
 
