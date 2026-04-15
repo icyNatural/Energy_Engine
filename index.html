@@ -535,7 +535,6 @@
       <button class="nav-btn active" data-page="home">Home</button>
       <button class="nav-btn" data-page="energy">Energy</button>
       <button class="nav-btn" data-page="meaning">Meaning</button>
-      <button class="nav-btn" data-page="questions">Questions</button>
       <button class="nav-btn" data-page="interpreter">Interpreter</button>
       <button class="nav-btn" data-page="patterns">Patterns</button>
       <button class="nav-btn" data-page="settings">Settings</button>
@@ -706,7 +705,7 @@
       </div>
     </section>
 
-    <section id="page-questions" class="page hidden">
+    <section id="page-questions" class="page hidden" style="display:none;">
       <div class="card">
         <div class="section-title">Questions</div>
         <div class="muted">These are meant to help you think clearly, not confuse you more.</div>
@@ -805,6 +804,14 @@
           <div class="row">
             <button class="btn btn-primary" id="useMeaningStarterBtn" type="button">Continue into Meaning</button>
           </div>
+        </div>
+
+        <div class="output-block" id="mergedQuestionsBlock">
+          <div class="output-label">Questions for this state</div>
+          <div class="tiny">These questions are now part of Interpreter, so the flow stays in one place.</div>
+          <div id="mergedQuestionsModeBox" class="mini-box" style="margin-top:10px;"></div>
+          <div id="mergedQuestionSetChips" class="chip-row" style="margin-top:10px;"></div>
+          <div id="mergedQuestionList" class="list" style="margin-top:10px;"></div>
         </div>
       </div>
     </section>
@@ -3204,9 +3211,143 @@ Best move:
   }
 
 })();
+/* ============================
+   ICY CLEAN MERGE QUESTIONS PATCH
+   (Questions folded into Interpreter safely)
+============================ */
+(function () {
+  console.log("ICY CLEAN MERGE QUESTIONS PATCH LOADED");
+
+  function getSafeQuestionBundle(state) {
+    if (typeof getInterpreterQuestionBundleV2 === "function") {
+      return getInterpreterQuestionBundleV2(state);
+    }
+
+    if (typeof getInterpreterQuestionBundle === "function") {
+      return getInterpreterQuestionBundle(state);
+    }
+
+    const mode = state.question_set || "default";
+    return {
+      recommendedMode: mode,
+      reason: "These questions fit your current interpreted state.",
+      questions: (window.QUESTION_BANKS?.[mode] || []).slice(0, 6)
+    };
+  }
+
+  function getQuestionModeLabel(mode) {
+    const labels = {
+      default: "Clear thinking",
+      direct: "Direct",
+      calm: "Calm down",
+      grounded: "Grounded"
+    };
+    return labels[mode] || mode;
+  }
+
+  function renderMergedQuestionSection() {
+    const state = loadState();
+
+    // safety: if old tab is saved, move user to interpreter
+    if (state.page === "questions") {
+      state.page = "interpreter";
+      saveState(state);
+    }
+
+    const modeBox = document.getElementById("mergedQuestionsModeBox");
+    const chipsWrap = document.getElementById("mergedQuestionSetChips");
+    const listWrap = document.getElementById("mergedQuestionList");
+
+    if (!modeBox || !chipsWrap || !listWrap) return;
+
+    chipsWrap.innerHTML = "";
+    listWrap.innerHTML = "";
+
+    const bundle = getSafeQuestionBundle(state);
+    const recommendedMode = bundle.recommendedMode || state.question_set || "default";
+    const reason = bundle.reason || "These questions were shaped by your interpreted state.";
+
+    modeBox.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Recommended mode</div>
+        <div class="tag">${getQuestionModeLabel(recommendedMode)}</div>
+      </div>
+      <div class="mini-text">${reason}</div>
+    `;
+
+    // mode chips
+    const modes = Object.keys(window.QUESTION_BANKS || { default: [] });
+    modes.forEach(mode => {
+      const btn = document.createElement("button");
+      btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
+      btn.textContent = mode === recommendedMode
+        ? `${getQuestionModeLabel(mode)} · recommended`
+        : getQuestionModeLabel(mode);
+
+      btn.addEventListener("click", () => {
+        const s = loadState();
+        s.question_set = mode;
+        saveState(s);
+        if (typeof render === "function") render();
+      });
+
+      chipsWrap.appendChild(btn);
+    });
+
+    const currentMode = state.question_set || recommendedMode || "default";
+    const matched = bundle.questions || [];
+    const base = window.QUESTION_BANKS?.[currentMode] || [];
+    const custom = Array.isArray(state.custom_questions) ? state.custom_questions : [];
+    const combined = [...new Set([...matched, ...base, ...custom])].slice(0, 10);
+
+    if (!combined.length) {
+      listWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No questions loaded yet.</div></div>`;
+      return;
+    }
+
+    combined.forEach(q => {
+      const box = document.createElement("div");
+      box.className = "mini-box question-card";
+      box.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">${matched.includes(q) ? "Matched" : "Question"}</div>
+        </div>
+        <div class="mini-text">Tap to make this your current question.</div>
+      `;
+      box.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = currentMode;
+        saveState(s);
+        if (typeof render === "function") render();
+      });
+      listWrap.appendChild(box);
+    });
+  }
+
+  // hide old Questions page every time, safely
+  function hideOldQuestionsPage() {
+    const page = document.getElementById("page-questions");
+    if (page) page.style.display = "none";
+  }
+
+  const oldRenderMergeQuestions = window.render;
+  window.render = function () {
+    if (typeof oldRenderMergeQuestions === "function") oldRenderMergeQuestions();
+    hideOldQuestionsPage();
+    renderMergedQuestionSection();
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    hideOldQuestionsPage();
+    renderMergedQuestionSection();
+  });
+})();
 </script>
 </body>
 </html>
+
 
 
 
