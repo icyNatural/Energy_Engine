@@ -3351,9 +3351,52 @@ Best move:
     emojiEl.textContent = getPhaseEmojiSafe(phaseName);
   };
 })();
+/* ============================
+   ICY PHASE CLEAN RENDER PATCH
+   Removes broken ?? and rebuilds hero phase line
+============================ */
+
+(function () {
+  console.log("ICY PHASE CLEAN RENDER PATCH LOADED");
+
+  function getPhaseEmojiSafe(phaseName) {
+    const map = {
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙",
+      "Untracked": "⏳"
+    };
+    return map[phaseName] || "⏳";
+  }
+
+  function rebuildPhaseLine() {
+    const phaseNameEl = document.getElementById("phaseName");
+    if (!phaseNameEl) return;
+
+    const phaseWrap = phaseNameEl.closest(".phase");
+    if (!phaseWrap) return;
+
+    const cleanName = (phaseNameEl.textContent || "")
+      .replace(/\?/g, "")
+      .trim();
+
+    phaseWrap.innerHTML = `<span id="phaseEmoji">${getPhaseEmojiSafe(cleanName)}</span> <span id="phaseName">${cleanName}</span>`;
+  }
+
+  const oldRenderPhaseClean = window.render;
+  window.render = function () {
+    if (typeof oldRenderPhaseClean === "function") oldRenderPhaseClean();
+    rebuildPhaseLine();
+  };
+
+  document.addEventListener("DOMContentLoaded", rebuildPhaseLine);
+})();
 </script>
 </body>
 </html>
+
 
 
 
