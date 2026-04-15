@@ -1413,11 +1413,11 @@
       const radianceEnd = 14 * 60 + extensionMin;
       const surgeEnd = 18 * 60 + Math.round(extensionMin * 0.6);
 
-      if (effectiveAwakeMin < recoveryEnd) return ["??", "Recovery", "Take it slow. You are still warming up."];
-      if (effectiveAwakeMin < flowEnd) return ["??", "Flow", "Things should feel smooth right now."];
-      if (effectiveAwakeMin < radianceEnd) return ["??", "Radiance", "This is your strongest window."];
+      if (effectiveAwakeMin < recoveryEnd) return ["", "Recovery", "Take it slow. You are still warming up."];
+      if (effectiveAwakeMin < flowEnd) return ["", "Flow", "Things should feel smooth right now."];
+      if (effectiveAwakeMin < radianceEnd) return ["", "Radiance", "This is your strongest window."];
       if (effectiveAwakeMin < surgeEnd) return ["?", "Surge", "Energy is high. Do not waste it."];
-      return ["??", "Settle", "Start slowing things down."];
+      return ["", "Settle", "Start slowing things down."];
     }
 
     function phaseColor(name) {
@@ -2088,14 +2088,14 @@
       document.getElementById("recoveryScoreText").textContent = `Recovery score ${recoveryScore}/100`;
       document.getElementById("confidenceText").textContent = confidenceText;
 
-      document.getElementById("sleepMinutesInput").value = d.actual_sleep_minutes ?? "";
-      document.getElementById("sleepHrInput").value = d.sleep_hr ?? "";
-      document.getElementById("hrvInput").value = d.hrv ?? "";
-      document.getElementById("deepMinutesInput").value = d.deep_minutes ?? "";
-      document.getElementById("remMinutesInput").value = d.rem_minutes ?? "";
-      document.getElementById("respRateInput").value = d.respiratory_rate ?? "";
-      document.getElementById("activityMinutesInput").value = d.activity_minutes ?? "";
-      document.getElementById("sleepEffInput").value = d.sleep_eff ?? "";
+      document.getElementById("sleepMinutesInput").value = d.actual_sleep_minutes  "";
+      document.getElementById("sleepHrInput").value = d.sleep_hr  "";
+      document.getElementById("hrvInput").value = d.hrv  "";
+      document.getElementById("deepMinutesInput").value = d.deep_minutes  "";
+      document.getElementById("remMinutesInput").value = d.rem_minutes  "";
+      document.getElementById("respRateInput").value = d.respiratory_rate  "";
+      document.getElementById("activityMinutesInput").value = d.activity_minutes  "";
+      document.getElementById("sleepEffInput").value = d.sleep_eff  "";
 
       document.getElementById("patternsIntro").textContent = patternItems.length ? "A few things are worth watching." : "Nothing to watch right now.";
       const patternsWrap = document.getElementById("patternsWrap");
@@ -3353,7 +3353,7 @@ Best move:
 })();
 /* ============================
    ICY PHASE CLEAN RENDER PATCH
-   Removes broken ?? and rebuilds hero phase line
+   Removes broken  and rebuilds hero phase line
 ============================ */
 
 (function () {
@@ -3393,9 +3393,47 @@ Best move:
 
   document.addEventListener("DOMContentLoaded", rebuildPhaseLine);
 })();
+/* ============================
+   ICY QUESTIONMARK NUKE PATCH
+============================ */
+(function () {
+  console.log("ICY QUESTIONMARK NUKE PATCH LOADED");
+
+  function cleanQuestionMarks() {
+    // clean the flow subtitle
+    document.querySelectorAll("*").forEach(el => {
+      if (el.children.length === 0 && el.textContent) {
+        if (el.textContent.includes("State ? meaning ? questions ? patterns.")) {
+          el.textContent = "State → meaning → questions → patterns.";
+        }
+      }
+    });
+
+    // clean the phase line specifically
+    const phaseBlocks = document.querySelectorAll(".phase");
+    phaseBlocks.forEach(block => {
+      block.innerHTML = block.innerHTML.replace(/\?\?/g, "").trim();
+    });
+
+    // if hero text still has ?? before phase name, strip it
+    const heroCard = document.querySelector(".hero, .card.hero");
+    if (heroCard) {
+      heroCard.innerHTML = heroCard.innerHTML.replace(/\?\?/g, "");
+    }
+  }
+
+  const oldRenderQuestionMarkNuke = window.render;
+  window.render = function () {
+    if (typeof oldRenderQuestionMarkNuke === "function") oldRenderQuestionMarkNuke();
+    cleanQuestionMarks();
+  };
+
+  document.addEventListener("DOMContentLoaded", cleanQuestionMarks);
+})();
 </script>
 </body>
 </html>
+
 
 
 
