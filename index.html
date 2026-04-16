@@ -3378,9 +3378,151 @@ Best move:
     fixNavOrder();
   };
 })();
+/* ============================
+   ICY QUESTION LOADING FIX PATCH
+============================ */
+(function () {
+  console.log("ICY QUESTION LOADING FIX PATCH LOADED");
+
+  function normalizeQuestionMode(mode) {
+    const raw = String(mode || "").trim().toLowerCase();
+
+    const map = {
+      "clear thinking": "default",
+      "default": "default",
+      "direct": "direct",
+      "calm": "calm",
+      "calm down": "calm",
+      "grounded": "grounded"
+    };
+
+    return map[raw] || "default";
+  }
+
+  function getQuestionModeLabel(mode) {
+    const normalized = normalizeQuestionMode(mode);
+    const labels = {
+      "default": "Clear thinking",
+      "direct": "Direct",
+      "calm": "Calm down",
+      "grounded": "Grounded"
+    };
+    return labels[normalized] || "Clear thinking";
+  }
+
+  function getSafeInterpreterBundle(state) {
+    let bundle = null;
+
+    if (typeof getInterpreterQuestionBundleV2 === "function") {
+      bundle = getInterpreterQuestionBundleV2(state);
+    } else if (typeof getInterpreterQuestionBundle === "function") {
+      bundle = getInterpreterQuestionBundle(state);
+    }
+
+    if (!bundle || typeof bundle !== "object") {
+      bundle = {};
+    }
+
+    const recommendedMode = normalizeQuestionMode(bundle.recommendedMode || state.question_set || "default");
+    const recommendedLabel = getQuestionModeLabel(recommendedMode);
+
+    let matched = Array.isArray(bundle.questions) ? bundle.questions.filter(Boolean) : [];
+    const bank = (window.QUESTION_BANKS && window.QUESTION_BANKS[recommendedMode]) ? window.QUESTION_BANKS[recommendedMode] : [];
+    const custom = Array.isArray(state.custom_questions) ? state.custom_questions.filter(Boolean) : [];
+
+    const combined = [...new Set([...matched, ...bank, ...custom])].filter(Boolean);
+
+    return {
+      recommendedMode,
+      recommendedLabel,
+      reason: bundle.reason || "These questions fit your current interpreted state.",
+      questions: combined.slice(0, 8)
+    };
+  }
+
+  function renderMergedQuestionSectionFixed() {
+    const state = loadState();
+
+    const modeBox = document.getElementById("mergedQuestionsModeBox");
+    const chipsWrap = document.getElementById("mergedQuestionSetChips");
+    const listWrap = document.getElementById("mergedQuestionList");
+
+    if (!modeBox || !chipsWrap || !listWrap) return;
+
+    const bundle = getSafeInterpreterBundle(state);
+
+    modeBox.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Recommended mode</div>
+        <div class="tag">${bundle.recommendedLabel}</div>
+      </div>
+      <div class="mini-text">${bundle.reason}</div>
+    `;
+
+    // remove the extra chip/button confusion layer
+    chipsWrap.innerHTML = "";
+
+    // but keep one small manual override row if banks exist
+    const modeKeys = Object.keys(window.QUESTION_BANKS || {});
+    if (modeKeys.length > 1) {
+      modeKeys.forEach(mode => {
+        const normalized = normalizeQuestionMode(mode);
+        const btn = document.createElement("button");
+        btn.className = "chip" + (normalizeQuestionMode(state.question_set || bundle.recommendedMode) === normalized ? " active" : "");
+        btn.textContent = getQuestionModeLabel(normalized);
+        btn.addEventListener("click", () => {
+          const s = loadState();
+          s.question_set = normalized;
+          saveState(s);
+          if (typeof render === "function") render();
+        });
+        chipsWrap.appendChild(btn);
+      });
+    }
+
+    listWrap.innerHTML = "";
+
+    if (!bundle.questions.length) {
+      const fallback = document.createElement("div");
+      fallback.className = "mini-box";
+      fallback.innerHTML = `<div class="mini-text">Questions could not be matched yet. Try another refined state or add question banks for this mode.</div>`;
+      listWrap.appendChild(fallback);
+      return;
+    }
+
+    bundle.questions.forEach(q => {
+      const box = document.createElement("div");
+      box.className = "mini-box question-card";
+      box.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">Question</div>
+        </div>
+        <div class="mini-text">Tap to make this your current question.</div>
+      `;
+      box.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = bundle.recommendedMode;
+        saveState(s);
+        if (typeof render === "function") render();
+      });
+      listWrap.appendChild(box);
+    });
+  }
+
+  const oldRenderQuestionLoadingFix = window.render;
+  window.render = function () {
+    if (typeof oldRenderQuestionLoadingFix === "function") oldRenderQuestionLoadingFix();
+    renderMergedQuestionSectionFixed();
+  };
+
+  document.addEventListener("DOMContentLoaded", renderMergedQuestionSectionFixed);
+})();
 </script>
 </body>
 </html>
+
 
 
 
