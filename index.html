@@ -3519,9 +3519,215 @@ Best move:
 
   document.addEventListener("DOMContentLoaded", renderMergedQuestionSectionFixed);
 })();
+/* ============================
+   ICY QUESTION FLOW FIX PATCH
+   Interpreter owns questions
+============================ */
+(function () {
+  console.log("ICY QUESTION FLOW FIX PATCH LOADED");
+
+  function normalizeQuestionMode(mode) {
+    const raw = String(mode || "").trim().toLowerCase();
+    const map = {
+      "clear thinking": "default",
+      "default": "default",
+      "direct": "direct",
+      "calm": "calm",
+      "calm down": "calm",
+      "grounded": "grounded"
+    };
+    return map[raw] || "default";
+  }
+
+  function getQuestionModeLabel(mode) {
+    const normalized = normalizeQuestionMode(mode);
+    const labels = {
+      default: "Clear thinking",
+      direct: "Direct",
+      calm: "Calm down",
+      grounded: "Grounded"
+    };
+    return labels[normalized] || "Clear thinking";
+  }
+
+  function getInterpreterQuestionBundleSafe(state) {
+    let bundle = null;
+
+    if (typeof getInterpreterQuestionBundleV2 === "function") {
+      bundle = getInterpreterQuestionBundleV2(state);
+    } else if (typeof getInterpreterQuestionBundle === "function") {
+      bundle = getInterpreterQuestionBundle(state);
+    }
+
+    if (!bundle || typeof bundle !== "object") {
+      bundle = {};
+    }
+
+    const recommendedMode = normalizeQuestionMode(
+      bundle.recommendedMode || state.question_set || "default"
+    );
+
+    const matched = Array.isArray(bundle.questions)
+      ? bundle.questions.filter(Boolean)
+      : [];
+
+    const bank = (window.QUESTION_BANKS && window.QUESTION_BANKS[recommendedMode])
+      ? window.QUESTION_BANKS[recommendedMode].filter(Boolean)
+      : [];
+
+    const custom = Array.isArray(state.custom_questions)
+      ? state.custom_questions.filter(Boolean)
+      : [];
+
+    const combined = [...new Set([...matched, ...bank, ...custom])].filter(Boolean);
+
+    return {
+      recommendedMode,
+      recommendedLabel: getQuestionModeLabel(recommendedMode),
+      reason: bundle.reason || "These questions fit your current interpreted state.",
+      questions: combined.slice(0, 8)
+    };
+  }
+
+  function ensureInterpreterQuestionHost() {
+    const interpreterPage = document.getElementById("page-interpreter");
+    if (!interpreterPage) return null;
+
+    let host = document.getElementById("mergedQuestionsBlock");
+    if (host) return host;
+
+    const meaningBlock = document.getElementById("interpMeaningStarter")?.closest(".output-block");
+    if (!meaningBlock) return null;
+
+    host = document.createElement("div");
+    host.className = "output-block";
+    host.id = "mergedQuestionsBlock";
+    host.innerHTML = `
+      <div class="output-label">Questions for this state</div>
+      <div class="tiny">The system picks the approach. You just choose the question that fits best.</div>
+      <div id="mergedQuestionsModeBox" class="mini-box" style="margin-top:10px;"></div>
+      <div id="mergedQuestionSetChips" class="chip-row" style="margin-top:10px;"></div>
+      <div id="mergedQuestionList" class="list" style="margin-top:10px;"></div>
+    `;
+
+    meaningBlock.insertAdjacentElement("afterend", host);
+    return host;
+  }
+
+  function hideOldQuestionsPage() {
+    const oldPage = document.getElementById("page-questions");
+    if (oldPage) oldPage.style.display = "none";
+
+    const navBtn = document.querySelector('[data-page="questions"]');
+    if (navBtn) navBtn.style.display = "none";
+  }
+
+  function renderInterpreterQuestionFlow() {
+    const state = loadState();
+    hideOldQuestionsPage();
+
+    if (state.page === "questions") {
+      state.page = "interpreter";
+      saveState(state);
+    }
+
+    const host = ensureInterpreterQuestionHost();
+    if (!host) return;
+
+    const modeBox = document.getElementById("mergedQuestionsModeBox");
+    const chipsWrap = document.getElementById("mergedQuestionSetChips");
+    const listWrap = document.getElementById("mergedQuestionList");
+
+    if (!modeBox || !chipsWrap || !listWrap) return;
+
+    if (!state.interpreter_refined) {
+      modeBox.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">Questions will appear here</div>
+          <div class="tag">Waiting</div>
+        </div>
+        <div class="mini-text">Pick a refined state first.</div>
+      `;
+      chipsWrap.innerHTML = "";
+      listWrap.innerHTML = "";
+      return;
+    }
+
+    const bundle = getInterpreterQuestionBundleSafe(state);
+
+    modeBox.innerHTML = `
+      <div class="mini-title-row">
+        <div class="mini-title">Recommended mode</div>
+        <div class="tag">${bundle.recommendedLabel}</div>
+      </div>
+      <div class="mini-text">${bundle.reason}</div>
+    `;
+
+    # build small manual override row
+    chipsWrap.innerHTML = "";
+    const modes = Object.keys(window.QUESTION_BANKS || {});
+    if (modes.length > 1) {
+      modes.forEach(mode => {
+        const normalized = normalizeQuestionMode(mode);
+        const chip = document.createElement("button");
+        chip.className = "chip" + (
+          normalizeQuestionMode(state.question_set || bundle.recommendedMode) === normalized ? " active" : ""
+        );
+        chip.textContent = getQuestionModeLabel(normalized);
+        chip.type = "button";
+        chip.addEventListener("click", () => {
+          const s = loadState();
+          s.question_set = normalized;
+          saveState(s);
+          render();
+        });
+        chipsWrap.appendChild(chip);
+      });
+    }
+
+    listWrap.innerHTML = "";
+
+    if (!bundle.questions.length) {
+      const fallback = document.createElement("div");
+      fallback.className = "mini-box";
+      fallback.innerHTML = `<div class="mini-text">No questions found for this state yet.</div>`;
+      listWrap.appendChild(fallback);
+      return;
+    }
+
+    bundle.questions.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "mini-box question-card";
+      card.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">${q}</div>
+          <div class="tag">Question</div>
+        </div>
+        <div class="mini-text">Tap to make this your current question.</div>
+      `;
+      card.addEventListener("click", () => {
+        const s = loadState();
+        s.selected_question = q;
+        s.question_set = bundle.recommendedMode;
+        saveState(s);
+        render();
+      });
+      listWrap.appendChild(card);
+    });
+  }
+
+  const oldRenderQuestionFlowFix = window.render;
+  window.render = function () {
+    if (typeof oldRenderQuestionFlowFix === "function") oldRenderQuestionFlowFix();
+    renderInterpreterQuestionFlow();
+  };
+
+  document.addEventListener("DOMContentLoaded", renderInterpreterQuestionFlow);
+})();
 </script>
 </body>
 </html>
+
 
 
 
