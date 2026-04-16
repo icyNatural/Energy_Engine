@@ -3345,9 +3345,43 @@ Best move:
     renderMergedQuestionSection();
   });
 })();
+/* ============================
+   ICY NAV ORDER FIX
+   Forces Interpreter before Meaning
+============================ */
+(function () {
+  console.log("ICY NAV ORDER FIX LOADED");
+
+  function fixNavOrder() {
+    const nav = document.querySelector(".nav, .nav-row, .tabs, .top-nav");
+    if (!nav) return;
+
+    const interpreter = nav.querySelector('[data-page="interpreter"]');
+    const meaning = nav.querySelector('[data-page="meaning"]');
+
+    if (!interpreter || !meaning) return;
+
+    // if interpreter is already before meaning, do nothing
+    if (interpreter.compareDocumentPosition(meaning) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      return;
+    }
+
+    // move interpreter before meaning
+    nav.insertBefore(interpreter, meaning);
+  }
+
+  document.addEventListener("DOMContentLoaded", fixNavOrder);
+
+  const oldRenderNavFix = window.render;
+  window.render = function () {
+    if (typeof oldRenderNavFix === "function") oldRenderNavFix();
+    fixNavOrder();
+  };
+})();
 </script>
 </body>
 </html>
+
 
 
 
