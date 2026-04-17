@@ -525,14 +525,6 @@
       .energy-state { font-size: 30px; }
     }
   </style>
-<style>
-.subtle-note {
-    opacity: 0.7;
-    font-size: 0.9rem;
-    margin-top: 6px;
-    margin-bottom: 12px;
-}
-</style>
 </head>
 <body>
   <div class="wrap">
@@ -542,8 +534,8 @@
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
       <button class="nav-btn" data-page="energy">Energy</button>
-      <button class="nav-btn" data-page="interpreter">Interpreter</button><button class="nav-btn" data-page="meaning">Meaning</button>
-      
+      <button class="nav-btn" data-page="meaning">Meaning</button>
+      <button class="nav-btn" data-page="interpreter">Interpreter</button>
       <button class="nav-btn" data-page="patterns">Patterns</button>
       <button class="nav-btn" data-page="settings">Settings</button>
     </div>
@@ -554,8 +546,8 @@
           <div class="eyebrow">Your state right now</div>
 
           <div class="phase-row">
-            <div class="emoji" id="phaseIcon">?</div>
-            <div class="phase"><span id="phaseEmoji">⏳</span> <span id="phaseName">Untracked</span></div>
+            <div class="emoji" id="phaseIcon">⏳</div>
+            <div class="phase" id="phaseName">Untracked</div>
           </div>
 
           <div class="phase-quote" id="phaseQuote">Set your wake time to begin.</div>
@@ -691,6 +683,7 @@
     <section id="page-meaning" class="page hidden">
       <div class="card">
         <div class="section-title">Meaning engine</div>
+<div class="muted">You can log directly here, or start in Interpreter for a guided entry.</div>
         <div class="muted">Log what happened, what you made it mean, what you felt, what you did, and what it led to.</div>
 
         <div class="list">
@@ -713,7 +706,7 @@
       </div>
     </section>
 
-    <section id="page-questions" class="page hidden">
+    <section id="page-questions" class="page hidden" style="display:none;">
       <div class="card">
         <div class="section-title">Questions</div>
         <div class="muted">These are meant to help you think clearly, not confuse you more.</div>
@@ -812,6 +805,14 @@
           <div class="row">
             <button class="btn btn-primary" id="useMeaningStarterBtn" type="button">Continue into Meaning</button>
           </div>
+        </div>
+
+        <div class="output-block" id="mergedQuestionsBlock">
+          <div class="output-label">Questions for this state</div>
+          <div class="tiny">These questions are now part of Interpreter, so the flow stays in one place.</div>
+          <div id="mergedQuestionsModeBox" class="mini-box" style="margin-top:10px;"></div>
+          <div id="mergedQuestionSetChips" class="chip-row" style="margin-top:10px;"></div>
+          <div id="mergedQuestionList" class="list" style="margin-top:10px;"></div>
         </div>
       </div>
     </section>
@@ -1405,7 +1406,7 @@
 
     function phaseFromEffectiveAwake(effectiveAwakeMin, extensionMin = 0) {
       if (effectiveAwakeMin === null || effectiveAwakeMin === undefined) {
-        return ["?", "Untracked", "Set your wake time to begin."];
+        return ["⏳", "Untracked", "Set your wake time to begin."];
       }
 
       const recoveryEnd = 4 * 60;
@@ -1413,11 +1414,11 @@
       const radianceEnd = 14 * 60 + extensionMin;
       const surgeEnd = 18 * 60 + Math.round(extensionMin * 0.6);
 
-      if (effectiveAwakeMin < recoveryEnd) return ["??", "Recovery", "Take it slow. You are still warming up."];
-      if (effectiveAwakeMin < flowEnd) return ["??", "Flow", "Things should feel smooth right now."];
-      if (effectiveAwakeMin < radianceEnd) return ["??", "Radiance", "This is your strongest window."];
-      if (effectiveAwakeMin < surgeEnd) return ["?", "Surge", "Energy is high. Do not waste it."];
-      return ["??", "Settle", "Start slowing things down."];
+      if (effectiveAwakeMin < recoveryEnd) return ["🌑", "Recovery", "Take it slow. You are still warming up."];
+      if (effectiveAwakeMin < flowEnd) return ["🌊", "Flow", "Things should feel smooth right now."];
+      if (effectiveAwakeMin < radianceEnd) return ["☀️", "Radiance", "This is your strongest window."];
+      if (effectiveAwakeMin < surgeEnd) return ["⚡", "Surge", "Energy is high. Do not waste it."];
+      return ["🌙", "Settle", "Start slowing things down."];
     }
 
     function phaseColor(name) {
@@ -2013,7 +2014,7 @@
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -2487,7 +2488,7 @@ ${info.move}`;
   };
 
   /* -------------------------
-     PATCH: INTERPRETER ? MEANING
+     PATCH: INTERPRETER → MEANING
   ------------------------- */
 
   const btn = document.getElementById("useMeaningStarterBtn");
@@ -2663,16 +2664,16 @@ Move:
   }
 
   function getPatternTrend(entries) {
-    if (!entries || entries.length < 2) return "? steady";
+    if (!entries || entries.length < 2) return "→ steady";
 
     const sorted = [...entries].sort((a, b) => (a.date || "").localeCompare(b.date || ""));
     const split = Math.ceil(sorted.length / 2);
     const firstHalf = sorted.slice(0, split).length;
     const secondHalf = sorted.slice(split).length;
 
-    if (secondHalf > firstHalf) return "? rising";
-    if (secondHalf < firstHalf) return "? fading";
-    return "? steady";
+    if (secondHalf > firstHalf) return "↑ rising";
+    if (secondHalf < firstHalf) return "↓ fading";
+    return "→ steady";
   }
 
   function buildPatternCard(title, entries, type) {
@@ -3212,195 +3213,174 @@ Best move:
 
 })();
 /* ============================
-   ICY MERGE QUESTIONS INTO INTERPRETER PATCH
-   (Questions page folded into Interpreter)
+   ICY CLEAN MERGE QUESTIONS PATCH
+   (Questions folded into Interpreter safely)
 ============================ */
-
 (function () {
-  console.log("ICY MERGE QUESTIONS INTO INTERPRETER PATCH LOADED");
+  console.log("ICY CLEAN MERGE QUESTIONS PATCH LOADED");
 
-  function ensureInterpreterQuestionMerge() {
-    const host = document.getElementById("interpreterMergedQuestionsInner");
-    if (!host) return null;
-    host.innerHTML = "";
-    return host;
-  }
-
-  function getMergedQuestionBundle(state) {
+  function getSafeQuestionBundle(state) {
     if (typeof getInterpreterQuestionBundleV2 === "function") {
       return getInterpreterQuestionBundleV2(state);
     }
 
+    if (typeof getInterpreterQuestionBundle === "function") {
+      return getInterpreterQuestionBundle(state);
+    }
+
     const mode = state.question_set || "default";
-    const qs = (window.QUESTION_BANKS?.[mode] || []).slice(0, 6);
     return {
       recommendedMode: mode,
-      reason: "These questions fit your current state.",
-      questions: qs
+      reason: "These questions fit your current interpreted state.",
+      questions: (window.QUESTION_BANKS?.[mode] || []).slice(0, 6)
     };
   }
 
-  function renderInterpreterMergedQuestions() {
-    const state = loadState();
-    const host = ensureInterpreterQuestionMerge();
-    if (!host) return;
+  function getQuestionModeLabel(mode) {
+    const labels = {
+      default: "Clear thinking",
+      direct: "Direct",
+      calm: "Calm down",
+      grounded: "Grounded"
+    };
+    return labels[mode] || mode;
+  }
 
-    if (!state.interpreter_refined) {
-      host.innerHTML = `<div class="mini-box"><div class="mini-text">Pick a refined state to load questions here.</div></div>`;
-      return;
+  function renderMergedQuestionSection() {
+    const state = loadState();
+
+    // safety: if old tab is saved, move user to interpreter
+    if (state.page === "questions") {
+      state.page = "interpreter";
+      saveState(state);
     }
 
-    const bundle = getMergedQuestionBundle(state);
+    const modeBox = document.getElementById("mergedQuestionsModeBox");
+    const chipsWrap = document.getElementById("mergedQuestionSetChips");
+    const listWrap = document.getElementById("mergedQuestionList");
 
-    const top = document.createElement("div");
-    top.className = "mini-box";
-    top.innerHTML = `
+    if (!modeBox || !chipsWrap || !listWrap) return;
+
+    chipsWrap.innerHTML = "";
+    listWrap.innerHTML = "";
+
+    const bundle = getSafeQuestionBundle(state);
+    const recommendedMode = bundle.recommendedMode || state.question_set || "default";
+    const reason = bundle.reason || "These questions were shaped by your interpreted state.";
+
+    modeBox.innerHTML = `
       <div class="mini-title-row">
         <div class="mini-title">Recommended mode</div>
-        <div class="tag">${bundle.recommendedMode}</div>
+        <div class="tag">${getQuestionModeLabel(recommendedMode)}</div>
       </div>
-      <div class="mini-text">${bundle.reason || "These questions were shaped by your state."}</div>
+      <div class="mini-text">${reason}</div>
     `;
-    host.appendChild(top);
 
-    if (!bundle.questions || !bundle.questions.length) {
-      const empty = document.createElement("div");
-      empty.className = "mini-box";
-      empty.innerHTML = `<div class="mini-text">No matched questions loaded yet.</div>`;
-      host.appendChild(empty);
+    // mode chips
+    const modes = Object.keys(window.QUESTION_BANKS || { default: [] });
+    modes.forEach(mode => {
+      const btn = document.createElement("button");
+      btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
+      btn.textContent = mode === recommendedMode
+        ? `${getQuestionModeLabel(mode)} · recommended`
+        : getQuestionModeLabel(mode);
+
+      btn.addEventListener("click", () => {
+        const s = loadState();
+        s.question_set = mode;
+        saveState(s);
+        if (typeof render === "function") render();
+      });
+
+      chipsWrap.appendChild(btn);
+    });
+
+    const currentMode = state.question_set || recommendedMode || "default";
+    const matched = bundle.questions || [];
+    const base = window.QUESTION_BANKS?.[currentMode] || [];
+    const custom = Array.isArray(state.custom_questions) ? state.custom_questions : [];
+    const combined = [...new Set([...matched, ...base, ...custom])].slice(0, 10);
+
+    if (!combined.length) {
+      listWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No questions loaded yet.</div></div>`;
       return;
     }
 
-    bundle.questions.forEach(q => {
+    combined.forEach(q => {
       const box = document.createElement("div");
       box.className = "mini-box question-card";
       box.innerHTML = `
         <div class="mini-title-row">
           <div class="mini-title">${q}</div>
-          <div class="tag">Matched</div>
+          <div class="tag">${matched.includes(q) ? "Matched" : "Question"}</div>
         </div>
         <div class="mini-text">Tap to make this your current question.</div>
       `;
       box.addEventListener("click", () => {
         const s = loadState();
         s.selected_question = q;
-        s.question_set = bundle.recommendedMode || s.question_set || "default";
+        s.question_set = currentMode;
         saveState(s);
-        render();
+        if (typeof render === "function") render();
       });
-      host.appendChild(box);
+      listWrap.appendChild(box);
     });
   }
 
-  const oldRender = window.render;
+  // hide old Questions page every time, safely
+  function hideOldQuestionsPage() {
+    const page = document.getElementById("page-questions");
+    if (page) page.style.display = "none";
+  }
+
+  const oldRenderMergeQuestions = window.render;
   window.render = function () {
-    if (typeof oldRender === "function") oldRender();
-
-    const state = loadState();
-
-    // Safety: if page somehow stayed on removed tab, move back to interpreter
-    if (state.page === "questions") {
-      state.page = "interpreter";
-      saveState(state);
-      if (typeof oldRender === "function") oldRender();
-    }
-
-    renderInterpreterMergedQuestions();
+    if (typeof oldRenderMergeQuestions === "function") oldRenderMergeQuestions();
+    hideOldQuestionsPage();
+    renderMergedQuestionSection();
   };
 
-  // If nav code looks for existing buttons, this keeps it calm
-  const oldInitNav = window.initNav;
-  window.initNav = function () {
-    if (typeof oldInitNav === "function") oldInitNav();
-
-    const questionPage = document.getElementById("page-questions");
-    if (questionPage) {
-      questionPage.style.display = "none";
-    }
-  };
+  document.addEventListener("DOMContentLoaded", function () {
+    hideOldQuestionsPage();
+    renderMergedQuestionSection();
+  });
 })();
 /* ============================
-   ICY EMOJI FIX PATCH
+   ICY NAV ORDER FIX
+   Forces Interpreter before Meaning
 ============================ */
-
 (function () {
-  console.log("ICY EMOJI FIX PATCH LOADED");
+  console.log("ICY NAV ORDER FIX LOADED");
 
-  function getPhaseEmojiSafe(phaseName) {
-    const map = {
-      "Recovery": "🌑",
-      "Flow": "🌊",
-      "Radiance": "☀️",
-      "Surge": "⚡",
-      "Settle": "🌙",
-      "Untracked": "⏳"
-    };
-    return map[phaseName] || "⏳";
+  function fixNavOrder() {
+    const nav = document.querySelector(".nav, .nav-row, .tabs, .top-nav");
+    if (!nav) return;
+
+    const interpreter = nav.querySelector('[data-page="interpreter"]');
+    const meaning = nav.querySelector('[data-page="meaning"]');
+
+    if (!interpreter || !meaning) return;
+
+    // if interpreter is already before meaning, do nothing
+    if (interpreter.compareDocumentPosition(meaning) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      return;
+    }
+
+    // move interpreter before meaning
+    nav.insertBefore(interpreter, meaning);
   }
 
-  const oldRenderEmojiFix = window.render;
+  document.addEventListener("DOMContentLoaded", fixNavOrder);
+
+  const oldRenderNavFix = window.render;
   window.render = function () {
-    if (typeof oldRenderEmojiFix === "function") oldRenderEmojiFix();
-
-    const phaseEl = document.getElementById("phaseName");
-    const emojiEl = document.getElementById("phaseEmoji");
-
-    if (!phaseEl || !emojiEl) return;
-
-    const phaseName = (phaseEl.textContent || "").trim();
-    emojiEl.textContent = getPhaseEmojiSafe(phaseName);
+    if (typeof oldRenderNavFix === "function") oldRenderNavFix();
+    fixNavOrder();
   };
-})();
-/* ============================
-   ICY PHASE CLEAN RENDER PATCH
-   Removes broken ?? and rebuilds hero phase line
-============================ */
-
-(function () {
-  console.log("ICY PHASE CLEAN RENDER PATCH LOADED");
-
-  function getPhaseEmojiSafe(phaseName) {
-    const map = {
-      "Recovery": "🌑",
-      "Flow": "🌊",
-      "Radiance": "☀️",
-      "Surge": "⚡",
-      "Settle": "🌙",
-      "Untracked": "⏳"
-    };
-    return map[phaseName] || "⏳";
-  }
-
-  function rebuildPhaseLine() {
-    const phaseNameEl = document.getElementById("phaseName");
-    if (!phaseNameEl) return;
-
-    const phaseWrap = phaseNameEl.closest(".phase");
-    if (!phaseWrap) return;
-
-    const cleanName = (phaseNameEl.textContent || "")
-      .replace(/\?/g, "")
-      .trim();
-
-    phaseWrap.innerHTML = `<span id="phaseEmoji">${getPhaseEmojiSafe(cleanName)}</span> <span id="phaseName">${cleanName}</span>`;
-  }
-
-  const oldRenderPhaseClean = window.render;
-  window.render = function () {
-    if (typeof oldRenderPhaseClean === "function") oldRenderPhaseClean();
-    rebuildPhaseLine();
-  };
-
-  document.addEventListener("DOMContentLoaded", rebuildPhaseLine);
 })();
 </script>
 </body>
 </html>
-
-
-
-
-
 
 
 
