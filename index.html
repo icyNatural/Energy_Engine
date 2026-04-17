@@ -807,8 +807,7 @@
           </div>
         </div>
 
-        <div class="output-block" id="mergedQuestionsBlock">
-          <div class="output-label">Questions for this state</div>
+        
           <div class="tiny">These questions are now part of Interpreter, so the flow stays in one place.</div>
           <div id="mergedQuestionsModeBox" class="mini-box" style="margin-top:10px;"></div>
           <div id="mergedQuestionSetChips" class="chip-row" style="margin-top:10px;"></div>
@@ -3618,7 +3617,7 @@ Best move:
     const oldPage = document.getElementById("page-questions");
     if (oldPage) oldPage.style.display = "none";
 
-    const navBtn = document.querySelector('[data-page="questions"]');
+    const navBtn = document.querySelector('[data-page="questions" style="display:none;"]');
     if (navBtn) navBtn.style.display = "none";
   }
 
@@ -3719,7 +3718,7 @@ Best move:
   const oldRenderQuestionFlowFix = window.render;
   window.render = function () {
     if (typeof oldRenderQuestionFlowFix === "function") oldRenderQuestionFlowFix();
-    renderInterpreterQuestionFlow();
+    // removed duplicate question renderer
   };
 
   document.addEventListener("DOMContentLoaded", renderInterpreterQuestionFlow);
@@ -3727,6 +3726,7 @@ Best move:
 </script>
 </body>
 </html>
+
 
 
 
