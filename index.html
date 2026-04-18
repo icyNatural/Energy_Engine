@@ -3447,9 +3447,115 @@ Best move:
 
   document.addEventListener("DOMContentLoaded", cleanMeaningPromptField);
 })();
+/* ============================
+   ICY SELECTED PROMPT LAYOUT PATCH
+   Meaning gets a separate Selected Prompt display + Extra Notes box
+============================ */
+(function () {
+  console.log("ICY SELECTED PROMPT LAYOUT PATCH LOADED");
+
+  function findMeaningCard() {
+    return document.querySelector("#page-meaning .card, #page-meaning .panel, #page-meaning .section-card, #page-meaning");
+  }
+
+  function ensureMeaningPromptLayout() {
+    const page = document.getElementById("page-meaning");
+    if (!page) return;
+
+    const notesField =
+      page.querySelector('textarea[name="notes"]') ||
+      page.querySelector('#meaningNotes') ||
+      page.querySelector('textarea');
+
+    if (!notesField) return;
+
+    let promptBlock = document.getElementById("selectedPromptBlock");
+    let notesLabel = document.getElementById("extraNotesLabel");
+
+    if (!promptBlock) {
+      promptBlock = document.createElement("div");
+      promptBlock.id = "selectedPromptBlock";
+      promptBlock.className = "mini-box";
+      promptBlock.style.marginBottom = "12px";
+      promptBlock.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">Selected prompt</div>
+        </div>
+        <div id="selectedPromptText" class="mini-text">No prompt selected.</div>
+      `;
+
+      notesField.parentNode.insertBefore(promptBlock, notesField);
+    }
+
+    if (!notesLabel) {
+      notesLabel = document.createElement("div");
+      notesLabel.id = "extraNotesLabel";
+      notesLabel.className = "section-title";
+      notesLabel.style.marginTop = "10px";
+      notesLabel.style.marginBottom = "8px";
+      notesLabel.textContent = "Extra notes";
+      notesField.parentNode.insertBefore(notesLabel, notesField);
+    }
+
+    if (!notesField.dataset.originalPlaceholder) {
+      notesField.dataset.originalPlaceholder = notesField.getAttribute("placeholder") || "";
+    }
+
+    notesField.setAttribute("placeholder", "Extra notes (optional)");
+  }
+
+  function renderSelectedPromptInMeaning() {
+    const state = loadState();
+    const page = document.getElementById("page-meaning");
+    if (!page) return;
+
+    const notesField =
+      page.querySelector('textarea[name="notes"]') ||
+      page.querySelector('#meaningNotes') ||
+      page.querySelector('textarea');
+
+    const promptText = document.getElementById("selectedPromptText");
+    if (!notesField || !promptText) return;
+
+    const selected = (state.selected_question || "").trim();
+    const currentVal = notesField.value || "";
+
+    const oldPromptDump =
+      currentVal.startsWith("Current prompt:") ||
+      currentVal.startsWith("Matched questions:");
+
+    if (selected) {
+      promptText.textContent = selected;
+
+      if (oldPromptDump) {
+        notesField.value = "";
+      }
+    } else {
+      promptText.textContent = "No prompt selected.";
+
+      if (oldPromptDump) {
+        notesField.value = "";
+      }
+    }
+  }
+
+  function applyMeaningPromptLayout() {
+    ensureMeaningPromptLayout();
+    renderSelectedPromptInMeaning();
+  }
+
+  const oldRenderSelectedPromptLayout = window.render;
+  window.render = function () {
+    if (typeof oldRenderSelectedPromptLayout === "function") oldRenderSelectedPromptLayout();
+    applyMeaningPromptLayout();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyMeaningPromptLayout);
+})();
 </script>
 </body>
 </html>
+
 
 
 
