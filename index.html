@@ -3400,9 +3400,57 @@ Best move:
 
   document.addEventListener("DOMContentLoaded", hideDuplicateQuestionBlock);
 })();
+/* ============================
+   ICY CURRENT PROMPT CLEANUP PATCH
+   Meaning shows one selected prompt, not the full matched list
+============================ */
+(function () {
+  console.log("ICY CURRENT PROMPT CLEANUP PATCH LOADED");
+
+  function cleanMeaningPromptField() {
+    const state = loadState();
+
+    const notesField =
+      document.querySelector('textarea[name="notes"]') ||
+      document.querySelector('#meaningNotes') ||
+      document.querySelector('textarea');
+
+    if (!notesField) return;
+
+    const selected = (state.selected_question || "").trim();
+
+    // If field currently contains old matched-question dump, replace it
+    const currentVal = notesField.value || "";
+
+    const looksLikeOldDump =
+      currentVal.includes("Matched questions:") ||
+      currentVal.includes("- What ");
+
+    if (selected) {
+      const newText = `Current prompt:` + "\n" + selected;
+
+      if (looksLikeOldDump || currentVal.trim() === "") {
+        notesField.value = newText;
+      }
+    } else {
+      if (looksLikeOldDump) {
+        notesField.value = "";
+      }
+    }
+  }
+
+  const oldRenderCurrentPromptCleanup = window.render;
+  window.render = function () {
+    if (typeof oldRenderCurrentPromptCleanup === "function") oldRenderCurrentPromptCleanup();
+    cleanMeaningPromptField();
+  };
+
+  document.addEventListener("DOMContentLoaded", cleanMeaningPromptField);
+})();
 </script>
 </body>
 </html>
+
 
 
 
