@@ -3378,9 +3378,32 @@ Best move:
     fixNavOrder();
   };
 })();
+/* ============================
+   ICY HIDE DUPLICATE QUESTIONS BLOCK
+   Keep only "Good questions right now"
+============================ */
+(function () {
+  console.log("ICY HIDE DUPLICATE QUESTIONS BLOCK LOADED");
+
+  function hideDuplicateQuestionBlock() {
+    const dup = document.getElementById("mergedQuestionsBlock");
+    if (dup) {
+      dup.style.display = "none";
+    }
+  }
+
+  const oldRenderHideDupQuestions = window.render;
+  window.render = function () {
+    if (typeof oldRenderHideDupQuestions === "function") oldRenderHideDupQuestions();
+    hideDuplicateQuestionBlock();
+  };
+
+  document.addEventListener("DOMContentLoaded", hideDuplicateQuestionBlock);
+})();
 </script>
 </body>
 </html>
+
 
 
 
