@@ -790,7 +790,7 @@
         </div>
 
         <div class="output-block">
-          <div class="output-label">Good questions right now</div>
+          <div class="output-label">Best focus prompts right now</div>
           <div id="interpQuestions" class="list"></div>
         </div>
 
@@ -808,8 +808,8 @@
         </div>
 
         <div class="output-block" id="mergedQuestionsBlock">
-          <div class="output-label">Questions for this state</div>
-          <div class="tiny">These questions are now part of Interpreter, so the flow stays in one place.</div>
+          <div class="output-label">Use this state for</div>
+          <div class="tiny">These prompts are part of Interpreter so the flow stays in one place.</div>
           <div id="mergedQuestionsModeBox" class="mini-box" style="margin-top:10px;"></div>
           <div id="mergedQuestionSetChips" class="chip-row" style="margin-top:10px;"></div>
           <div id="mergedQuestionList" class="list" style="margin-top:10px;"></div>
@@ -1886,7 +1886,7 @@
               <div class="mini-title">${q}</div>
               <div class="tag">Matched</div>
             </div>
-            <div class="mini-text">Tap to make this your current question.</div>
+            <div class="mini-text">Tap to carry this into Meaning.</div>
           `;
           box.addEventListener("click", () => {
             const s = loadState();
@@ -3187,7 +3187,7 @@ Move:
 
       if (notesInput) {
         notesInput.value =
-`Recommended mode:
+`Best mode for this state:
 - ${bundle.recommendedMode}
 
 Matched questions:
@@ -3231,7 +3231,7 @@ Best move:
     const mode = state.question_set || "default";
     return {
       recommendedMode: mode,
-      reason: "These questions fit your current interpreted state.",
+      reason: "This mode fits your current interpreted state.",
       questions: (window.QUESTION_BANKS?.[mode] || []).slice(0, 6)
     };
   }
@@ -3270,7 +3270,7 @@ Best move:
 
     modeBox.innerHTML = `
       <div class="mini-title-row">
-        <div class="mini-title">Recommended mode</div>
+        <div class="mini-title">Best mode for this state</div>
         <div class="tag">${getQuestionModeLabel(recommendedMode)}</div>
       </div>
       <div class="mini-text">${reason}</div>
@@ -3302,7 +3302,7 @@ Best move:
     const combined = [...new Set([...matched, ...base, ...custom])].slice(0, 10);
 
     if (!combined.length) {
-      listWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No questions loaded yet.</div></div>`;
+      listWrap.innerHTML = `<div class="mini-box"><div class="mini-text">No prompts loaded yet.</div></div>`;
       return;
     }
 
@@ -3314,7 +3314,7 @@ Best move:
           <div class="mini-title">${q}</div>
           <div class="tag">${matched.includes(q) ? "Matched" : "Question"}</div>
         </div>
-        <div class="mini-text">Tap to make this your current question.</div>
+        <div class="mini-text">Tap to carry this into Meaning.</div>
       `;
       box.addEventListener("click", () => {
         const s = loadState();
@@ -3380,7 +3380,7 @@ Best move:
 })();
 /* ============================
    ICY HIDE DUPLICATE QUESTIONS BLOCK
-   Keep only "Good questions right now"
+   Keep only "Best focus prompts right now"
 ============================ */
 (function () {
   console.log("ICY HIDE DUPLICATE QUESTIONS BLOCK LOADED");
@@ -3403,6 +3403,7 @@ Best move:
 </script>
 </body>
 </html>
+
 
 
 
