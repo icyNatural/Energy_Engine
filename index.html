@@ -3552,9 +3552,228 @@ Best move:
 
   document.addEventListener("DOMContentLoaded", applyMeaningPromptLayout);
 })();
+/* ============================
+   ICY FINAL MEANING BRIDGE PATCH
+   Single source of truth for:
+   - Interpreter prompt carryover
+   - Meaning page guidance block
+   - Cleaner Meaning placeholders
+============================ */
+(function () {
+  console.log("ICY FINAL MEANING BRIDGE PATCH LOADED");
+
+  function getMeaningEls() {
+    return {
+      page: document.getElementById("page-meaning"),
+      eventInput: document.getElementById("eventInput"),
+      meaningInput: document.getElementById("meaningInput"),
+      emotionInput: document.getElementById("emotionInput"),
+      actionInput: document.getElementById("actionInput"),
+      costInput: document.getElementById("costInput"),
+      notesInput: document.getElementById("meaningNotesInput"),
+      saveBtn: document.getElementById("saveMeaningBtn")
+    };
+  }
+
+  function movePromptBlockToTop() {
+    const page = document.getElementById("page-meaning");
+    if (!page) return;
+
+    const card = page.querySelector(".card");
+    const list = card ? card.querySelector(".list") : null;
+    const promptBlock = document.getElementById("selectedPromptBlock");
+    if (!card || !list || !promptBlock) return;
+
+    const title = promptBlock.querySelector(".mini-title");
+    if (title) title.textContent = "Prompt guiding this entry";
+
+    if (promptBlock.previousElementSibling !== list.previousElementSibling) {
+      card.insertBefore(promptBlock, list);
+    }
+  }
+
+  function cleanMeaningLabels() {
+    const els = getMeaningEls();
+    if (!els.eventInput) return;
+
+    els.eventInput.placeholder = "What just happened?";
+    els.meaningInput.placeholder = "What did you make it mean?";
+    els.emotionInput.placeholder = "What did it make you feel or become?";
+    els.actionInput.placeholder = "What did you do next?";
+    els.costInput.placeholder = "What did this lead to?";
+    if (els.notesInput) {
+      els.notesInput.placeholder = "Extra notes (optional)";
+    }
+  }
+
+  function cleanOldNotesDump() {
+    const els = getMeaningEls();
+    if (!els.notesInput) return;
+
+    const val = els.notesInput.value || "";
+    if (
+      val.includes("Matched questions:") ||
+      val.includes("Best mode for this state:") ||
+      val.includes("What may be underneath:") ||
+      val.includes("Best move:") ||
+      val.startsWith("Current prompt:")
+    ) {
+      els.notesInput.value = "";
+    }
+  }
+
+  function renderPromptGuide() {
+    const state = loadState();
+    const promptText = document.getElementById("selectedPromptText");
+    if (!promptText) return;
+
+    const selected = (state.selected_question || "").trim();
+    promptText.textContent = selected || "No prompt selected.";
+  }
+
+  function setMeaningPageFromInterpreter(options) {
+    const state = loadState();
+    const refined = state.interpreter_refined;
+    if (!refined || !window.REFINED_BANK || !REFINED_BANK[refined]) return;
+
+    const info = REFINED_BANK[refined];
+    const secondaryKeys = Array.isArray(state.interpreter_secondary) ? state.interpreter_secondary : [];
+    const secondaryInfos = secondaryKeys.map(k => REFINED_BANK[k]).filter(Boolean);
+    const intensity = state.interpreter_intensity;
+    const intensityLabel = intensity && window.INTENSITY_LABELS ? (INTENSITY_LABELS[intensity] || intensity).toLowerCase() : null;
+
+    const els = getMeaningEls();
+    if (!els.meaningInput || !els.emotionInput) return;
+
+    const selectedPrompt = options && options.prompt ? options.prompt : (state.selected_question || "");
+    if (selectedPrompt) {
+      state.selected_question = selectedPrompt;
+    }
+
+    const stateLine =
+      secondaryInfos.length
+        ? `${info.label}${intensityLabel ? ` (${intensityLabel})` : ""}, with ${secondaryInfos.map(x => x.label).join(", ")} also present`
+        : `${info.label}${intensityLabel ? ` (${intensityLabel})` : ""}`;
+
+    if (!els.meaningInput.value.trim()) {
+      els.meaningInput.value = info.meaningStarter;
+    }
+
+    if (!els.emotionInput.value.trim()) {
+      els.emotionInput.value = stateLine;
+    }
+
+    cleanOldNotesDump();
+    state.page = "meaning";
+    saveState(state);
+
+    if (typeof render === "function") render();
+  }
+
+  function carryPromptIntoMeaning(promptText) {
+    const state = loadState();
+    state.selected_question = promptText;
+    state.page = "meaning";
+    saveState(state);
+
+    if (typeof render === "function") render();
+  }
+
+  function wireInterpreterPromptCards() {
+    const wrap = document.getElementById("interpQuestions");
+    if (!wrap || wrap.dataset.icyPromptBridgeWired === "1") return;
+
+    wrap.addEventListener("click", function (e) {
+      const card = e.target.closest(".question-card");
+      if (!card) return;
+
+      const titleEl = card.querySelector(".mini-title");
+      const promptText = titleEl ? (titleEl.textContent || "").trim() : "";
+      if (!promptText) return;
+
+      carryPromptIntoMeaning(promptText);
+    });
+
+    wrap.dataset.icyPromptBridgeWired = "1";
+  }
+
+  function wireMeaningStarterBtn() {
+    const btn = document.getElementById("useMeaningStarterBtn");
+    if (!btn) return;
+
+    btn.onclick = function () {
+      const state = loadState();
+      const refined = state.interpreter_refined;
+      if (!refined || !window.REFINED_BANK || !REFINED_BANK[refined]) return;
+
+      const info = REFINED_BANK[refined];
+      const prompt = state.selected_question || (Array.isArray(info.questions) && info.questions.length ? info.questions[0] : "");
+
+      setMeaningPageFromInterpreter({ prompt: prompt });
+    };
+  }
+
+  function ensureMeaningPromptLayoutFinal() {
+    const page = document.getElementById("page-meaning");
+    if (!page) return;
+
+    const notesField = document.getElementById("meaningNotesInput");
+    if (!notesField) return;
+
+    let promptBlock = document.getElementById("selectedPromptBlock");
+    let notesLabel = document.getElementById("extraNotesLabel");
+
+    if (!promptBlock) {
+      promptBlock = document.createElement("div");
+      promptBlock.id = "selectedPromptBlock";
+      promptBlock.className = "mini-box";
+      promptBlock.innerHTML = `
+        <div class="mini-title-row">
+          <div class="mini-title">Prompt guiding this entry</div>
+        </div>
+        <div id="selectedPromptText" class="mini-text">No prompt selected.</div>
+      `;
+      notesField.parentNode.insertBefore(promptBlock, notesField);
+    }
+
+    if (!notesLabel) {
+      notesLabel = document.createElement("div");
+      notesLabel.id = "extraNotesLabel";
+      notesLabel.className = "section-title";
+      notesLabel.textContent = "Extra notes";
+      notesField.parentNode.insertBefore(notesLabel, notesField);
+    }
+
+    movePromptBlockToTop();
+  }
+
+  const oldRenderFinalMeaningBridge = window.render;
+  window.render = function () {
+    if (typeof oldRenderFinalMeaningBridge === "function") oldRenderFinalMeaningBridge();
+
+    ensureMeaningPromptLayoutFinal();
+    movePromptBlockToTop();
+    cleanMeaningLabels();
+    cleanOldNotesDump();
+    renderPromptGuide();
+    wireInterpreterPromptCards();
+    wireMeaningStarterBtn();
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    ensureMeaningPromptLayoutFinal();
+    movePromptBlockToTop();
+    cleanMeaningLabels();
+    cleanOldNotesDump();
+    renderPromptGuide();
+    wireInterpreterPromptCards();
+    wireMeaningStarterBtn();
+  });
+})();
 </script>
 </body>
 </html>
+
 
 
 
