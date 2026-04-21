@@ -790,7 +790,10 @@
         </div>
 
         <div class="output-block">
-          <div class="output-label">Best focus prompts right now</div>
+          <div class="output-label"><div class="subtle-note" id="questionFlowNote">
+Select a prompt to carry it into Meaning and start your entry.
+</div>
+Best focus prompts right now</div>
           <div id="interpQuestions" class="list"></div>
         </div>
 
@@ -803,7 +806,7 @@
           <div class="output-label">Suggested meaning</div>
           <div class="output-text" id="interpMeaningStarter">A suggested starter will show here.</div>
           <div class="row">
-            <button class="btn btn-primary" id="useMeaningStarterBtn" type="button">Continue into Meaning</button>
+            
           </div>
         </div>
 
@@ -3380,7 +3383,10 @@ Best move:
 })();
 /* ============================
    ICY HIDE DUPLICATE QUESTIONS BLOCK
-   Keep only "Best focus prompts right now"
+   Keep only "<div class="subtle-note" id="questionFlowNote">
+Select a prompt to carry it into Meaning and start your entry.
+</div>
+Best focus prompts right now"
 ============================ */
 (function () {
   console.log("ICY HIDE DUPLICATE QUESTIONS BLOCK LOADED");
@@ -3773,6 +3779,7 @@ Best move:
 </script>
 </body>
 </html>
+
 
 
 
