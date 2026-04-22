@@ -810,7 +810,7 @@ Best focus prompts right now</div>
           </div>
         </div>
 
-        <div class="output-block" id="mergedQuestionsBlock">
+        <div class="output-block" id="mergedQuestionsBlock" style="display:none;">
           <div class="output-label">Use this state for</div>
           <div class="tiny">These prompts are part of Interpreter so the flow stays in one place.</div>
           <div id="mergedQuestionsModeBox" class="mini-box" style="margin-top:10px;"></div>
@@ -2250,7 +2250,9 @@ Best focus prompts right now</div>
       render();
     });
 
-    document.getElementById("useMeaningStarterBtn").addEventListener("click", () => {
+    const useMeaningStarterBtn = document.getElementById("useMeaningStarterBtn");
+if (useMeaningStarterBtn) {
+  useMeaningStarterBtn.addEventListener("click", () => {
       const s = loadState();
       const refined = s.interpreter_refined;
       const intensity = s.interpreter_intensity;
@@ -2279,9 +2281,10 @@ ${info.move}`;
       s.page = "meaning";
       saveState(s);
       render();
-    });
+  });
+}
 
-    document.getElementById("downloadBackupBtn").addEventListener("click", () => {
+document.getElementById("downloadBackupBtn").addEventListener("click", () => {
       const state = loadState();
       const json = JSON.stringify(state, null, 2);
       const blob = new Blob([json], { type: "application/json" });
@@ -3818,6 +3821,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
