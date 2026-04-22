@@ -3818,9 +3818,92 @@ Best focus prompts right now"
 
   document.addEventListener("DOMContentLoaded", applyPromptNotePatch);
 })();
+/* ============================
+   ICY PERSISTENT INPUT LABELS PATCH
+   Adds visible labels above inputs so placeholders are not doing all the work
+============================ */
+(function () {
+  console.log("ICY PERSISTENT INPUT LABELS PATCH LOADED");
+
+  const FIELD_LABELS = {
+    wakeInput: "Wake time",
+    napStartInput: "Nap start",
+    napWakeInput: "Nap wake",
+    sleepMinutesInput: "Sleep minutes",
+    sleepHrInput: "Sleep heart rate",
+    hrvInput: "HRV",
+    deepMinutesInput: "Deep sleep minutes",
+    remMinutesInput: "REM minutes",
+    respRateInput: "Respiratory rate",
+    activityMinutesInput: "Activity minutes",
+    sleepEffInput: "Sleep efficiency percent",
+    eventInput: "What happened",
+    meaningInput: "Assigned meaning",
+    emotionInput: "State / feeling",
+    actionInput: "Action / urge",
+    costInput: "Effect / result",
+    meaningNotesInput: "Extra notes"
+  };
+
+  function ensurePersistentLabels() {
+    Object.entries(FIELD_LABELS).forEach(([id, label]) => {
+      const input = document.getElementById(id);
+      if (!input) return;
+
+      const parent = input.parentNode;
+      if (!parent) return;
+
+      const already = parent.querySelector(`[data-label-for="${id}"]`);
+      if (already) return;
+
+      const labelEl = document.createElement("div");
+      labelEl.className = "icy-field-label";
+      labelEl.setAttribute("data-label-for", id);
+      labelEl.textContent = label;
+
+      parent.insertBefore(labelEl, input);
+    });
+  }
+
+  function injectPersistentLabelStyles() {
+    if (document.getElementById("icyPersistentLabelStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "icyPersistentLabelStyles";
+    style.textContent = `
+      .icy-field-label {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #93a7c2;
+        margin: 8px 0 6px;
+      }
+
+      details .icy-field-label {
+        margin-top: 10px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function applyPersistentLabels() {
+    injectPersistentLabelStyles();
+    ensurePersistentLabels();
+  }
+
+  const oldRenderPersistentLabels = window.render;
+  window.render = function () {
+    if (typeof oldRenderPersistentLabels === "function") oldRenderPersistentLabels();
+    applyPersistentLabels();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyPersistentLabels);
+})();
 </script>
 </body>
 </html>
+
 
 
 
