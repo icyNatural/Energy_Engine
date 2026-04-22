@@ -3900,9 +3900,76 @@ Best focus prompts right now"
 
   document.addEventListener("DOMContentLoaded", applyPersistentLabels);
 })();
+/* ============================
+   ICY FIELD GROUP FIX PATCH
+   Groups label + input together so desktop grid stays clean
+============================ */
+(function () {
+  console.log("ICY FIELD GROUP FIX PATCH LOADED");
+
+  function injectFieldGroupStyles() {
+    if (document.getElementById("icyFieldGroupStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "icyFieldGroupStyles";
+    style.textContent = `
+      .icy-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .icy-field-group .icy-field-label {
+        margin: 0;
+      }
+
+      .three > .icy-field-group,
+      .two > .icy-field-group {
+        width: 100%;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function wrapLabeledFields() {
+    const labels = document.querySelectorAll(".icy-field-label[data-label-for]");
+    labels.forEach(label => {
+      const id = label.getAttribute("data-label-for");
+      const input = document.getElementById(id);
+      if (!input) return;
+
+      if (label.parentElement && label.parentElement.classList.contains("icy-field-group")) return;
+
+      const parent = input.parentNode;
+      if (!parent) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "icy-field-group";
+
+      parent.insertBefore(wrapper, label);
+      wrapper.appendChild(label);
+      wrapper.appendChild(input);
+    });
+  }
+
+  function applyFieldGroupFix() {
+    injectFieldGroupStyles();
+    wrapLabeledFields();
+  }
+
+  const oldRenderFieldGroupFix = window.render;
+  window.render = function () {
+    if (typeof oldRenderFieldGroupFix === "function") oldRenderFieldGroupFix();
+    applyFieldGroupFix();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyFieldGroupFix);
+})();
 </script>
 </body>
 </html>
+
 
 
 
