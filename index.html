@@ -3776,9 +3776,49 @@ Best focus prompts right now"
     wireMeaningStarterBtn();
   });
 })();
+/* ============================
+   ICY PROMPT NOTE PATCH
+   Hide redundant continue button
+   Add cleaner instruction above prompts
+============================ */
+(function () {
+  console.log("ICY PROMPT NOTE PATCH LOADED");
+
+  function applyPromptNotePatch() {
+    const continueBtn = document.getElementById("useMeaningStarterBtn");
+    if (continueBtn) {
+      continueBtn.style.display = "none";
+    }
+
+    const interpQuestions = document.getElementById("interpQuestions");
+    if (!interpQuestions) return;
+
+    let note = document.getElementById("interpPromptCarryNote");
+    if (!note) {
+      note = document.createElement("div");
+      note.id = "interpPromptCarryNote";
+      note.className = "tiny";
+      note.style.marginTop = "0";
+      note.style.marginBottom = "10px";
+      note.textContent = "Select a prompt below to carry it into Meaning and begin your entry.";
+
+      const parentBlock = interpQuestions.parentNode;
+      parentBlock.insertBefore(note, interpQuestions);
+    }
+  }
+
+  const oldRenderPromptNotePatch = window.render;
+  window.render = function () {
+    if (typeof oldRenderPromptNotePatch === "function") oldRenderPromptNotePatch();
+    applyPromptNotePatch();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyPromptNotePatch);
+})();
 </script>
 </body>
 </html>
+
 
 
 
