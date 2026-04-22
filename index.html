@@ -3966,9 +3966,56 @@ Best focus prompts right now"
 
   document.addEventListener("DOMContentLoaded", applyFieldGroupFix);
 })();
+/* ============================
+   ICY MEANING LAYOUT POLISH PATCH
+   Makes Meaning form cleaner on desktop
+============================ */
+(function () {
+  console.log("ICY MEANING LAYOUT POLISH PATCH LOADED");
+
+  function injectMeaningLayoutStyles() {
+    if (document.getElementById("icyMeaningLayoutStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "icyMeaningLayoutStyles";
+    style.textContent = `
+      #page-meaning .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      @media (min-width: 900px) {
+        #page-meaning .list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: start;
+        }
+
+        #page-meaning #selectedPromptBlock,
+        #page-meaning #extraNotesLabel,
+        #page-meaning #meaningNotesInput {
+          grid-column: 1 / -1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function applyMeaningLayoutPolish() {
+    injectMeaningLayoutStyles();
+  }
+
+  const oldRenderMeaningLayoutPolish = window.render;
+  window.render = function () {
+    if (typeof oldRenderMeaningLayoutPolish === "function") oldRenderMeaningLayoutPolish();
+    applyMeaningLayoutPolish();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyMeaningLayoutPolish);
+})();
 </script>
 </body>
 </html>
+
 
 
 
