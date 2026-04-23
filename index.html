@@ -524,7 +524,48 @@
       .phase { font-size: 40px; }
       .energy-state { font-size: 30px; }
     }
-  </style>
+  /* ============================
+   ICY ENERGY GRID CLEANUP
+   Fix desktop layout for HRV page
+============================ */
+
+.energy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.energy-grid .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.energy-grid label {
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+}
+
+.energy-grid input {
+  width: 100%;
+}
+
+/* tablet */
+@media (max-width: 900px) {
+  .energy-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* mobile */
+@media (max-width: 600px) {
+  .energy-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -4015,6 +4056,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
