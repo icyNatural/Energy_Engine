@@ -4053,9 +4053,235 @@ Best focus prompts right now"
 
   document.addEventListener("DOMContentLoaded", applyMeaningLayoutPolish);
 })();
+/* ============================
+   ICY ENERGY HOME FLOW BRIDGE PATCH
+   Energy = input layer
+   Home = interpretation layer
+============================ */
+(function () {
+  console.log("ICY ENERGY HOME FLOW BRIDGE PATCH LOADED");
+
+  function formatBridgeTime(ts) {
+    if (!ts) return "";
+    const d = new Date(ts * 1000);
+    let h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, "0");
+    const ampm = h >= 12 ? "PM" : "AM";
+    h = h % 12;
+    if (h === 0) h = 12;
+    return `${h}:${m} ${ampm}`;
+  }
+
+  function injectBridgeStyles() {
+    if (document.getElementById("icyEnergyHomeBridgeStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "icyEnergyHomeBridgeStyles";
+    style.textContent = `
+      .flow-bridge-box {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 14px;
+        margin-top: 14px;
+      }
+
+      .flow-bridge-title {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #93a7c2;
+        margin-bottom: 8px;
+      }
+
+      .flow-bridge-text {
+        font-size: 15px;
+        line-height: 1.45;
+        color: #e5edf7;
+      }
+
+      .flow-bridge-sub {
+        margin-top: 6px;
+        font-size: 13px;
+        color: #9fb0c8;
+      }
+
+      .flow-bridge-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .flow-bridge-row .btn {
+        width: auto;
+        min-width: 160px;
+      }
+
+      #homeEnergyBridge {
+        margin-top: 10px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function ensureEnergyBridgeBox() {
+    const energyPage = document.getElementById("page-energy");
+    if (!energyPage) return;
+
+    const firstCard = energyPage.querySelector(".card");
+    if (!firstCard) return;
+
+    let box = document.getElementById("energyFlowBridgeBox");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "energyFlowBridgeBox";
+      box.className = "flow-bridge-box";
+      box.style.display = "none";
+      box.innerHTML = `
+        <div class="flow-bridge-title">System updated</div>
+        <div class="flow-bridge-text" id="energyFlowBridgeText">
+          Home now has the latest state read.
+        </div>
+        <div class="flow-bridge-sub" id="energyFlowBridgeSub">
+          State, meaning, and action have been refreshed from your latest energy inputs.
+        </div>
+        <div class="flow-bridge-row">
+          <button type="button" class="btn btn-primary" id="goHomeFromEnergyBtn">Go to Home</button>
+        </div>
+      `;
+      firstCard.appendChild(box);
+    }
+
+    const goBtn = document.getElementById("goHomeFromEnergyBtn");
+    if (goBtn && !goBtn.dataset.bridgeWired) {
+      goBtn.addEventListener("click", function () {
+        const s = loadState();
+        s.page = "home";
+        saveState(s);
+        render();
+      });
+      goBtn.dataset.bridgeWired = "1";
+    }
+  }
+
+  function ensureHomeBridgeLine() {
+    const homePage = document.getElementById("page-home");
+    if (!homePage) return;
+
+    const heroInner = homePage.querySelector(".hero-inner");
+    const windowText = document.getElementById("windowText");
+    if (!heroInner || !windowText) return;
+
+    let bridge = document.getElementById("homeEnergyBridge");
+    if (!bridge) {
+      bridge = document.createElement("div");
+      bridge.id = "homeEnergyBridge";
+      bridge.className = "flow-bridge-sub";
+      windowText.insertAdjacentElement("afterend", bridge);
+    }
+
+    let stamp = document.getElementById("homeEnergyBridgeStamp");
+    if (!stamp) {
+      stamp = document.createElement("div");
+      stamp.id = "homeEnergyBridgeStamp";
+      stamp.className = "flow-bridge-sub";
+      bridge.insertAdjacentElement("afterend", stamp);
+    }
+  }
+
+  function renderEnergyHomeBridge() {
+    ensureEnergyBridgeBox();
+    ensureHomeBridgeLine();
+
+    const state = loadState();
+    const bridgeBox = document.getElementById("energyFlowBridgeBox");
+    const bridgeText = document.getElementById("energyFlowBridgeText");
+    const bridgeSub = document.getElementById("energyFlowBridgeSub");
+    const homeBridge = document.getElementById("homeEnergyBridge");
+    const homeStamp = document.getElementById("homeEnergyBridgeStamp");
+
+    const notice = state.energy_flow_notice || null;
+
+    if (bridgeBox) {
+      if (notice) {
+        bridgeBox.style.display = "block";
+        if (bridgeText) {
+          bridgeText.textContent = "Home now has the latest state read.";
+        }
+        if (bridgeSub) {
+          bridgeSub.textContent = "State, meaning, and action have been refreshed from your latest energy inputs.";
+        }
+      } else {
+        bridgeBox.style.display = "none";
+      }
+    }
+
+    if (homeBridge) {
+      homeBridge.textContent = "Read from your latest saved energy inputs.";
+    }
+
+    if (homeStamp) {
+      homeStamp.textContent = notice && notice.ts
+        ? `Last updated from Energy: ${formatBridgeTime(notice.ts)}`
+        : "";
+    }
+  }
+
+  function markEnergyUpdated(kind) {
+    const s = loadState();
+    s.energy_flow_notice = {
+      kind: kind,
+      ts: nowTs()
+    };
+    saveState(s);
+    render();
+  }
+
+  function wireEnergySaveBridge() {
+    const fastBtn = document.getElementById("saveFastBtn");
+    const advancedBtn = document.getElementById("saveAdvancedBtn");
+
+    if (fastBtn && !fastBtn.dataset.flowBridgeWired) {
+      fastBtn.addEventListener("click", function () {
+        setTimeout(function () {
+          markEnergyUpdated("core");
+        }, 0);
+      });
+      fastBtn.dataset.flowBridgeWired = "1";
+    }
+
+    if (advancedBtn && !advancedBtn.dataset.flowBridgeWired) {
+      advancedBtn.addEventListener("click", function () {
+        setTimeout(function () {
+          markEnergyUpdated("expanded");
+        }, 0);
+      });
+      advancedBtn.dataset.flowBridgeWired = "1";
+    }
+  }
+
+  function applyEnergyHomeFlowBridge() {
+    injectBridgeStyles();
+    ensureEnergyBridgeBox();
+    ensureHomeBridgeLine();
+    wireEnergySaveBridge();
+    renderEnergyHomeBridge();
+  }
+
+  const oldRenderEnergyHomeBridge = window.render;
+  window.render = function () {
+    if (typeof oldRenderEnergyHomeBridge === "function") oldRenderEnergyHomeBridge();
+    applyEnergyHomeFlowBridge();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyEnergyHomeFlowBridge);
+})();
 </script>
 </body>
 </html>
+
 
 
 
