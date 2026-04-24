@@ -4278,9 +4278,123 @@ Best focus prompts right now"
 
   document.addEventListener("DOMContentLoaded", applyEnergyHomeFlowBridge);
 })();
+/* ============================
+   ICY ENERGY SAVE FEEDBACK PATCH
+   Immediate save confirmation for Energy page
+============================ */
+(function () {
+  console.log("ICY ENERGY SAVE FEEDBACK PATCH LOADED");
+
+  function injectSaveFeedbackStyles() {
+    if (document.getElementById("icyEnergySaveFeedbackStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "icyEnergySaveFeedbackStyles";
+    style.textContent = `
+      .save-feedback-line {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #9fd0b7;
+        line-height: 1.4;
+      }
+
+      .btn-saved {
+        background: #dff7ea !important;
+        color: #081225 !important;
+        transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function ensureSaveFeedbackLine(buttonId, lineId) {
+    const btn = document.getElementById(buttonId);
+    if (!btn) return null;
+
+    let line = document.getElementById(lineId);
+    if (!line) {
+      line = document.createElement("div");
+      line.id = lineId;
+      line.className = "save-feedback-line";
+      line.style.display = "none";
+      btn.insertAdjacentElement("afterend", line);
+    }
+
+    return line;
+  }
+
+  function flashSaved(buttonId, lineId, message) {
+    const btn = document.getElementById(buttonId);
+    const line = ensureSaveFeedbackLine(buttonId, lineId);
+    if (!btn || !line) return;
+
+    if (!btn.dataset.originalText) {
+      btn.dataset.originalText = btn.textContent;
+    }
+
+    btn.textContent = "Saved";
+    btn.classList.add("btn-saved");
+
+    line.textContent = message;
+    line.style.display = "block";
+
+    clearTimeout(btn._savedTimer);
+    btn._savedTimer = setTimeout(() => {
+      btn.textContent = btn.dataset.originalText || btn.textContent;
+      btn.classList.remove("btn-saved");
+    }, 1600);
+  }
+
+  function wireEnergySaveFeedback() {
+    const fastBtn = document.getElementById("saveFastBtn");
+    const advancedBtn = document.getElementById("saveAdvancedBtn");
+
+    if (fastBtn && !fastBtn.dataset.saveFeedbackWired) {
+      fastBtn.addEventListener("click", function () {
+        setTimeout(function () {
+          flashSaved(
+            "saveFastBtn",
+            "saveFastFeedback",
+            "Core energy inputs saved. Home now has the latest state read."
+          );
+        }, 0);
+      });
+      fastBtn.dataset.saveFeedbackWired = "1";
+    }
+
+    if (advancedBtn && !advancedBtn.dataset.saveFeedbackWired) {
+      advancedBtn.addEventListener("click", function () {
+        setTimeout(function () {
+          flashSaved(
+            "saveAdvancedBtn",
+            "saveAdvancedFeedback",
+            "Expanded energy inputs saved. Home now has the latest state read."
+          );
+        }, 0);
+      });
+      advancedBtn.dataset.saveFeedbackWired = "1";
+    }
+  }
+
+  function applyEnergySaveFeedback() {
+    injectSaveFeedbackStyles();
+    ensureSaveFeedbackLine("saveFastBtn", "saveFastFeedback");
+    ensureSaveFeedbackLine("saveAdvancedBtn", "saveAdvancedFeedback");
+    wireEnergySaveFeedback();
+  }
+
+  const oldRenderEnergySaveFeedback = window.render;
+  window.render = function () {
+    if (typeof oldRenderEnergySaveFeedback === "function") oldRenderEnergySaveFeedback();
+    applyEnergySaveFeedback();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyEnergySaveFeedback);
+})();
 </script>
 </body>
 </html>
+
 
 
 
