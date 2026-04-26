@@ -1,4 +1,4 @@
-# ? Energy Engine
+# Energy Engine
 
 Energy Engine is a personal physiological timing and energy-state modeling system.
 
