@@ -1,4 +1,4 @@
-<!doctype html>
+Ôªø<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -612,12 +612,211 @@ body > * {
   z-index: 2;
 }
 </style>
+<style id="icy-avalanche-theme">
+/* ============================
+   ICY AVALANCHE THEME PATCH
+   Light-through-ice blue + white system identity
+============================ */
+
+:root {
+  --ice-black: #030914;
+  --ice-deep: #06111f;
+  --ice-panel: rgba(9, 22, 39, 0.82);
+  --ice-panel-2: rgba(13, 30, 52, 0.72);
+  --ice-line: rgba(190, 235, 255, 0.18);
+  --ice-blue: #9be7ff;
+  --ice-blue-2: #5fd4ff;
+  --ice-white: #f8fcff;
+  --ice-muted: #a9c0d4;
+  --ice-glow: rgba(155, 231, 255, 0.34);
+  --ice-glow-soft: rgba(255, 255, 255, 0.14);
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(255,255,255,0.18), transparent 24%),
+    radial-gradient(circle at 80% 8%, rgba(95,212,255,0.16), transparent 28%),
+    linear-gradient(145deg, #020712 0%, #06111f 38%, #0a1b2d 68%, #020814 100%) !important;
+  color: var(--ice-white) !important;
+}
+
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.035) 36%, rgba(155,231,255,0.08) 48%, transparent 62%),
+    radial-gradient(circle at 25% 20%, rgba(155,231,255,0.12), transparent 30%);
+  mix-blend-mode: screen;
+}
+
+.wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.app-title {
+  color: var(--ice-white);
+  text-shadow:
+    0 0 12px rgba(155,231,255,0.22),
+    0 0 32px rgba(255,255,255,0.10);
+}
+
+.app-sub,
+.muted,
+.tiny,
+.window,
+.flow-bridge-sub {
+  color: var(--ice-muted) !important;
+}
+
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(155,231,255,0.035)),
+    var(--ice-panel) !important;
+  border: 1px solid var(--ice-line) !important;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,255,255,0.14), transparent 32%),
+    linear-gradient(135deg, rgba(155,231,255,0.075), rgba(5,15,29,0.86)) !important;
+  box-shadow:
+    0 22px 70px rgba(0,0,0,0.40),
+    0 0 34px rgba(155,231,255,0.08) !important;
+}
+
+.nav-btn,
+.btn-ghost,
+.btn-soft,
+.chip,
+.state-btn {
+  background: rgba(255,255,255,0.055) !important;
+  border: 1px solid rgba(190,235,255,0.10) !important;
+  color: var(--ice-white) !important;
+}
+
+.nav-btn.active,
+.chip.active,
+.state-btn.active,
+.btn-primary {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(155,231,255,0.88)) !important;
+  color: #03101b !important;
+  border: 1px solid rgba(255,255,255,0.92) !important;
+  box-shadow:
+    0 0 18px rgba(155,231,255,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.85) !important;
+}
+
+input,
+textarea {
+  background: rgba(255,255,255,0.045) !important;
+  border: 1px solid rgba(190,235,255,0.16) !important;
+  color: var(--ice-white) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgba(155,231,255,0.55) !important;
+  box-shadow:
+    0 0 0 3px rgba(155,231,255,0.10),
+    0 0 18px rgba(155,231,255,0.12) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(211,234,248,0.58) !important;
+}
+
+.eyebrow,
+.section-title,
+.output-label,
+.state-stack-label,
+.icy-field-label,
+.flow-bridge-title {
+  color: rgba(213,241,255,0.74) !important;
+}
+
+.phase,
+.energy-state,
+.big {
+  text-shadow:
+    0 0 10px rgba(155,231,255,0.18),
+    0 0 28px rgba(255,255,255,0.08);
+}
+
+.emoji {
+  filter: drop-shadow(0 0 12px rgba(155,231,255,0.28));
+}
+
+.fill {
+  background: linear-gradient(90deg, #eaffff 0%, #9be7ff 42%, #5fd4ff 78%, #ffffff 100%) !important;
+  box-shadow:
+    0 0 12px rgba(155,231,255,0.42),
+    0 0 26px rgba(255,255,255,0.16);
+}
+
+.bar {
+  background: rgba(255,255,255,0.10) !important;
+  border: 1px solid rgba(190,235,255,0.08);
+}
+
+.tag {
+  background: rgba(155,231,255,0.14) !important;
+  color: #eafaff !important;
+  border: 1px solid rgba(155,231,255,0.18);
+}
+
+/* stronger but still subtle avalanche shimmer */
+.icy-shimmer {
+  opacity: 0.9;
+}
+
+.icy-shimmer::before {
+  background: linear-gradient(
+    115deg,
+    transparent 34%,
+    rgba(155, 231, 255, 0.06) 43%,
+    rgba(255, 255, 255, 0.18) 49%,
+    rgba(155, 231, 255, 0.08) 54%,
+    transparent 66%
+  ) !important;
+  animation: icyShimmer 10s linear infinite !important;
+}
+
+.icy-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 35% 15%, rgba(255,255,255,0.10), transparent 18%),
+    radial-gradient(circle at 70% 20%, rgba(95,212,255,0.08), transparent 22%);
+  animation: icyGlowDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes icyGlowDrift {
+  from { transform: translate3d(-2%, -1%, 0); opacity: 0.55; }
+  to { transform: translate3d(2%, 1%, 0); opacity: 0.9; }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
   <div class="wrap">
     <div class="app-title">Icy Natural OS</div>
-    <div class="app-sub">One core app. Multiple modules. State ? meaning ? questions ? patterns.</div>
+    <div class="app-sub">One core app. Multiple modules. State ‚Üí meaning ‚Üí questions ‚Üí patterns.</div>
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
@@ -2009,10 +2208,10 @@ Best focus prompts right now</div>
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "ó"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "ó"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "ó"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "ó"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "‚Äî"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "‚Äî"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "‚Äî"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "‚Äî"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -2060,7 +2259,7 @@ Best focus prompts right now</div>
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "ó" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "‚Äî" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -2082,7 +2281,7 @@ Best focus prompts right now</div>
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "ó" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "‚Äî" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -2105,7 +2304,7 @@ Best focus prompts right now</div>
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["‚è≥","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -2790,7 +2989,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} ï ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} ‚Ä¢ ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -2805,17 +3004,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "ó"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "ó"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "‚Äî"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "‚Äî"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "ó"}</div>
+            <div class="tag">${item.date || "‚Äî"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "ó"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "ó"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "‚Äî"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "‚Äî"}</div>
         `;
         list.appendChild(row);
       });
@@ -2943,7 +3142,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "ó" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "‚Äî" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -3376,7 +3575,7 @@ Best move:
       const btn = document.createElement("button");
       btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
       btn.textContent = mode === recommendedMode
-        ? `${getQuestionModeLabel(mode)} ∑ recommended`
+        ? `${getQuestionModeLabel(mode)} ¬∑ recommended`
         : getQuestionModeLabel(mode);
 
       btn.addEventListener("click", () => {
@@ -4441,6 +4640,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
