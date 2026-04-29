@@ -1171,6 +1171,115 @@ input:focus, textarea:focus {
   filter: drop-shadow(0 0 10px rgba(155,231,255,0.4));
 }
 </style>
+<style id="icy-balanced-avalanche">
+/* ============================
+   ICY BALANCED AVALANCHE PATCH
+   Dark frost base + selected-button ice color
+============================ */
+
+body {
+  background:
+    radial-gradient(circle at 50% -6%, rgba(201,241,255,0.24), transparent 26%),
+    radial-gradient(circle at 80% 8%, rgba(155,231,255,0.16), transparent 30%),
+    radial-gradient(circle at 15% 36%, rgba(255,255,255,0.07), transparent 28%),
+    linear-gradient(145deg, #06111d 0%, #0b1f2d 42%, #071521 72%, #030812 100%) !important;
+}
+
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(155,231,255,0.035)),
+    rgba(7, 20, 34, 0.78) !important;
+  border: 1px solid rgba(201,241,255,0.17) !important;
+  box-shadow:
+    0 20px 55px rgba(0,0,0,0.36),
+    inset 0 1px 0 rgba(255,255,255,0.045) !important;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 18% 4%, rgba(255,255,255,0.13), transparent 32%),
+    linear-gradient(135deg, rgba(201,241,255,0.105), rgba(5,18,30,0.80)) !important;
+}
+
+.nav-btn.active,
+.chip.active,
+.state-btn.active,
+.btn-primary {
+  background: linear-gradient(135deg, #f7fdff, #c9f1ff, #9be7ff) !important;
+  color: #021018 !important;
+  box-shadow:
+    0 0 14px rgba(201,241,255,0.38),
+    0 0 30px rgba(155,231,255,0.22) !important;
+}
+
+.nav-btn,
+.chip,
+.state-btn,
+.btn-soft,
+.btn-ghost {
+  background: rgba(255,255,255,0.055) !important;
+  border: 1px solid rgba(201,241,255,0.12) !important;
+}
+
+.fill {
+  background: linear-gradient(90deg, #f7fdff, #c9f1ff, #9be7ff) !important;
+  box-shadow: 0 0 12px rgba(201,241,255,0.35) !important;
+}
+
+.icy-shimmer {
+  opacity: 0.45 !important;
+}
+
+.icy-shimmer::before {
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(201,241,255,0.05) 44%,
+    rgba(255,255,255,0.11) 50%,
+    rgba(155,231,255,0.05) 56%,
+    transparent 66%
+  ) !important;
+  animation: icyShimmer 14s linear infinite !important;
+}
+
+.icy-shimmer::after {
+  opacity: 0.35 !important;
+}
+</style>
+
+<script id="icy-balanced-emoji-fix">
+(function () {
+  function fixPhaseEmoji() {
+    const phase = document.getElementById("phaseName");
+    const icon = document.getElementById("phaseIcon");
+    if (!phase || !icon) return;
+
+    const map = {
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
+    };
+
+    icon.textContent = map[(phase.textContent || "").trim()] || "⏳";
+  }
+
+  const oldRenderBalancedEmoji = window.render;
+  window.render = function () {
+    if (typeof oldRenderBalancedEmoji === "function") oldRenderBalancedEmoji();
+    fixPhaseEmoji();
+  };
+
+  document.addEventListener("DOMContentLoaded", fixPhaseEmoji);
+})();
+</script>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5000,6 +5109,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
