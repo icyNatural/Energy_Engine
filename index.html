@@ -1393,6 +1393,79 @@ textarea:focus {
     inset 0 1px 0 rgba(255,255,255,0.06) !important;
 }
 </style>
+<style id="icy-frost-lift">
+/* ============================
+   ICY FROST LIFT PATCH
+   Keeps lower cards from falling into dark/navy
+============================ */
+
+/* Keep the whole page in the top-half frost atmosphere */
+body {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(220,248,255,0.30), transparent 28%),
+    radial-gradient(circle at 20% 18%, rgba(255,255,255,0.12), transparent 28%),
+    radial-gradient(circle at 82% 20%, rgba(155,231,255,0.20), transparent 34%),
+    linear-gradient(180deg, #294653 0%, #203c49 38%, #18313d 72%, #142a35 100%) !important;
+}
+
+/* Lift cards toward glass-blue instead of black-blue */
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  background:
+    linear-gradient(180deg, rgba(230,249,255,0.115), rgba(155,231,255,0.055)),
+    rgba(34, 62, 76, 0.62) !important;
+  border: 1px solid rgba(221,248,255,0.22) !important;
+}
+
+/* Hero gets the same frosted body, just slightly deeper */
+.hero {
+  background:
+    radial-gradient(circle at 18% 4%, rgba(255,255,255,0.16), transparent 34%),
+    linear-gradient(135deg, rgba(230,249,255,0.14), rgba(28,55,69,0.72)) !important;
+}
+
+/* Inner stat blocks should not go black */
+.metric,
+.mini-box {
+  background:
+    linear-gradient(180deg, rgba(230,249,255,0.10), rgba(155,231,255,0.045)),
+    rgba(31, 58, 72, 0.54) !important;
+}
+
+/* Inputs stay visible but not navy */
+input,
+textarea {
+  background: rgba(230,249,255,0.075) !important;
+  border: 1px solid rgba(221,248,255,0.20) !important;
+}
+
+/* Secondary buttons stay glass-blue */
+.btn-soft,
+.btn-ghost,
+.nav-btn,
+.chip,
+.state-btn {
+  background: rgba(230,249,255,0.075) !important;
+  border: 1px solid rgba(221,248,255,0.18) !important;
+}
+
+/* Less shadow weight so lower page doesn't feel heavy */
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details,
+.hero {
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.07) !important;
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5279,6 +5352,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
