@@ -1327,6 +1327,72 @@ button:has(span:contains("Set Wake Now")) {
     inset 0 1px 0 rgba(255,255,255,0.05) !important;
 }
 </style>
+<style id="icy-glow-hierarchy">
+/* ============================
+   ICY GLOW HIERARCHY PATCH
+   Only signal elements glow strongly
+============================ */
+
+/* 1) CARDS = structure, almost no glow */
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+
+/* 2) NORMAL BUTTONS = no glow, just glass */
+.nav-btn,
+.chip,
+.state-btn,
+.btn-soft,
+.btn-ghost {
+  box-shadow: none !important;
+}
+
+/* 3) ACTIVE NAV / SELECTED = controlled glow */
+.nav-btn.active,
+.chip.active,
+.state-btn.active {
+  box-shadow:
+    0 0 7px rgba(201,241,255,0.42),
+    0 0 14px rgba(155,231,255,0.22) !important;
+}
+
+/* 4) PRIMARY CTA = strongest focused glow */
+.btn-primary {
+  box-shadow:
+    0 0 10px rgba(201,241,255,0.55),
+    0 0 20px rgba(155,231,255,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.55) !important;
+}
+
+/* 5) ENERGY BAR = signal glow, stronger than nav but thinner than CTA */
+.fill {
+  box-shadow:
+    0 0 9px rgba(201,241,255,0.50),
+    0 0 16px rgba(155,231,255,0.30) !important;
+}
+
+/* 6) INPUT FOCUS = temporary attention glow */
+input:focus,
+textarea:focus {
+  box-shadow:
+    0 0 0 2px rgba(201,241,255,0.13),
+    0 0 10px rgba(155,231,255,0.16) !important;
+}
+
+/* 7) HERO = soft aura only, not button-level glow */
+.hero {
+  box-shadow:
+    0 18px 48px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5213,6 +5279,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
