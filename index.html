@@ -5107,8 +5107,66 @@ Best focus prompts right now"
   document.addEventListener("DOMContentLoaded", applyEnergySaveFeedback);
 })();
 </script>
+<script id="icy-phase-emoji-force-fix">
+/* ============================
+   ICY PHASE EMOJI FORCE FIX
+   Forces phase emoji after every render/state change
+============================ */
+(function () {
+  function getEmojiForPhase(name) {
+    const clean = String(name || "").trim().toLowerCase();
+
+    if (clean.includes("untracked")) return "⏳";
+    if (clean.includes("recovery")) return "🌑";
+    if (clean.includes("flow")) return "🌊";
+    if (clean.includes("radiance")) return "☀️";
+    if (clean.includes("surge")) return "⚡";
+    if (clean.includes("settle")) return "🌙";
+
+    return "⏳";
+  }
+
+  function forcePhaseEmoji() {
+    const phaseNameEl =
+      document.getElementById("phaseName") ||
+      document.querySelector("[data-phase-name]");
+
+    const emojiEl =
+      document.getElementById("phaseIcon") ||
+      document.getElementById("phaseEmoji") ||
+      document.querySelector(".emoji");
+
+    if (!phaseNameEl || !emojiEl) return;
+
+    const phaseName = phaseNameEl.textContent || "";
+    emojiEl.textContent = getEmojiForPhase(phaseName);
+  }
+
+  const oldRenderEmojiForceFix = window.render;
+
+  window.render = function () {
+    if (typeof oldRenderEmojiForceFix === "function") {
+      oldRenderEmojiForceFix();
+    }
+
+    forcePhaseEmoji();
+
+    setTimeout(forcePhaseEmoji, 50);
+    setTimeout(forcePhaseEmoji, 250);
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    forcePhaseEmoji();
+    setTimeout(forcePhaseEmoji, 100);
+    setTimeout(forcePhaseEmoji, 500);
+  });
+
+  setInterval(forcePhaseEmoji, 1000);
+})();
+</script>
 </body>
 </html>
+
 
 
 
