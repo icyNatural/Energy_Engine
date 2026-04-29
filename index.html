@@ -943,6 +943,102 @@ input:focus, textarea:focus {
   filter: drop-shadow(0 0 10px rgba(155,231,255,0.4));
 }
 </style>
+<style id="icy-light-avalanche-final">
+/* ============================
+   ICY LIGHT AVALANCHE FINAL PATCH
+   Brighter avalanche blue-white base
+============================ */
+
+body {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(235,252,255,0.42), transparent 28%),
+    radial-gradient(circle at 78% 12%, rgba(155,231,255,0.34), transparent 34%),
+    radial-gradient(circle at 15% 40%, rgba(255,255,255,0.18), transparent 32%),
+    linear-gradient(140deg, #dff7ff 0%, #8fcde4 22%, #1b465c 48%, #061522 100%) !important;
+}
+
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  background:
+    linear-gradient(180deg, rgba(235,252,255,0.13), rgba(155,231,255,0.07)),
+    rgba(7, 20, 34, 0.72) !important;
+  border: 1px solid rgba(220,250,255,0.26) !important;
+  box-shadow:
+    0 22px 60px rgba(0,0,0,0.28),
+    0 0 34px rgba(201,241,255,0.12) !important;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 18% 4%, rgba(255,255,255,0.24), transparent 34%),
+    linear-gradient(135deg, rgba(201,241,255,0.16), rgba(5,18,30,0.72)) !important;
+}
+
+.nav-btn.active,
+.chip.active,
+.state-btn.active,
+.btn-primary {
+  background: linear-gradient(135deg, #ffffff, #c9f1ff, #9be7ff) !important;
+  color: #021018 !important;
+  box-shadow:
+    0 0 18px rgba(201,241,255,0.55),
+    0 0 42px rgba(155,231,255,0.35) !important;
+}
+
+.fill {
+  background: linear-gradient(90deg, #ffffff, #dffaff, #9be7ff, #5fd4ff) !important;
+  box-shadow: 0 0 18px rgba(201,241,255,0.65) !important;
+}
+
+.icy-shimmer::before {
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255,255,255,0.12) 42%,
+    rgba(210,247,255,0.28) 50%,
+    rgba(155,231,255,0.12) 58%,
+    transparent 70%
+  ) !important;
+}
+</style>
+
+<script id="icy-light-avalanche-final-script">
+/* ============================
+   ICY LIGHT AVALANCHE FINAL PATCH
+   Force restore phase emojis after render
+============================ */
+(function () {
+  function fixPhaseEmoji() {
+    const phase = document.getElementById("phaseName");
+    const icon = document.getElementById("phaseIcon");
+    if (!phase || !icon) return;
+
+    const map = {
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
+    };
+
+    const name = (phase.textContent || "").trim();
+    icon.textContent = map[name] || "⏳";
+  }
+
+  const oldRenderAvalancheFinal = window.render;
+  window.render = function () {
+    if (typeof oldRenderAvalancheFinal === "function") oldRenderAvalancheFinal();
+    fixPhaseEmoji();
+  };
+
+  document.addEventListener("DOMContentLoaded", fixPhaseEmoji);
+})();
+</script>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -4772,6 +4868,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
