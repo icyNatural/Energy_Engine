@@ -1280,6 +1280,53 @@ details {
   document.addEventListener("DOMContentLoaded", fixPhaseEmoji);
 })();
 </script>
+<style id="icy-tight-glow">
+/* ============================
+   ICY TIGHT GLOW PATCH
+   Smaller radius, sharper light
+============================ */
+
+/* ACTIVE / PRIMARY BUTTONS */
+.nav-btn.active,
+.chip.active,
+.state-btn.active,
+.btn-primary {
+  box-shadow:
+    0 0 8px rgba(201,241,255,0.45),
+    0 0 16px rgba(155,231,255,0.25) !important;
+}
+
+/* MAIN CTA BUTTON (Set Wake Now) */
+.btn-primary,
+button:has(span:contains("Set Wake Now")) {
+  box-shadow:
+    0 0 10px rgba(201,241,255,0.5),
+    0 0 20px rgba(155,231,255,0.28) !important;
+}
+
+/* REMOVE WIDE BLOOM */
+.nav-btn,
+.chip,
+.state-btn {
+  box-shadow: none !important;
+}
+
+/* ENERGY BAR GLOW TIGHTEN */
+.fill {
+  box-shadow:
+    0 0 8px rgba(201,241,255,0.45),
+    0 0 14px rgba(155,231,255,0.22) !important;
+}
+
+/* CARD EDGE SHARPEN */
+.card,
+.output-block,
+.metric {
+  box-shadow:
+    0 14px 35px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5166,6 +5213,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
