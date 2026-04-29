@@ -811,6 +811,138 @@ textarea::placeholder {
   to { transform: translate3d(2%, 1%, 0); opacity: 0.9; }
 }
 </style>
+<style id="icy-avalanche-v2">
+/* ============================
+   AVALANCHE CORE (BUTTON-BASED)
+   Your selected button color becomes the system
+============================ */
+
+:root {
+  /* PRIMARY SYSTEM COLOR (your Patterns button) */
+  --ice-main: #c9f1ff;
+  --ice-main-soft: #e6f9ff;
+
+  /* SLIGHTLY MORE SATURATED VERSION */
+  --ice-accent: #9be7ff;
+
+  /* SUPPORTING */
+  --ice-deep: #04101c;
+  --ice-bg: #020814;
+  --ice-panel: rgba(10, 25, 45, 0.65);
+  --ice-border: rgba(180, 230, 255, 0.18);
+  --ice-text: #f4fbff;
+  --ice-muted: #a8c7db;
+}
+
+/* ===== BACKGROUND ===== */
+body {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(201,241,255,0.25), transparent 25%),
+    radial-gradient(circle at 80% 10%, rgba(155,231,255,0.18), transparent 30%),
+    linear-gradient(140deg, #020814 0%, #04101c 50%, #020814 100%) !important;
+
+  color: var(--ice-text);
+}
+
+/* ===== CARDS ===== */
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(201,241,255,0.04)),
+    var(--ice-panel) !important;
+
+  border: 1px solid var(--ice-border) !important;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.4),
+    0 0 25px rgba(155,231,255,0.08);
+}
+
+/* ===== NAV BUTTONS ===== */
+.nav-btn,
+.chip,
+.state-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(180,230,255,0.12);
+  color: var(--ice-text);
+}
+
+/* ===== ACTIVE BUTTON (THIS IS YOUR CORE COLOR) ===== */
+.nav-btn.active,
+.chip.active,
+.state-btn.active {
+  background: linear-gradient(135deg, var(--ice-main-soft), var(--ice-main)) !important;
+  color: #031019 !important;
+
+  box-shadow:
+    0 0 20px rgba(155,231,255,0.35),
+    0 0 40px rgba(201,241,255,0.25);
+}
+
+/* ===== PRIMARY BUTTON ===== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--ice-main), var(--ice-accent)) !important;
+  color: #021018 !important;
+
+  box-shadow:
+    0 0 20px rgba(155,231,255,0.4),
+    0 0 40px rgba(155,231,255,0.2);
+}
+
+/* ===== TEXT ===== */
+.app-title {
+  color: var(--ice-text);
+  text-shadow:
+    0 0 15px rgba(201,241,255,0.25),
+    0 0 40px rgba(155,231,255,0.15);
+}
+
+.muted,
+.tiny {
+  color: var(--ice-muted);
+}
+
+/* ===== ENERGY BAR ===== */
+.fill {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    var(--ice-main-soft) 30%,
+    var(--ice-main) 60%,
+    var(--ice-accent) 100%
+  ) !important;
+
+  box-shadow:
+    0 0 15px rgba(155,231,255,0.5),
+    0 0 30px rgba(201,241,255,0.3);
+}
+
+.bar {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ===== INPUTS ===== */
+input, textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(180,230,255,0.2);
+  color: var(--ice-text);
+}
+
+input:focus, textarea:focus {
+  border-color: var(--ice-accent);
+  box-shadow:
+    0 0 10px rgba(155,231,255,0.2);
+}
+
+/* ===== EMOJI GLOW ===== */
+.emoji {
+  filter: drop-shadow(0 0 10px rgba(155,231,255,0.4));
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -4640,6 +4772,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
