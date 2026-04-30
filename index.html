@@ -1879,6 +1879,98 @@ details,
 
 }
 </style>
+<style>
+/* ============================
+   ICY BOTTOM DOCK NAV (MOBILE)
+============================ */
+
+@media (max-width: 720px) {
+
+  body {
+    padding-bottom: 90px !important;
+  }
+
+  /* HIDE TOP NAV ON MOBILE */
+  .nav {
+    display: none !important;
+  }
+
+  /* COMPRESS HEADER */
+  .app-title {
+    font-size: 30px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .app-sub {
+    font-size: 13px !important;
+    opacity: 0.7 !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* STATE CARD FIRST */
+  .hero {
+    margin-top: 6px !important;
+    padding: 18px !important;
+  }
+
+  /* BUTTON STACK CLEAN */
+  .hero button {
+    width: 100% !important;
+    margin-top: 8px !important;
+    min-height: 52px !important;
+    border-radius: 18px !important;
+  }
+}
+
+/* ============================
+   DOCK BAR
+============================ */
+
+.icy-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background: rgba(10, 20, 30, 0.7);
+  backdrop-filter: blur(18px);
+
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 9999;
+}
+
+.icy-dock button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  opacity: 0.6;
+}
+
+.icy-dock button.active {
+  opacity: 1;
+}
+
+.icy-dock .icon {
+  font-size: 20px;
+}
+
+/* OPTIONAL: avalanche glow for active */
+.icy-dock button.active {
+  text-shadow: 0 0 8px rgba(160,220,255,0.6);
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5763,8 +5855,35 @@ Best focus prompts right now"
   setInterval(forcePhaseEmoji, 1000);
 })();
 </script>
+<div class="icy-dock">
+  <button onclick="showPage('home')" class="active">
+    <div class="icon">🏠</div>
+    Home
+  </button>
+
+  <button onclick="showPage('energy')">
+    <div class="icon">⚡</div>
+    Energy
+  </button>
+
+  <button onclick="showPage('interpreter')">
+    <div class="icon">🧠</div>
+    Interpret
+  </button>
+
+  <button onclick="showPage('patterns')">
+    <div class="icon">📊</div>
+    Patterns
+  </button>
+
+  <button onclick="showPage('settings')">
+    <div class="icon">⚙️</div>
+    Settings
+  </button>
+</div>
 </body>
 </html>
+
 
 
 
