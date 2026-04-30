@@ -5889,8 +5889,24 @@ Best focus prompts right now"
     Settings
   </button>
 </div>
+<script id="icy-showpage-wrapper-fix">
+/* ICY SHOWPAGE WRAPPER FIX */
+function showPage(page) {
+  if (typeof switchPage === "function") {
+    switchPage(page);
+  }
+
+  document.querySelectorAll(".icy-dock button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  const activeBtn = document.querySelector(`.icy-dock button[onclick*="${page}"]`);
+  if (activeBtn) activeBtn.classList.add("active");
+}
+</script>
 </body>
 </html>
+
 
 
 
