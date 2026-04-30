@@ -1466,6 +1466,205 @@ details,
     inset 0 1px 0 rgba(255,255,255,0.07) !important;
 }
 </style>
+<style id="icy-mobile-control-surface">
+/* ============================
+   ICY MOBILE CONTROL SURFACE PATCH
+   Mobile opens like a control surface, not a hero website
+============================ */
+
+@media (max-width: 720px) {
+
+  body {
+    background:
+      radial-gradient(circle at 50% -8%, rgba(220,248,255,0.32), transparent 26%),
+      radial-gradient(circle at 82% 18%, rgba(155,231,255,0.22), transparent 34%),
+      linear-gradient(180deg, #294653 0%, #203c49 45%, #18313d 100%) !important;
+    padding-bottom: 110px !important;
+  }
+
+  .wrap {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 22px 18px 120px !important;
+  }
+
+  /* compact identity header */
+  .app-title {
+    font-size: 42px !important;
+    line-height: 0.95 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .app-sub {
+    font-size: 18px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 18px !important;
+  }
+
+  /* nav becomes control chips */
+  .nav,
+  .tabs,
+  .module-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 18px !important;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar,
+  .tabs::-webkit-scrollbar,
+  .module-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-btn {
+    flex: 0 0 auto !important;
+    min-width: auto !important;
+    padding: 15px 24px !important;
+    border-radius: 999px !important;
+    font-size: 18px !important;
+  }
+
+  /* state card becomes the real hero */
+  .hero,
+  #page-home .card:first-of-type {
+    margin-top: 8px !important;
+    padding: 34px 28px !important;
+    border-radius: 34px !important;
+  }
+
+  .hero .eyebrow,
+  .eyebrow {
+    font-size: 15px !important;
+    letter-spacing: 0.16em !important;
+    margin-bottom: 14px !important;
+  }
+
+  .phase,
+  .big,
+  #phaseName {
+    font-size: 54px !important;
+    line-height: 1 !important;
+  }
+
+  .emoji,
+  #phaseIcon,
+  #phaseEmoji {
+    font-size: 42px !important;
+    margin-right: 10px !important;
+  }
+
+  .energy-state,
+  #energyLabel {
+    font-size: 44px !important;
+    line-height: 1.05 !important;
+    margin-top: 26px !important;
+  }
+
+  .hero p,
+  .hero .muted,
+  .window,
+  #windowText {
+    font-size: 24px !important;
+    line-height: 1.34 !important;
+  }
+
+  .hero strong,
+  #guidanceText {
+    display: block !important;
+    font-size: 27px !important;
+    line-height: 1.3 !important;
+    margin-top: 16px !important;
+  }
+
+  .bar {
+    height: 16px !important;
+    margin: 26px 0 !important;
+    border-radius: 999px !important;
+  }
+
+  /* quick actions: thick but shorter */
+  .hero .btn,
+  .hero button {
+    min-height: 76px !important;
+    border-radius: 26px !important;
+    font-size: 22px !important;
+    margin-top: 14px !important;
+  }
+
+  /* lower cards become secondary */
+  .card,
+  .output-block {
+    border-radius: 30px !important;
+    padding: 26px 22px !important;
+    margin-top: 24px !important;
+  }
+
+  .card h2,
+  .card h3,
+  .section-title {
+    font-size: 24px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .card p,
+  .card .muted,
+  .tiny {
+    font-size: 18px !important;
+    line-height: 1.42 !important;
+  }
+
+  input,
+  textarea {
+    min-height: 66px !important;
+    border-radius: 22px !important;
+    font-size: 20px !important;
+    padding: 0 22px !important;
+  }
+
+  textarea {
+    padding-top: 18px !important;
+  }
+
+  .btn,
+  button {
+    min-height: 64px !important;
+    border-radius: 22px !important;
+    font-size: 19px !important;
+  }
+
+  .metric,
+  .mini-box {
+    border-radius: 24px !important;
+    padding: 22px !important;
+  }
+
+  /* make detail sections feel lower priority */
+  details {
+    border-radius: 28px !important;
+    padding: 20px !important;
+  }
+
+  details summary {
+    font-size: 22px !important;
+  }
+
+  /* prevent mobile from falling into dark lower-page look */
+  .card,
+  .output-block,
+  .metric,
+  .mini-box,
+  .state-stack-card,
+  details {
+    background:
+      linear-gradient(180deg, rgba(230,249,255,0.12), rgba(155,231,255,0.06)),
+      rgba(34, 62, 76, 0.62) !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5352,6 +5551,7 @@ Best focus prompts right now"
 </script>
 </body>
 </html>
+
 
 
 
