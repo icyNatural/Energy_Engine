@@ -1188,78 +1188,113 @@ body > * {
   text-shadow: 0 0 8px rgba(160,220,255,0.6);
 }
 </style>
-<style id="icy-locked-color-system">
-:root {
-  --ice-text:#f6fdff;
-  --ice-muted:rgba(224,245,255,.70);
-  --ice-card:rgba(8,27,39,.58);
-  --ice-card-strong:rgba(5,20,32,.72);
-  --ice-line:rgba(226,250,255,.24);
-  --phase-accent:#9be7ff;
-  --phase-accent-2:#dff8ff;
-  --phase-glow:rgba(155,231,255,.34);
-}
 
-body[data-phase="Recovery"]{--phase-accent:#a9b7ff;--phase-accent-2:#e1e6ff;--phase-glow:rgba(169,183,255,.34);}
-body[data-phase="Flow"]{--phase-accent:#71e6ff;--phase-accent-2:#d9fbff;--phase-glow:rgba(113,230,255,.38);}
-body[data-phase="Radiance"]{--phase-accent:#ffe08a;--phase-accent-2:#fff7d1;--phase-glow:rgba(255,224,138,.34);}
-body[data-phase="Surge"]{--phase-accent:#bda7ff;--phase-accent-2:#eadfff;--phase-glow:rgba(189,167,255,.36);}
-body[data-phase="Settle"]{--phase-accent:#8fb8ff;--phase-accent-2:#d7e6ff;--phase-glow:rgba(143,184,255,.32);}
+<style id="icy-darker-gradient-lock">
+/* darker avalanche glass gradient only */
 
 body {
   background:
-    radial-gradient(circle at 50% -10%, rgba(245,253,255,.38), transparent 28%),
-    radial-gradient(circle at 85% 8%, rgba(155,231,255,.20), transparent 32%),
-    linear-gradient(180deg, #8fb8c4 0%, #406b78 34%, #071824 100%) !important;
-  color:var(--ice-text)!important;
+    radial-gradient(circle at 50% -8%, rgba(185,235,255,0.22), transparent 28%),
+    radial-gradient(circle at 82% 12%, rgba(80,180,220,0.14), transparent 34%),
+    linear-gradient(180deg, #203f4b 0%, #142d38 38%, #0b1d28 72%, #06121c 100%) !important;
+  color: #f6fdff !important;
 }
 
-.card,.output-block,.metric,.mini-box,.state-stack-card,details {
-  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(155,231,255,.045)),var(--ice-card)!important;
-  border:1px solid var(--ice-line)!important;
-  box-shadow:0 18px 42px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.08)!important;
-  backdrop-filter:blur(14px);
+.card,
+.output-block,
+.metric,
+.mini-box,
+.state-stack-card,
+details {
+  background:
+    linear-gradient(180deg, rgba(235,252,255,0.07), rgba(120,215,255,0.025)),
+    rgba(5, 18, 30, 0.72) !important;
+  border: 1px solid rgba(210,245,255,0.16) !important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.055) !important;
 }
 
 .hero {
-  background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.17),transparent 34%),
-             linear-gradient(135deg,rgba(255,255,255,.08),var(--ice-card-strong))!important;
+  background:
+    radial-gradient(circle at 18% 4%, rgba(255,255,255,0.10), transparent 34%),
+    linear-gradient(135deg, rgba(180,235,255,0.08), rgba(4,16,27,0.82)) !important;
 }
 
-.app-title,.phase,.energy-state,.big {
-  color:var(--ice-text)!important;
-  text-shadow:0 0 12px rgba(255,255,255,.16),0 0 22px var(--phase-glow);
+.app-sub,
+.muted,
+.tiny,
+.window,
+.flow-bridge-sub,
+.metric-label,
+.metric-sub {
+  color: rgba(215,238,250,0.66) !important;
 }
 
-.app-sub,.muted,.tiny,.window,.metric-label,.metric-sub {
-  color:var(--ice-muted)!important;
+.eyebrow,
+.section-title,
+.output-label,
+.state-stack-label,
+.icy-field-label,
+.flow-bridge-title {
+  color: rgba(215,241,255,0.72) !important;
 }
 
-.nav-btn,.chip,.state-btn,.btn-soft,.btn-ghost {
-  background:rgba(255,255,255,.075)!important;
-  border:1px solid rgba(235,250,255,.18)!important;
-  color:var(--ice-text)!important;
+.nav-btn,
+.chip,
+.state-btn,
+.btn-soft,
+.btn-ghost {
+  background: rgba(235,252,255,0.055) !important;
+  border: 1px solid rgba(220,248,255,0.14) !important;
+  color: #f6fdff !important;
 }
 
-.nav-btn.active,.chip.active,.state-btn.active,.btn-primary {
-  background:linear-gradient(135deg,#fff,var(--phase-accent-2),var(--phase-accent))!important;
-  color:#04131c!important;
-  box-shadow:0 0 10px var(--phase-glow),0 0 20px rgba(255,255,255,.16)!important;
+.nav-btn.active,
+.chip.active,
+.state-btn.active,
+.btn-primary {
+  background: linear-gradient(135deg, #ffffff, #d8f8ff, #8fe8ff) !important;
+  color: #04131c !important;
+  box-shadow:
+    0 0 8px rgba(180,235,255,0.42),
+    0 0 16px rgba(120,220,255,0.22) !important;
 }
 
 .fill {
-  background:linear-gradient(90deg,#fff,var(--phase-accent-2),var(--phase-accent))!important;
-  box-shadow:0 0 10px var(--phase-glow),0 0 18px rgba(255,255,255,.12)!important;
+  background: linear-gradient(90deg, #ffffff, #d8f8ff, #8fe8ff) !important;
+  box-shadow:
+    0 0 8px rgba(180,235,255,0.42),
+    0 0 14px rgba(120,220,255,0.22) !important;
+}
+
+.bar {
+  background: rgba(255,255,255,0.10) !important;
+}
+
+input,
+textarea {
+  background: rgba(235,252,255,0.055) !important;
+  border: 1px solid rgba(220,248,255,0.14) !important;
+  color: #f6fdff !important;
 }
 
 .icy-dock {
-  background:rgba(5,18,28,.74)!important;
-  backdrop-filter:blur(18px);
+  background: rgba(4, 16, 26, 0.82) !important;
+  border-top: 1px solid rgba(220,248,255,0.12) !important;
+}
+
+.icy-dock button {
+  color: rgba(246,253,255,0.58) !important;
 }
 
 .icy-dock button.active {
-  color:var(--ice-text)!important;
-  text-shadow:0 0 10px var(--phase-glow)!important;
+  color: #f6fdff !important;
+  text-shadow: 0 0 8px rgba(150,230,255,0.55) !important;
+}
+
+.icy-shimmer {
+  opacity: 0.28 !important;
 }
 </style>
 </head>
@@ -5213,6 +5248,7 @@ function showPage(page) {
 </script>
 </body>
 </html>
+
 
 
 
