@@ -3092,6 +3092,14 @@ Best focus prompts right now</div>
       document.querySelectorAll(".nav-btn").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.page === pageName);
       });
+
+      /* ICY DOCK ACTIVE INSIDE SWITCHPAGE */
+      document.querySelectorAll(".icy-dock button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      const dockBtn = document.querySelector(`.icy-dock button[onclick*="${pageName}"]`);
+      if (dockBtn) dockBtn.classList.add("active");
     }
 
     function renderQuestionSetChips() {
@@ -5883,6 +5891,7 @@ Best focus prompts right now"
 </div>
 </body>
 </html>
+
 
 
 
