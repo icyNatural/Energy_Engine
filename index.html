@@ -1453,6 +1453,96 @@ details {
   to { transform: translate3d(-40px, -60px, 0); }
 }
 </style>
+<style id="icy-text-tighter-old-look">
+/* ============================
+   ICY TEXT TIGHTEN PATCH
+   Restores older cleaner text proportions
+============================ */
+
+@media (max-width: 720px) {
+
+  /* stop hero text from stretching too wide */
+  .hero-inner {
+    max-width: 92% !important;
+    margin: 0 auto !important;
+  }
+
+  .phase-row {
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  #phaseIcon,
+  .emoji {
+    font-size: 38px !important;
+    flex: 0 0 auto !important;
+  }
+
+  #phaseName,
+  .phase {
+    font-size: clamp(42px, 12vw, 56px) !important;
+    line-height: 0.95 !important;
+    max-width: 100% !important;
+  }
+
+  .phase-quote {
+    font-size: 20px !important;
+    line-height: 1.42 !important;
+    max-width: 92% !important;
+  }
+
+  #energyState,
+  .energy-state {
+    font-size: 38px !important;
+    line-height: 1 !important;
+    margin-top: 24px !important;
+  }
+
+  #energyMeaning,
+  .energy-meaning {
+    font-size: 21px !important;
+    line-height: 1.35 !important;
+    max-width: 92% !important;
+  }
+
+  #energyAction,
+  .energy-action {
+    font-size: 21px !important;
+    line-height: 1.32 !important;
+    max-width: 92% !important;
+  }
+
+  #windowText,
+  .window {
+    font-size: 25px !important;
+    line-height: 1.42 !important;
+    max-width: 86% !important;
+    color: rgba(218,242,252,0.58) !important;
+  }
+
+  #homeEnergyBridge,
+  #homeEnergyBridgeStamp,
+  .flow-bridge-sub {
+    font-size: 16px !important;
+    line-height: 1.38 !important;
+    max-width: 92% !important;
+  }
+
+  .bar {
+    max-width: 92% !important;
+  }
+
+  .hero-actions {
+    max-width: 92% !important;
+  }
+
+  .hero .btn,
+  .hero button {
+    font-size: 19px !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5404,6 +5494,7 @@ function showPage(page) {
 </script>
 </body>
 </html>
+
 
 
 
