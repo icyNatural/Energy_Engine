@@ -1454,126 +1454,116 @@ details {
 }
 </style>
 
-<style id="icy-best-hero-lock">
-/* ============================
-   ICY BEST HERO LOCK
-   Restores the clean screenshot layout:
-   big title, readable lines, no cramped wrapping
-============================ */
 
+<style id="icy-hero-compact-lock">
+/* compact mobile hero: same theme, less giant block */
 @media (max-width: 720px) {
 
-  .hero {
-    padding: 34px 28px 30px !important;
-    border-radius: 34px !important;
+  .wrap {
+    padding-top: 14px !important;
   }
 
-  .hero-inner {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
+  .app-title {
+    font-size: 34px !important;
+    line-height: 1 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .app-sub {
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero {
+    padding: 24px 22px 22px !important;
+    border-radius: 30px !important;
+    margin-top: 10px !important;
   }
 
   .eyebrow {
-    font-size: 15px !important;
-    letter-spacing: 0.16em !important;
-    margin-bottom: 24px !important;
+    font-size: 13px !important;
+    letter-spacing: 0.14em !important;
+    margin-bottom: 18px !important;
   }
 
   .phase-row {
     display: flex !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 16px !important;
-    margin-bottom: 22px !important;
+    gap: 14px !important;
+    margin-bottom: 16px !important;
   }
 
   #phaseIcon,
   .emoji {
-    font-size: 42px !important;
+    font-size: 38px !important;
     flex: 0 0 auto !important;
   }
 
   #phaseName,
   .phase {
-    font-size: clamp(50px, 13vw, 68px) !important;
+    font-size: clamp(44px, 12vw, 58px) !important;
     line-height: 0.95 !important;
     white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    width: auto !important;
-    max-width: none !important;
   }
 
   #phaseQuote,
   .phase-quote {
-    font-size: 24px !important;
-    line-height: 1.35 !important;
-    max-width: none !important;
-    margin-bottom: 30px !important;
-    border-bottom: none !important;
-    padding-bottom: 0 !important;
+    font-size: 22px !important;
+    line-height: 1.32 !important;
+    margin-bottom: 22px !important;
   }
 
   #energyState,
   .energy-state {
-    font-size: 46px !important;
+    font-size: 38px !important;
     line-height: 1 !important;
-    margin-top: 0 !important;
-    margin-bottom: 14px !important;
+    margin: 0 0 12px !important;
   }
 
   #energyMeaning,
   .energy-meaning {
-    font-size: 27px !important;
+    font-size: 22px !important;
     line-height: 1.32 !important;
-    max-width: none !important;
-    margin-bottom: 18px !important;
+    margin-bottom: 14px !important;
   }
 
   #energyAction,
   .energy-action {
-    font-size: 27px !important;
+    font-size: 22px !important;
     line-height: 1.28 !important;
-    max-width: none !important;
-    padding-bottom: 0 !important;
-    border-bottom: none !important;
-    margin-bottom: 30px !important;
+    margin-bottom: 22px !important;
   }
 
   #windowText,
   .window {
-    font-size: 22px !important;
-    line-height: 1.35 !important;
-    max-width: none !important;
-    color: rgba(218,242,252,0.66) !important;
-    margin-bottom: 18px !important;
+    font-size: 20px !important;
+    line-height: 1.32 !important;
+    margin-bottom: 12px !important;
   }
 
   #homeEnergyBridge,
   #homeEnergyBridgeStamp,
   .flow-bridge-sub {
-    font-size: 20px !important;
-    line-height: 1.35 !important;
-    max-width: none !important;
+    font-size: 16px !important;
+    line-height: 1.32 !important;
   }
 
   .bar {
-    height: 12px !important;
-    margin: 26px 0 34px !important;
-    max-width: none !important;
+    height: 11px !important;
+    margin: 20px 0 24px !important;
   }
 
   .hero-actions {
-    max-width: none !important;
-    margin-top: 0 !important;
+    gap: 10px !important;
   }
 
   .hero .btn,
   .hero button {
-    min-height: 72px !important;
-    font-size: 22px !important;
-    border-radius: 26px !important;
+    min-height: 58px !important;
+    font-size: 18px !important;
+    border-radius: 22px !important;
   }
 }
 </style>
@@ -5528,6 +5518,7 @@ function showPage(page) {
 </script>
 </body>
 </html>
+
 
 
 
