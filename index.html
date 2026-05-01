@@ -1453,93 +1453,127 @@ details {
   to { transform: translate3d(-40px, -60px, 0); }
 }
 </style>
-<style id="icy-text-tighter-old-look">
+
+<style id="icy-best-hero-lock">
 /* ============================
-   ICY TEXT TIGHTEN PATCH
-   Restores older cleaner text proportions
+   ICY BEST HERO LOCK
+   Restores the clean screenshot layout:
+   big title, readable lines, no cramped wrapping
 ============================ */
 
 @media (max-width: 720px) {
 
-  /* stop hero text from stretching too wide */
+  .hero {
+    padding: 34px 28px 30px !important;
+    border-radius: 34px !important;
+  }
+
   .hero-inner {
-    max-width: 92% !important;
-    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  .eyebrow {
+    font-size: 15px !important;
+    letter-spacing: 0.16em !important;
+    margin-bottom: 24px !important;
   }
 
   .phase-row {
+    display: flex !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 16px !important;
+    margin-bottom: 22px !important;
   }
 
   #phaseIcon,
   .emoji {
-    font-size: 38px !important;
+    font-size: 42px !important;
     flex: 0 0 auto !important;
   }
 
   #phaseName,
   .phase {
-    font-size: clamp(42px, 12vw, 56px) !important;
+    font-size: clamp(50px, 13vw, 68px) !important;
     line-height: 0.95 !important;
-    max-width: 100% !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    width: auto !important;
+    max-width: none !important;
   }
 
+  #phaseQuote,
   .phase-quote {
-    font-size: 20px !important;
-    line-height: 1.42 !important;
-    max-width: 92% !important;
+    font-size: 24px !important;
+    line-height: 1.35 !important;
+    max-width: none !important;
+    margin-bottom: 30px !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
   }
 
   #energyState,
   .energy-state {
-    font-size: 38px !important;
+    font-size: 46px !important;
     line-height: 1 !important;
-    margin-top: 24px !important;
+    margin-top: 0 !important;
+    margin-bottom: 14px !important;
   }
 
   #energyMeaning,
   .energy-meaning {
-    font-size: 21px !important;
-    line-height: 1.35 !important;
-    max-width: 92% !important;
+    font-size: 27px !important;
+    line-height: 1.32 !important;
+    max-width: none !important;
+    margin-bottom: 18px !important;
   }
 
   #energyAction,
   .energy-action {
-    font-size: 21px !important;
-    line-height: 1.32 !important;
-    max-width: 92% !important;
+    font-size: 27px !important;
+    line-height: 1.28 !important;
+    max-width: none !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+    margin-bottom: 30px !important;
   }
 
   #windowText,
   .window {
-    font-size: 25px !important;
-    line-height: 1.42 !important;
-    max-width: 86% !important;
-    color: rgba(218,242,252,0.58) !important;
+    font-size: 22px !important;
+    line-height: 1.35 !important;
+    max-width: none !important;
+    color: rgba(218,242,252,0.66) !important;
+    margin-bottom: 18px !important;
   }
 
   #homeEnergyBridge,
   #homeEnergyBridgeStamp,
   .flow-bridge-sub {
-    font-size: 16px !important;
-    line-height: 1.38 !important;
-    max-width: 92% !important;
+    font-size: 20px !important;
+    line-height: 1.35 !important;
+    max-width: none !important;
   }
 
   .bar {
-    max-width: 92% !important;
+    height: 12px !important;
+    margin: 26px 0 34px !important;
+    max-width: none !important;
   }
 
   .hero-actions {
-    max-width: 92% !important;
+    max-width: none !important;
+    margin-top: 0 !important;
   }
 
   .hero .btn,
   .hero button {
-    font-size: 19px !important;
+    min-height: 72px !important;
+    font-size: 22px !important;
+    border-radius: 26px !important;
   }
 }
 </style>
@@ -5494,6 +5528,7 @@ function showPage(page) {
 </script>
 </body>
 </html>
+
 
 
 
