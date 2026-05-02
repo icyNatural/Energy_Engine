@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -628,16 +628,16 @@ body > * {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "?",
-      "Recovery": "??",
-      "Flow": "??",
-      "Radiance": "??",
-      "Surge": "?",
-      "Settle": "??"
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
     };
 
     const name = (phase.textContent || "").trim();
-    icon.textContent = map[name] || "?";
+    icon.textContent = map[name] || "⏳";
   }
 
   const oldRenderAvalancheFinal = window.render;
@@ -660,15 +660,15 @@ body > * {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "?",
-      "Recovery": "??",
-      "Flow": "??",
-      "Radiance": "??",
-      "Surge": "?",
-      "Settle": "??"
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
     };
 
-    icon.textContent = map[(phase.textContent || "").trim()] || "?";
+    icon.textContent = map[(phase.textContent || "").trim()] || "⏳";
   }
 
   const oldRenderBalancedEmoji = window.render;
@@ -998,7 +998,7 @@ body > * {
     margin-bottom: 12px !important;
   }
 
-  /* NAV ? horizontal scroll only */
+  /* NAV → horizontal scroll only */
   .nav {
     display: flex !important;
     flex-wrap: nowrap !important;
@@ -1188,384 +1188,78 @@ body > * {
   text-shadow: 0 0 8px rgba(160,220,255,0.6);
 }
 </style>
+<style id="icy-locked-color-system">
+:root {
+  --ice-text:#f6fdff;
+  --ice-muted:rgba(224,245,255,.70);
+  --ice-card:rgba(8,27,39,.58);
+  --ice-card-strong:rgba(5,20,32,.72);
+  --ice-line:rgba(226,250,255,.24);
+  --phase-accent:#9be7ff;
+  --phase-accent-2:#dff8ff;
+  --phase-glow:rgba(155,231,255,.34);
+}
 
-<style id="icy-darker-gradient-lock">
-/* darker avalanche glass gradient only */
+body[data-phase="Recovery"]{--phase-accent:#a9b7ff;--phase-accent-2:#e1e6ff;--phase-glow:rgba(169,183,255,.34);}
+body[data-phase="Flow"]{--phase-accent:#71e6ff;--phase-accent-2:#d9fbff;--phase-glow:rgba(113,230,255,.38);}
+body[data-phase="Radiance"]{--phase-accent:#ffe08a;--phase-accent-2:#fff7d1;--phase-glow:rgba(255,224,138,.34);}
+body[data-phase="Surge"]{--phase-accent:#bda7ff;--phase-accent-2:#eadfff;--phase-glow:rgba(189,167,255,.36);}
+body[data-phase="Settle"]{--phase-accent:#8fb8ff;--phase-accent-2:#d7e6ff;--phase-glow:rgba(143,184,255,.32);}
 
 body {
   background:
-    radial-gradient(circle at 50% -8%, rgba(185,235,255,0.22), transparent 28%),
-    radial-gradient(circle at 82% 12%, rgba(80,180,220,0.14), transparent 34%),
-    linear-gradient(180deg, #203f4b 0%, #142d38 38%, #0b1d28 72%, #06121c 100%) !important;
-  color: #f6fdff !important;
+    radial-gradient(circle at 50% -10%, rgba(245,253,255,.38), transparent 28%),
+    radial-gradient(circle at 85% 8%, rgba(155,231,255,.20), transparent 32%),
+    linear-gradient(180deg, #8fb8c4 0%, #406b78 34%, #071824 100%) !important;
+  color:var(--ice-text)!important;
 }
 
-.card,
-.output-block,
-.metric,
-.mini-box,
-.state-stack-card,
-details {
-  background:
-    linear-gradient(180deg, rgba(235,252,255,0.07), rgba(120,215,255,0.025)),
-    rgba(5, 18, 30, 0.72) !important;
-  border: 1px solid rgba(210,245,255,0.16) !important;
-  box-shadow:
-    0 16px 38px rgba(0,0,0,0.34),
-    inset 0 1px 0 rgba(255,255,255,0.055) !important;
+.card,.output-block,.metric,.mini-box,.state-stack-card,details {
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(155,231,255,.045)),var(--ice-card)!important;
+  border:1px solid var(--ice-line)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(14px);
 }
 
 .hero {
-  background:
-    radial-gradient(circle at 18% 4%, rgba(255,255,255,0.10), transparent 34%),
-    linear-gradient(135deg, rgba(180,235,255,0.08), rgba(4,16,27,0.82)) !important;
+  background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.17),transparent 34%),
+             linear-gradient(135deg,rgba(255,255,255,.08),var(--ice-card-strong))!important;
 }
 
-.app-sub,
-.muted,
-.tiny,
-.window,
-.flow-bridge-sub,
-.metric-label,
-.metric-sub {
-  color: rgba(215,238,250,0.66) !important;
+.app-title,.phase,.energy-state,.big {
+  color:var(--ice-text)!important;
+  text-shadow:0 0 12px rgba(255,255,255,.16),0 0 22px var(--phase-glow);
 }
 
-.eyebrow,
-.section-title,
-.output-label,
-.state-stack-label,
-.icy-field-label,
-.flow-bridge-title {
-  color: rgba(215,241,255,0.72) !important;
+.app-sub,.muted,.tiny,.window,.metric-label,.metric-sub {
+  color:var(--ice-muted)!important;
 }
 
-.nav-btn,
-.chip,
-.state-btn,
-.btn-soft,
-.btn-ghost {
-  background: rgba(235,252,255,0.055) !important;
-  border: 1px solid rgba(220,248,255,0.14) !important;
-  color: #f6fdff !important;
+.nav-btn,.chip,.state-btn,.btn-soft,.btn-ghost {
+  background:rgba(255,255,255,.075)!important;
+  border:1px solid rgba(235,250,255,.18)!important;
+  color:var(--ice-text)!important;
 }
 
-.nav-btn.active,
-.chip.active,
-.state-btn.active,
-.btn-primary {
-  background: linear-gradient(135deg, #ffffff, #d8f8ff, #8fe8ff) !important;
-  color: #04131c !important;
-  box-shadow:
-    0 0 8px rgba(180,235,255,0.42),
-    0 0 16px rgba(120,220,255,0.22) !important;
+.nav-btn.active,.chip.active,.state-btn.active,.btn-primary {
+  background:linear-gradient(135deg,#fff,var(--phase-accent-2),var(--phase-accent))!important;
+  color:#04131c!important;
+  box-shadow:0 0 10px var(--phase-glow),0 0 20px rgba(255,255,255,.16)!important;
 }
 
 .fill {
-  background: linear-gradient(90deg, #ffffff, #d8f8ff, #8fe8ff) !important;
-  box-shadow:
-    0 0 8px rgba(180,235,255,0.42),
-    0 0 14px rgba(120,220,255,0.22) !important;
-}
-
-.bar {
-  background: rgba(255,255,255,0.10) !important;
-}
-
-input,
-textarea {
-  background: rgba(235,252,255,0.055) !important;
-  border: 1px solid rgba(220,248,255,0.14) !important;
-  color: #f6fdff !important;
+  background:linear-gradient(90deg,#fff,var(--phase-accent-2),var(--phase-accent))!important;
+  box-shadow:0 0 10px var(--phase-glow),0 0 18px rgba(255,255,255,.12)!important;
 }
 
 .icy-dock {
-  background: rgba(4, 16, 26, 0.82) !important;
-  border-top: 1px solid rgba(220,248,255,0.12) !important;
-}
-
-.icy-dock button {
-  color: rgba(246,253,255,0.58) !important;
+  background:rgba(5,18,28,.74)!important;
+  backdrop-filter:blur(18px);
 }
 
 .icy-dock button.active {
-  color: #f6fdff !important;
-  text-shadow: 0 0 8px rgba(150,230,255,0.55) !important;
-}
-
-.icy-shimmer {
-  opacity: 0.28 !important;
-}
-</style>
-<style id="icy-contrast-push">
-/* ============================
-   ICY CONTRAST PUSH
-   Ice + light hitting it
-   Adds edges, signal glow, depth separation
-============================ */
-
-/* glass card edge = sharper ice outline */
-.card,
-.output-block,
-.metric,
-.mini-box,
-.state-stack-card,
-details {
-  border: 1px solid rgba(205, 245, 255, 0.24) !important;
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.36),
-    0 0 14px rgba(140,220,255,0.13),
-    inset 0 1px 0 rgba(255,255,255,0.075),
-    inset 0 -1px 0 rgba(120,220,255,0.035) !important;
-}
-
-/* hero gets a premium icy rim */
-.hero {
-  border: 1px solid rgba(210, 248, 255, 0.30) !important;
-  box-shadow:
-    0 18px 44px rgba(0,0,0,0.38),
-    0 0 18px rgba(140,220,255,0.16),
-    inset 0 1px 0 rgba(255,255,255,0.10),
-    inset 0 0 34px rgba(140,220,255,0.045) !important;
-}
-
-/* thin ice divider feeling inside hero */
-.hero .phase-quote {
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(220,248,255,0.16);
-}
-
-.energy-action {
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(220,248,255,0.13);
-}
-
-/* energy bar = life signal */
-.fill {
-  background:
-    linear-gradient(90deg, #ffffff 0%, #d8f8ff 32%, #8fe8ff 72%, #ffffff 100%) !important;
-  box-shadow:
-    0 0 10px rgba(180,235,255,0.55),
-    0 0 22px rgba(120,220,255,0.30),
-    inset 0 1px 0 rgba(255,255,255,0.7) !important;
-}
-
-.bar {
-  background: rgba(255,255,255,0.10) !important;
-  border: 1px solid rgba(220,248,255,0.12) !important;
-}
-
-/* primary action = brightest object */
-.btn-primary {
-  background:
-    linear-gradient(135deg, #ffffff 0%, #d8f8ff 48%, #8fe8ff 100%) !important;
-  color: #03131d !important;
-  box-shadow:
-    0 0 12px rgba(180,235,255,0.60),
-    0 0 26px rgba(120,220,255,0.34),
-    inset 0 1px 0 rgba(255,255,255,0.85),
-    inset 0 -1px 0 rgba(70,190,230,0.20) !important;
-}
-
-/* active nav/dock = signal, but weaker than CTA */
-.nav-btn.active,
-.chip.active,
-.state-btn.active {
-  box-shadow:
-    0 0 9px rgba(180,235,255,0.46),
-    0 0 18px rgba(120,220,255,0.24),
-    inset 0 1px 0 rgba(255,255,255,0.65) !important;
-}
-
-/* subtle ice shine overlay on big cards */
-.hero::after,
-.card::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(115deg,
-      transparent 0%,
-      transparent 36%,
-      rgba(255,255,255,0.045) 48%,
-      rgba(140,220,255,0.035) 54%,
-      transparent 68%
-    );
-  opacity: 0.55;
-}
-
-/* make sure cards can hold overlay */
-.card,
-.hero {
-  position: relative;
-  overflow: hidden;
-}
-
-.card > *,
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* title + phase get a small ice cut */
-.app-title,
-.phase {
-  text-shadow:
-    0 1px 0 rgba(255,255,255,0.18),
-    0 0 14px rgba(180,235,255,0.18),
-    0 0 30px rgba(120,220,255,0.10) !important;
-}
-
-/* quieter support text so signal elements pop */
-.window,
-.flow-bridge-sub,
-.muted,
-.tiny {
-  color: rgba(218,242,252,0.62) !important;
-}
-
-/* dock stronger glass edge */
-.icy-dock {
-  border-top: 1px solid rgba(210,245,255,0.20) !important;
-  box-shadow:
-    0 -8px 28px rgba(0,0,0,0.32),
-    0 0 14px rgba(120,220,255,0.10) !important;
-}
-
-/* tiny frost particles in shimmer layer */
-.icy-shimmer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.16) 0 1px, transparent 1px),
-    radial-gradient(circle, rgba(140,220,255,0.12) 0 1px, transparent 1px);
-  background-size: 90px 90px, 140px 140px;
-  background-position: 0 0, 40px 60px;
-  opacity: 0.18;
-  animation: icyParticles 18s linear infinite;
-}
-
-@keyframes icyParticles {
-  from { transform: translate3d(0,0,0); }
-  to { transform: translate3d(-40px, -60px, 0); }
-}
-</style>
-
-
-
-<style id="icy-hero-compact-lock">
-/* compact mobile hero: same theme, less giant block */
-@media (max-width: 720px) {
-
-  .wrap {
-    padding-top: 14px !important;
-  }
-
-  .app-title {
-    font-size: 34px !important;
-    line-height: 1 !important;
-    margin-bottom: 6px !important;
-  }
-
-  .app-sub {
-    font-size: 14px !important;
-    line-height: 1.35 !important;
-    margin-bottom: 12px !important;
-  }
-
-  .hero {
-    padding: 24px 22px 22px !important;
-    border-radius: 30px !important;
-    margin-top: 10px !important;
-  }
-
-  .eyebrow {
-    font-size: 13px !important;
-    letter-spacing: 0.14em !important;
-    margin-bottom: 18px !important;
-  }
-
-  .phase-row {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    gap: 14px !important;
-    margin-bottom: 16px !important;
-  }
-
-  #phaseIcon,
-  .emoji {
-    font-size: 38px !important;
-    flex: 0 0 auto !important;
-  }
-
-  #phaseName,
-  .phase {
-    font-size: clamp(44px, 12vw, 58px) !important;
-    line-height: 0.95 !important;
-    white-space: nowrap !important;
-  }
-
-  #phaseQuote,
-  .phase-quote {
-    font-size: 22px !important;
-    line-height: 1.32 !important;
-    margin-bottom: 22px !important;
-  }
-
-  #energyState,
-  .energy-state {
-    font-size: 38px !important;
-    line-height: 1 !important;
-    margin: 0 0 12px !important;
-  }
-
-  #energyMeaning,
-  .energy-meaning {
-    font-size: 22px !important;
-    line-height: 1.32 !important;
-    margin-bottom: 14px !important;
-  }
-
-  #energyAction,
-  .energy-action {
-    font-size: 22px !important;
-    line-height: 1.28 !important;
-    margin-bottom: 22px !important;
-  }
-
-  #windowText,
-  .window {
-    font-size: 20px !important;
-    line-height: 1.32 !important;
-    margin-bottom: 12px !important;
-  }
-
-  #homeEnergyBridge,
-  #homeEnergyBridgeStamp,
-  .flow-bridge-sub {
-    font-size: 16px !important;
-    line-height: 1.32 !important;
-  }
-
-  .bar {
-    height: 11px !important;
-    margin: 20px 0 24px !important;
-  }
-
-  .hero-actions {
-    gap: 10px !important;
-  }
-
-  .hero .btn,
-  .hero button {
-    min-height: 58px !important;
-    font-size: 18px !important;
-    border-radius: 22px !important;
-  }
+  color:var(--ice-text)!important;
+  text-shadow:0 0 10px var(--phase-glow)!important;
 }
 </style>
 </head>
@@ -1573,7 +1267,7 @@ details {
 <div class="icy-shimmer"></div>
   <div class="wrap">
     <div class="app-title">Icy Natural OS</div>
-    <div class="app-sub">One core app. Multiple modules. State ? meaning ? questions ? patterns.</div>
+    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
@@ -1683,58 +1377,6 @@ details {
         </div>
       </div>
     </section>
-<div class="quick-metrics">
-  <div class="qm-grid">
-
-    <div class="qm-card">
-      <div class="qm-label">Awake</div>
-      <div class="qm-value" id="awakeTime">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Nap</div>
-      <div class="qm-value" id="napCredit">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Phase</div>
-      <div class="qm-value" id="phaseShift">--</div>
-    </div>
-
-  </div>
-
-  <div class="qm-actions">
-    <button class="btn-primary">Wake</button>
-    <button class="btn-secondary">Nap</button>
-    <button class="btn-secondary">Refresh</button>
-  </div>
-</div>
-<div class="quick-metrics">
-  <div class="qm-grid">
-
-    <div class="qm-card">
-      <div class="qm-label">Awake</div>
-      <div class="qm-value" id="awakeTime">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Nap</div>
-      <div class="qm-value" id="napCredit">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Phase</div>
-      <div class="qm-value" id="phaseShift">--</div>
-    </div>
-
-  </div>
-
-  <div class="qm-actions">
-    <button class="btn-primary">Wake</button>
-    <button class="btn-secondary">Nap</button>
-    <button class="btn-secondary">Refresh</button>
-  </div>
-</div>
 
     <section id="page-energy" class="page hidden">
       <div class="card">
@@ -3025,10 +2667,10 @@ Best focus prompts right now</div>
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -3076,7 +2718,7 @@ Best focus prompts right now</div>
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -3098,7 +2740,7 @@ Best focus prompts right now</div>
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -3121,7 +2763,7 @@ Best focus prompts right now</div>
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -3806,7 +3448,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} � ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} • ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -3821,17 +3463,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "�"}</div>
+            <div class="tag">${item.date || "—"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         list.appendChild(row);
       });
@@ -3959,7 +3601,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -4392,7 +4034,7 @@ Best move:
       const btn = document.createElement("button");
       btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
       btn.textContent = mode === recommendedMode
-        ? `${getQuestionModeLabel(mode)} � recommended`
+        ? `${getQuestionModeLabel(mode)} · recommended`
         : getQuestionModeLabel(mode);
 
       btn.addEventListener("click", () => {
@@ -5464,14 +5106,14 @@ Best focus prompts right now"
   function getEmojiForPhase(name) {
     const clean = String(name || "").trim().toLowerCase();
 
-    if (clean.includes("untracked")) return "?";
-    if (clean.includes("recovery")) return "??";
-    if (clean.includes("flow")) return "??";
-    if (clean.includes("radiance")) return "??";
-    if (clean.includes("surge")) return "?";
-    if (clean.includes("settle")) return "??";
+    if (clean.includes("untracked")) return "⏳";
+    if (clean.includes("recovery")) return "🌑";
+    if (clean.includes("flow")) return "🌊";
+    if (clean.includes("radiance")) return "☀️";
+    if (clean.includes("surge")) return "⚡";
+    if (clean.includes("settle")) return "🌙";
 
-    return "?";
+    return "⏳";
   }
 
   function forcePhaseEmoji() {
@@ -5514,27 +5156,27 @@ Best focus prompts right now"
 </script>
 <div class="icy-dock">
   <button onclick="showPage('home')" class="active">
-    <div class="icon">??</div>
+    <div class="icon">🏠</div>
     Home
   </button>
 
   <button onclick="showPage('energy')">
-    <div class="icon">?</div>
+    <div class="icon">⚡</div>
     Energy
   </button>
 
   <button onclick="showPage('interpreter')">
-    <div class="icon">??</div>
+    <div class="icon">🧠</div>
     Interpret
   </button>
 
   <button onclick="showPage('patterns')">
-    <div class="icon">??</div>
+    <div class="icon">📊</div>
     Patterns
   </button>
 
   <button onclick="showPage('settings')">
-    <div class="icon">??</div>
+    <div class="icon">⚙️</div>
     Settings
   </button>
 </div>
@@ -5613,97 +5255,3 @@ function showPage(page) {
 
 
 
-
-
-
-
-
-
-
-<style>
-
-.quick-metrics {
-  margin-top: 14px;
-}
-
-.qm-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.qm-card {
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(200,240,255,0.12);
-  text-align: center;
-}
-
-.qm-label {
-  font-size: 11px;
-  opacity: 0.6;
-}
-
-.qm-value {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.qm-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.qm-actions button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 16px;
-}
-
-</style>
-
-<style>
-
-.quick-metrics {
-  margin-top: 14px;
-}
-
-.qm-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.qm-card {
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(200,240,255,0.12);
-  text-align: center;
-}
-
-.qm-label {
-  font-size: 11px;
-  opacity: 0.6;
-}
-
-.qm-value {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.qm-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.qm-actions button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 16px;
-}
-
-</style>

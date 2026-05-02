@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -628,16 +628,16 @@ body > * {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "?",
-      "Recovery": "??",
-      "Flow": "??",
-      "Radiance": "??",
-      "Surge": "?",
-      "Settle": "??"
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
     };
 
     const name = (phase.textContent || "").trim();
-    icon.textContent = map[name] || "?";
+    icon.textContent = map[name] || "⏳";
   }
 
   const oldRenderAvalancheFinal = window.render;
@@ -660,15 +660,15 @@ body > * {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "?",
-      "Recovery": "??",
-      "Flow": "??",
-      "Radiance": "??",
-      "Surge": "?",
-      "Settle": "??"
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
     };
 
-    icon.textContent = map[(phase.textContent || "").trim()] || "?";
+    icon.textContent = map[(phase.textContent || "").trim()] || "⏳";
   }
 
   const oldRenderBalancedEmoji = window.render;
@@ -998,7 +998,7 @@ body > * {
     margin-bottom: 12px !important;
   }
 
-  /* NAV ? horizontal scroll only */
+  /* NAV → horizontal scroll only */
   .nav {
     display: flex !important;
     flex-wrap: nowrap !important;
@@ -1455,7 +1455,6 @@ details {
 </style>
 
 
-
 <style id="icy-hero-compact-lock">
 /* compact mobile hero: same theme, less giant block */
 @media (max-width: 720px) {
@@ -1573,7 +1572,7 @@ details {
 <div class="icy-shimmer"></div>
   <div class="wrap">
     <div class="app-title">Icy Natural OS</div>
-    <div class="app-sub">One core app. Multiple modules. State ? meaning ? questions ? patterns.</div>
+    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
@@ -1683,58 +1682,6 @@ details {
         </div>
       </div>
     </section>
-<div class="quick-metrics">
-  <div class="qm-grid">
-
-    <div class="qm-card">
-      <div class="qm-label">Awake</div>
-      <div class="qm-value" id="awakeTime">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Nap</div>
-      <div class="qm-value" id="napCredit">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Phase</div>
-      <div class="qm-value" id="phaseShift">--</div>
-    </div>
-
-  </div>
-
-  <div class="qm-actions">
-    <button class="btn-primary">Wake</button>
-    <button class="btn-secondary">Nap</button>
-    <button class="btn-secondary">Refresh</button>
-  </div>
-</div>
-<div class="quick-metrics">
-  <div class="qm-grid">
-
-    <div class="qm-card">
-      <div class="qm-label">Awake</div>
-      <div class="qm-value" id="awakeTime">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Nap</div>
-      <div class="qm-value" id="napCredit">--</div>
-    </div>
-
-    <div class="qm-card">
-      <div class="qm-label">Phase</div>
-      <div class="qm-value" id="phaseShift">--</div>
-    </div>
-
-  </div>
-
-  <div class="qm-actions">
-    <button class="btn-primary">Wake</button>
-    <button class="btn-secondary">Nap</button>
-    <button class="btn-secondary">Refresh</button>
-  </div>
-</div>
 
     <section id="page-energy" class="page hidden">
       <div class="card">
@@ -3025,10 +2972,10 @@ Best focus prompts right now</div>
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -3076,7 +3023,7 @@ Best focus prompts right now</div>
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -3098,7 +3045,7 @@ Best focus prompts right now</div>
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -3121,7 +3068,7 @@ Best focus prompts right now</div>
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -3806,7 +3753,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} � ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} • ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -3821,17 +3768,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "�"}</div>
+            <div class="tag">${item.date || "—"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         list.appendChild(row);
       });
@@ -3959,7 +3906,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -4392,7 +4339,7 @@ Best move:
       const btn = document.createElement("button");
       btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
       btn.textContent = mode === recommendedMode
-        ? `${getQuestionModeLabel(mode)} � recommended`
+        ? `${getQuestionModeLabel(mode)} · recommended`
         : getQuestionModeLabel(mode);
 
       btn.addEventListener("click", () => {
@@ -5464,14 +5411,14 @@ Best focus prompts right now"
   function getEmojiForPhase(name) {
     const clean = String(name || "").trim().toLowerCase();
 
-    if (clean.includes("untracked")) return "?";
-    if (clean.includes("recovery")) return "??";
-    if (clean.includes("flow")) return "??";
-    if (clean.includes("radiance")) return "??";
-    if (clean.includes("surge")) return "?";
-    if (clean.includes("settle")) return "??";
+    if (clean.includes("untracked")) return "⏳";
+    if (clean.includes("recovery")) return "🌑";
+    if (clean.includes("flow")) return "🌊";
+    if (clean.includes("radiance")) return "☀️";
+    if (clean.includes("surge")) return "⚡";
+    if (clean.includes("settle")) return "🌙";
 
-    return "?";
+    return "⏳";
   }
 
   function forcePhaseEmoji() {
@@ -5514,27 +5461,27 @@ Best focus prompts right now"
 </script>
 <div class="icy-dock">
   <button onclick="showPage('home')" class="active">
-    <div class="icon">??</div>
+    <div class="icon">🏠</div>
     Home
   </button>
 
   <button onclick="showPage('energy')">
-    <div class="icon">?</div>
+    <div class="icon">⚡</div>
     Energy
   </button>
 
   <button onclick="showPage('interpreter')">
-    <div class="icon">??</div>
+    <div class="icon">🧠</div>
     Interpret
   </button>
 
   <button onclick="showPage('patterns')">
-    <div class="icon">??</div>
+    <div class="icon">📊</div>
     Patterns
   </button>
 
   <button onclick="showPage('settings')">
-    <div class="icon">??</div>
+    <div class="icon">⚙️</div>
     Settings
   </button>
 </div>
@@ -5618,92 +5565,3 @@ function showPage(page) {
 
 
 
-
-
-<style>
-
-.quick-metrics {
-  margin-top: 14px;
-}
-
-.qm-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.qm-card {
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(200,240,255,0.12);
-  text-align: center;
-}
-
-.qm-label {
-  font-size: 11px;
-  opacity: 0.6;
-}
-
-.qm-value {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.qm-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.qm-actions button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 16px;
-}
-
-</style>
-
-<style>
-
-.quick-metrics {
-  margin-top: 14px;
-}
-
-.qm-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.qm-card {
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(200,240,255,0.12);
-  text-align: center;
-}
-
-.qm-label {
-  font-size: 11px;
-  opacity: 0.6;
-}
-
-.qm-value {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.qm-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.qm-actions button {
-  flex: 1;
-  padding: 10px;
-  border-radius: 16px;
-}
-
-</style>
