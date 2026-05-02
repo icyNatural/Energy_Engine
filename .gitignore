@@ -2,3 +2,8 @@ state.json
 __pycache__/
 *.pyc
 .env
+
+# local HTML backups
+index_backup*.html
+index_before*.html
+*.bak
