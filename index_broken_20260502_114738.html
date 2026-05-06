@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -1018,16 +1018,16 @@ details {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "?",
-      "Recovery": "??",
-      "Flow": "??",
-      "Radiance": "??",
-      "Surge": "?",
-      "Settle": "??"
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
     };
 
     const name = (phase.textContent || "").trim();
-    icon.textContent = map[name] || "?";
+    icon.textContent = map[name] || "⏳";
   }
 
   const oldRenderAvalancheFinal = window.render;
@@ -1260,15 +1260,15 @@ details {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "?",
-      "Recovery": "??",
-      "Flow": "??",
-      "Radiance": "??",
-      "Surge": "?",
-      "Settle": "??"
+      "Untracked": "⏳",
+      "Recovery": "🌑",
+      "Flow": "🌊",
+      "Radiance": "☀️",
+      "Surge": "⚡",
+      "Settle": "🌙"
     };
 
-    icon.textContent = map[(phase.textContent || "").trim()] || "?";
+    icon.textContent = map[(phase.textContent || "").trim()] || "⏳";
   }
 
   const oldRenderBalancedEmoji = window.render;
@@ -1781,7 +1781,7 @@ details,
     margin-bottom: 12px !important;
   }
 
-  /* NAV ? horizontal scroll only */
+  /* NAV → horizontal scroll only */
   .nav {
     display: flex !important;
     flex-wrap: nowrap !important;
@@ -1971,37 +1971,12 @@ details,
   text-shadow: 0 0 8px rgba(160,220,255,0.6);
 }
 </style>
-<style>
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10000;
-}
-
-body {
-  padding-bottom: 100px; /* prevents overlap */
-}
-
-/* Remove click blocking */
-.hero::before,
-.hero::after {
-  pointer-events: none;
-}
-
-/* Ensure content stays below nav */
-.hero, .card, .output-block {
-  position: relative;
-  z-index: 1;
-}
-</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
   <div class="wrap">
     <div class="app-title">Icy Natural OS</div>
-    <div class="app-sub">One core app. Multiple modules. State ? meaning ? questions ? patterns.</div>
+    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
@@ -3393,10 +3368,10 @@ Best focus prompts right now</div>
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -3444,7 +3419,7 @@ Best focus prompts right now</div>
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -3466,7 +3441,7 @@ Best focus prompts right now</div>
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -3489,7 +3464,7 @@ Best focus prompts right now</div>
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -4174,7 +4149,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} � ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} • ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -4189,17 +4164,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "�"}</div>
+            <div class="tag">${item.date || "—"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
         `;
         list.appendChild(row);
       });
@@ -4327,7 +4302,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -4760,7 +4735,7 @@ Best move:
       const btn = document.createElement("button");
       btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
       btn.textContent = mode === recommendedMode
-        ? `${getQuestionModeLabel(mode)} � recommended`
+        ? `${getQuestionModeLabel(mode)} · recommended`
         : getQuestionModeLabel(mode);
 
       btn.addEventListener("click", () => {
@@ -5832,14 +5807,14 @@ Best focus prompts right now"
   function getEmojiForPhase(name) {
     const clean = String(name || "").trim().toLowerCase();
 
-    if (clean.includes("untracked")) return "?";
-    if (clean.includes("recovery")) return "??";
-    if (clean.includes("flow")) return "??";
-    if (clean.includes("radiance")) return "??";
-    if (clean.includes("surge")) return "?";
-    if (clean.includes("settle")) return "??";
+    if (clean.includes("untracked")) return "⏳";
+    if (clean.includes("recovery")) return "🌑";
+    if (clean.includes("flow")) return "🌊";
+    if (clean.includes("radiance")) return "☀️";
+    if (clean.includes("surge")) return "⚡";
+    if (clean.includes("settle")) return "🌙";
 
-    return "?";
+    return "⏳";
   }
 
   function forcePhaseEmoji() {
@@ -5882,51 +5857,32 @@ Best focus prompts right now"
 </script>
 <div class="icy-dock">
   <button onclick="showPage('home')" class="active">
-    <div class="icon">??</div>
+    <div class="icon">🏠</div>
     Home
   </button>
 
   <button onclick="showPage('energy')">
-    <div class="icon">?</div>
+    <div class="icon">⚡</div>
     Energy
   </button>
 
   <button onclick="showPage('interpreter')">
-    <div class="icon">??</div>
+    <div class="icon">🧠</div>
     Interpret
   </button>
 
   <button onclick="showPage('patterns')">
-    <div class="icon">??</div>
+    <div class="icon">📊</div>
     Patterns
   </button>
 
   <button onclick="showPage('settings')">
-    <div class="icon">??</div>
+    <div class="icon">⚙️</div>
     Settings
   </button>
 </div>
-<script>
-document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const tab = btn.getAttribute('data-tab');
-
-    // hide all tabs
-    document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
-
-    // show selected
-    const target = document.getElementById(tab);
-    if (target) target.style.display = 'block';
-
-    // active state
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
-});
-</script>
 </body>
 </html>
-
 
 
 
