@@ -1971,6 +1971,29 @@ details,
   text-shadow: 0 0 8px rgba(160,220,255,0.6);
 }
 </style>
+<style id="icy-dock-click-fix">
+.icy-dock {
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+.icy-dock button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.icy-shimmer,
+.icy-shimmer::before,
+.icy-shimmer::after,
+.hero::before,
+.hero::after {
+  pointer-events: none !important;
+}
+
+body {
+  padding-bottom: 95px !important;
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -5881,8 +5904,34 @@ Best focus prompts right now"
     Settings
   </button>
 </div>
+<script id="icy-dock-showpage-fix">
+function showPage(pageName) {
+  if (typeof switchPage === "function") {
+    switchPage(pageName);
+  }
+
+  document.querySelectorAll(".icy-dock button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  const activeBtn = document.querySelector(`.icy-dock button[onclick*="${pageName}"]`);
+  if (activeBtn) activeBtn.classList.add("active");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const savedPage = (typeof loadState === "function" && loadState().page) ? loadState().page : "home";
+
+  document.querySelectorAll(".icy-dock button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  const activeBtn = document.querySelector(`.icy-dock button[onclick*="${savedPage}"]`);
+  if (activeBtn) activeBtn.classList.add("active");
+});
+</script>
 </body>
 </html>
+
 
 
 
