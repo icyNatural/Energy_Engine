@@ -2400,6 +2400,112 @@ body {
   }
 }
 </style>
+<style id="icy-desktop-avalanche-sky">
+@media (min-width: 1000px) {
+  body {
+    background:
+      radial-gradient(circle at 82% 4%, rgba(218,248,255,0.34), transparent 30%),
+      radial-gradient(circle at 62% -8%, rgba(255,255,255,0.20), transparent 26%),
+      radial-gradient(circle at 16% 16%, rgba(134,213,255,0.18), transparent 32%),
+      linear-gradient(135deg, #071827 0%, #0d3348 44%, #b8e5f3 140%) !important;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(125deg, transparent 0%, rgba(255,255,255,0.06) 42%, rgba(186,236,255,0.14) 55%, transparent 72%),
+      radial-gradient(circle at 86% 8%, rgba(255,255,255,0.24), transparent 22%);
+    mix-blend-mode: screen;
+  }
+
+  .desktop-sidebar {
+    background:
+      linear-gradient(180deg, rgba(8,25,39,.82), rgba(4,14,26,.92)) !important;
+    border-right: 1px solid rgba(225,250,255,.20) !important;
+  }
+
+  .card,
+  .desktop-glance-item {
+    background:
+      linear-gradient(180deg, rgba(246,253,255,.10), rgba(160,224,248,.045)),
+      rgba(10, 32, 48, .66) !important;
+    border: 1px solid rgba(226,250,255,.20) !important;
+    box-shadow:
+      0 20px 55px rgba(0,0,0,.26),
+      0 0 22px rgba(166,226,255,.08),
+      inset 0 1px 0 rgba(255,255,255,.09) !important;
+  }
+
+  .hero {
+    background:
+      radial-gradient(circle at 22% 0%, rgba(255,255,255,.16), transparent 30%),
+      linear-gradient(135deg, rgba(211,246,255,.12), rgba(8,27,43,.74)) !important;
+  }
+
+  .nav-btn.active,
+  .btn-primary,
+  .desktop-side-nav button.active {
+    background:
+      linear-gradient(135deg, #ffffff 0%, #e7fbff 38%, #9fe7ff 100%) !important;
+    color: #03121d !important;
+    box-shadow:
+      0 0 12px rgba(226,250,255,.52),
+      0 0 28px rgba(128,216,255,.26),
+      inset 0 1px 0 rgba(255,255,255,.85) !important;
+  }
+
+  .nav-btn,
+  .btn-ghost,
+  .btn-soft,
+  .desktop-side-nav button {
+    border-color: rgba(225,250,255,.18) !important;
+  }
+
+  .app-sub,
+  .muted,
+  .window,
+  .tiny,
+  .desktop-glance-label {
+    color: rgba(222,243,252,.76) !important;
+  }
+
+  .section-title,
+  .eyebrow {
+    color: rgba(232,250,255,.78) !important;
+  }
+
+  .phase,
+  .energy-state,
+  .desktop-glance-value,
+  .app-title {
+    color: #f8fdff !important;
+    text-shadow:
+      0 0 12px rgba(218,248,255,.18),
+      0 0 28px rgba(134,213,255,.10) !important;
+  }
+
+  .fill {
+    background:
+      linear-gradient(90deg, #ffffff 0%, #e7fbff 32%, #9fe7ff 72%, #62d7ff 100%) !important;
+    box-shadow:
+      0 0 10px rgba(226,250,255,.55),
+      0 0 24px rgba(128,216,255,.25) !important;
+  }
+
+  .desktop-logo,
+  .desktop-glance-icon {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.24), rgba(134,213,255,.22)) !important;
+    box-shadow:
+      0 0 18px rgba(170,230,255,.22),
+      inset 0 1px 0 rgba(255,255,255,.20) !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -6498,6 +6604,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
