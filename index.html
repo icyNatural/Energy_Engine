@@ -2393,6 +2393,13 @@ body {
   }
 }
 </style>
+<style id="icy-desktop-cleanup">
+@media (min-width: 1000px) {
+  .desktop-top-status {
+    display: none !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -6451,8 +6458,47 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("DOMContentLoaded", syncDesktopShell);
 })();
 </script>
+<script id="icy-desktop-emoji-fix">
+(function () {
+  function fixDesktopEmojis() {
+    const logo = document.querySelector(".desktop-logo");
+    if (logo) logo.textContent = "\u2744\uFE0F";
+
+    const labels = {
+      home: "\uD83C\uDFE0 Home",
+      energy: "\u26A1 Energy",
+      interpreter: "\uD83E\uDDE0 Interpreter",
+      patterns: "\uD83D\uDCCA Patterns",
+      settings: "\u2699\uFE0F Settings"
+    };
+
+    document.querySelectorAll(".desktop-side-nav button").forEach(btn => {
+      const page = btn.dataset.page;
+      if (labels[page]) btn.textContent = labels[page];
+    });
+
+    const glanceIcons = document.querySelectorAll(".desktop-glance-icon");
+    if (glanceIcons[0]) glanceIcons[0].textContent = "\u25F7";
+    if (glanceIcons[1]) glanceIcons[1].textContent = "\uD83D\uDCA4";
+    if (glanceIcons[2]) glanceIcons[2].textContent = "\u26A1";
+
+    const energyBtn = document.getElementById("desktopViewEnergy");
+    if (energyBtn) energyBtn.textContent = "View Full Energy \u2192";
+  }
+
+  const oldRenderDesktopEmojiFix = window.render;
+  window.render = function () {
+    if (typeof oldRenderDesktopEmojiFix === "function") oldRenderDesktopEmojiFix();
+    fixDesktopEmojis();
+  };
+
+  document.addEventListener("DOMContentLoaded", fixDesktopEmojis);
+  setTimeout(fixDesktopEmojis, 250);
+})();
+</script>
 </body>
 </html>
+
 
 
 
