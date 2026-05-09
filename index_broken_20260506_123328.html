@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -1018,16 +1018,16 @@ details {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "⏳",
-      "Recovery": "🌑",
-      "Flow": "🌊",
-      "Radiance": "☀️",
-      "Surge": "⚡",
-      "Settle": "🌙"
+      "Untracked": "?",
+      "Recovery": "??",
+      "Flow": "??",
+      "Radiance": "??",
+      "Surge": "?",
+      "Settle": "??"
     };
 
     const name = (phase.textContent || "").trim();
-    icon.textContent = map[name] || "⏳";
+    icon.textContent = map[name] || "?";
   }
 
   const oldRenderAvalancheFinal = window.render;
@@ -1260,15 +1260,15 @@ details {
     if (!phase || !icon) return;
 
     const map = {
-      "Untracked": "⏳",
-      "Recovery": "🌑",
-      "Flow": "🌊",
-      "Radiance": "☀️",
-      "Surge": "⚡",
-      "Settle": "🌙"
+      "Untracked": "?",
+      "Recovery": "??",
+      "Flow": "??",
+      "Radiance": "??",
+      "Surge": "?",
+      "Settle": "??"
     };
 
-    icon.textContent = map[(phase.textContent || "").trim()] || "⏳";
+    icon.textContent = map[(phase.textContent || "").trim()] || "?";
   }
 
   const oldRenderBalancedEmoji = window.render;
@@ -1781,7 +1781,7 @@ details,
     margin-bottom: 12px !important;
   }
 
-  /* NAV → horizontal scroll only */
+  /* NAV ? horizontal scroll only */
   .nav {
     display: flex !important;
     flex-wrap: nowrap !important;
@@ -1971,426 +1971,29 @@ details,
   text-shadow: 0 0 8px rgba(160,220,255,0.6);
 }
 </style>
-<style id="icy-dock-click-fix">
-.icy-dock {
-  z-index: 99999 !important;
-  pointer-events: auto !important;
-}
-
-.icy-dock button {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-}
-
-.icy-shimmer,
-.icy-shimmer::before,
-.icy-shimmer::after,
-.hero::before,
-.hero::after {
-  pointer-events: none !important;
+<style>
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
 }
 
 body {
-  padding-bottom: 95px !important;
-}
-</style>
-<style id="icy-dock-full-upgrade">
-/* ============================
-   ICY DOCK FULL UPGRADE
-   SVG icon system + OS panel feel
-============================ */
-
-.icy-dock {
-  position: fixed !important;
-  left: 10px !important;
-  right: 10px !important;
-  bottom: max(10px, env(safe-area-inset-bottom)) !important;
-  width: auto !important;
-  height: 74px !important;
-  padding: 8px 8px !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
-  gap: 6px !important;
-
-  background:
-    linear-gradient(180deg, rgba(236, 251, 255, 0.13), rgba(155, 231, 255, 0.055)),
-    rgba(8, 18, 30, 0.78) !important;
-
-  border: 1px solid rgba(207, 246, 255, 0.22) !important;
-  border-radius: 26px !important;
-  box-shadow:
-    0 14px 36px rgba(0,0,0,0.32),
-    0 0 18px rgba(155,231,255,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.08) !important;
-
-  backdrop-filter: blur(22px) saturate(135%) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(135%) !important;
-  z-index: 99999 !important;
-  pointer-events: auto !important;
+  padding-bottom: 100px; /* prevents overlap */
 }
 
-.icy-dock button {
-  min-width: 0 !important;
-  min-height: 0 !important;
-  height: 58px !important;
-  padding: 7px 4px 6px !important;
-  border: 1px solid transparent !important;
-  border-radius: 20px !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 4px !important;
-
-  background: transparent !important;
-  color: rgba(235, 250, 255, 0.70) !important;
-  opacity: 1 !important;
-  cursor: pointer !important;
-  pointer-events: auto !important;
-
-  font-size: 10.5px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.01em !important;
-  line-height: 1 !important;
-
-  transition:
-    transform 0.16s ease,
-    color 0.16s ease,
-    background 0.16s ease,
-    border-color 0.16s ease,
-    box-shadow 0.16s ease !important;
-}
-
-.icy-dock button:active {
-  transform: translateY(1px) scale(0.98) !important;
-}
-
-.icy-dock button .dock-icon {
-  width: 25px !important;
-  height: 25px !important;
-  display: grid !important;
-  place-items: center !important;
-  border-radius: 999px !important;
-}
-
-.icy-dock button svg {
-  width: 22px !important;
-  height: 22px !important;
-  fill: none !important;
-  stroke: currentColor !important;
-  stroke-width: 2.05 !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
-  filter: drop-shadow(0 0 4px rgba(155,231,255,0.10)) !important;
-}
-
-.icy-dock button.active {
-  color: #031019 !important;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(201,241,255,0.92) 45%, rgba(155,231,255,0.86)) !important;
-  border-color: rgba(255,255,255,0.70) !important;
-  box-shadow:
-    0 0 8px rgba(201,241,255,0.42),
-    0 0 16px rgba(155,231,255,0.20),
-    inset 0 1px 0 rgba(255,255,255,0.75) !important;
-  text-shadow: none !important;
-}
-
-.icy-dock button.active svg {
-  filter:
-    drop-shadow(0 0 4px rgba(255,255,255,0.55))
-    drop-shadow(0 0 8px rgba(155,231,255,0.28)) !important;
-}
-
-.icy-dock button:not(.active):hover {
-  color: rgba(245, 253, 255, 0.96) !important;
-  background: rgba(230,249,255,0.06) !important;
-  border-color: rgba(207,246,255,0.12) !important;
-}
-
-.icy-shimmer,
-.icy-shimmer::before,
-.icy-shimmer::after,
+/* Remove click blocking */
 .hero::before,
 .hero::after {
-  pointer-events: none !important;
+  pointer-events: none;
 }
 
-body {
-  padding-bottom: 104px !important;
-}
-
-@media (min-width: 721px) {
-  .icy-dock {
-    display: none !important;
-  }
-}
-
-@media (max-width: 390px) {
-  .icy-dock {
-    left: 8px !important;
-    right: 8px !important;
-    height: 70px !important;
-    border-radius: 24px !important;
-  }
-
-  .icy-dock button {
-    height: 54px !important;
-    font-size: 9.5px !important;
-    border-radius: 18px !important;
-  }
-
-  .icy-dock button svg {
-    width: 20px !important;
-    height: 20px !important;
-  }
-}
-</style>
-
-<style id="icy-desktop-os-upgrade">
-@media (min-width: 1000px) {
-  body {
-    padding: 0 !important;
-    min-height: 100vh !important;
-    background:
-      radial-gradient(circle at 82% 0%, rgba(120,210,255,.22), transparent 32%),
-      radial-gradient(circle at 18% 8%, rgba(185,240,255,.14), transparent 28%),
-      linear-gradient(135deg, #04101c 0%, #082237 45%, #0b2c43 100%) !important;
-  }
-
-  .desktop-shell {
-    display: block !important;
-  }
-
-  .desktop-sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 250px;
-    padding: 34px 30px;
-    background: linear-gradient(180deg, rgba(6,20,34,.78), rgba(3,12,24,.88));
-    border-right: 1px solid rgba(210,245,255,.14);
-    z-index: 20;
-  }
-
-  .desktop-brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 25px;
-    font-weight: 950;
-    letter-spacing: -0.04em;
-    margin-bottom: 58px;
-  }
-
-  .desktop-logo {
-    width: 46px;
-    height: 46px;
-    display: grid;
-    place-items: center;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(180,235,255,.28), rgba(80,180,230,.12));
-    box-shadow: 0 0 24px rgba(155,231,255,.18);
-  }
-
-  .desktop-side-nav {
-    display: grid;
-    gap: 14px;
-  }
-
-  .desktop-side-nav button {
-    height: 64px;
-    border: 1px solid transparent;
-    border-radius: 0 18px 18px 0;
-    background: transparent;
-    color: rgba(235,250,255,.72);
-    font-size: 17px;
-    font-weight: 850;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 0 20px;
-    cursor: pointer;
-  }
-
-  .desktop-side-nav button.active {
-    background: rgba(145,220,255,.16);
-    color: white;
-    border-color: rgba(190,240,255,.12);
-    box-shadow: inset 3px 0 0 #9be7ff;
-  }
-
-  .desktop-top-status {
-    position: fixed;
-    top: 34px;
-    right: 44px;
-    z-index: 30;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .desktop-pill {
-    padding: 12px 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(220,250,255,.13);
-    background: rgba(255,255,255,.045);
-    color: rgba(235,250,255,.72);
-    font-weight: 800;
-    font-size: 13px;
-  }
-
-  .desktop-pill::before {
-    content: "";
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin-right: 10px;
-    border-radius: 50%;
-    background: #41d27d;
-    box-shadow: 0 0 12px rgba(65,210,125,.55);
-  }
-
-  .desktop-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, #b071ff, #ff6f91);
-    box-shadow: 0 0 22px rgba(180,120,255,.25);
-  }
-
-  .wrap {
-    max-width: none !important;
-    margin: 0 44px 0 320px !important;
-    padding: 86px 0 44px !important;
-  }
-
-  .app-title {
-    font-size: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-  }
-
-  .app-sub {
-    font-size: 15px !important;
-    margin: 0 0 26px !important;
-    color: rgba(220,240,255,.68) !important;
-  }
-
-  .nav {
-    margin-bottom: 28px !important;
-    gap: 18px !important;
-  }
-
-  .nav-btn {
-    min-width: 132px !important;
-    height: 56px !important;
-    border-radius: 18px !important;
-    border: 1px solid rgba(210,245,255,.14) !important;
-    background: rgba(255,255,255,.045) !important;
-  }
-
-  .nav-btn.active {
-    background: linear-gradient(135deg, #eaffff, #9be7ff) !important;
-    color: #031019 !important;
-    box-shadow: 0 0 22px rgba(155,231,255,.32) !important;
-  }
-
-  #page-home:not(.hidden) {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 420px !important;
-    gap: 24px !important;
-    align-items: start !important;
-  }
-
-  #page-home > .hero {
-    grid-column: 1 / 2 !important;
-    min-height: 360px !important;
-    padding: 30px 34px !important;
-  }
-
-  #desktopGlance {
-    grid-column: 2 / 3 !important;
-    grid-row: 1 !important;
-    display: block !important;
-  }
-
-  #page-home > .grid-2 {
-    grid-column: 1 / -1 !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 24px !important;
-  }
-
-  .card {
-    border-radius: 26px !important;
-    border: 1px solid rgba(210,245,255,.14) !important;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.06), rgba(155,231,255,.035)),
-      rgba(8, 26, 42, .62) !important;
-  }
-
-  .hero-actions {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-
-  .phase {
-    font-size: 64px !important;
-  }
-
-  .emoji {
-    font-size: 54px !important;
-  }
-
-  .energy-state {
-    font-size: 30px !important;
-  }
-
-  .desktop-glance-item {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 18px;
-    border-radius: 18px;
-    background: rgba(255,255,255,.045);
-    border: 1px solid rgba(210,245,255,.10);
-    margin-top: 14px;
-  }
-
-  .desktop-glance-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: rgba(155,231,255,.20);
-    font-size: 24px;
-  }
-
-  .desktop-glance-label {
-    color: rgba(220,240,255,.66);
-    font-size: 13px;
-    font-weight: 800;
-  }
-
-  .desktop-glance-value {
-    font-size: 22px;
-    font-weight: 950;
-    margin-top: 3px;
-  }
-}
-
-@media (max-width: 999px) {
-  .desktop-shell,
-  #desktopGlance {
-    display: none !important;
-  }
+/* Ensure content stays below nav */
+.hero, .card, .output-block {
+  position: relative;
+  z-index: 1;
 }
 </style>
 </head>
@@ -2398,7 +2001,7 @@ body {
 <div class="icy-shimmer"></div>
   <div class="wrap">
     <div class="app-title">Icy Natural OS</div>
-    <div class="app-sub">One core app. Multiple modules. State → meaning → questions → patterns.</div>
+    <div class="app-sub">One core app. Multiple modules. State ? meaning ? questions ? patterns.</div>
 
     <div class="nav">
       <button class="nav-btn active" data-page="home">Home</button>
@@ -3790,10 +3393,10 @@ Best focus prompts right now</div>
             <div class="mini-title">${item.event || "Untitled event"}</div>
             <div class="tag">${item.date}</div>
           </div>
-          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>
-          <div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>
-          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
+          <div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>
+          <div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
         `;
         wrap.appendChild(box);
       });
@@ -3841,7 +3444,7 @@ Best focus prompts right now</div>
         ].forEach(([label, val]) => {
           const box = document.createElement("div");
           box.className = "mini-box";
-          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
+          box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div><div class="mini-text">This is based on your recent pattern, not a generic default.</div>`;
           energyWrap.appendChild(box);
         });
       }
@@ -3863,7 +3466,7 @@ Best focus prompts right now</div>
       ].forEach(([label, val]) => {
         const box = document.createElement("div");
         box.className = "mini-box";
-        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div></div>`;
+        box.innerHTML = `<div class="mini-title-row"><div class="mini-title">${label}</div><div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div></div>`;
         wrap.appendChild(box);
       });
     }
@@ -3886,7 +3489,7 @@ Best focus prompts right now</div>
       let effAwake, phaseIcon, phaseName, phaseQuote;
       if (minsAwake === null) {
         effAwake = null;
-        [phaseIcon, phaseName, phaseQuote] = ["⏳","Untracked","Set your wake time to begin."];
+        [phaseIcon, phaseName, phaseQuote] = ["?","Untracked","Set your wake time to begin."];
       } else {
         effAwake = Math.max(0, minsAwake - napCredit);
         [phaseIcon, phaseName, phaseQuote] = phaseFromEffectiveAwake(effAwake, phaseExtension);
@@ -4571,7 +4174,7 @@ Move:
     const meta = document.createElement("div");
     meta.className = "mini-text";
     meta.style.marginTop = "8px";
-    meta.textContent = `${count} time${count === 1 ? "" : "s"} • ${trend}`;
+    meta.textContent = `${count} time${count === 1 ? "" : "s"} � ${trend}`;
     box.appendChild(meta);
 
     const list = document.createElement("div");
@@ -4586,17 +4189,17 @@ Move:
 
         const lineA =
           type === "meaning"
-            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "—"}</div>`
-            : `<div class="mini-text"><b>State:</b> ${item.emotion || "—"}</div>`;
+            ? `<div class="mini-text"><b>Meaning:</b> ${item.meaning || "�"}</div>`
+            : `<div class="mini-text"><b>State:</b> ${item.emotion || "�"}</div>`;
 
         row.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${item.event || "Logged entry"}</div>
-            <div class="tag">${item.date || "—"}</div>
+            <div class="tag">${item.date || "�"}</div>
           </div>
           ${lineA}
-          <div class="mini-text"><b>Action:</b> ${item.action || "—"}</div>
-          <div class="mini-text"><b>Effect:</b> ${item.cost || "—"}</div>
+          <div class="mini-text"><b>Action:</b> ${item.action || "�"}</div>
+          <div class="mini-text"><b>Effect:</b> ${item.cost || "�"}</div>
         `;
         list.appendChild(row);
       });
@@ -4724,7 +4327,7 @@ Move:
         box.innerHTML = `
           <div class="mini-title-row">
             <div class="mini-title">${label}</div>
-            <div class="tag">${val === null ? "—" : Number(val).toFixed(1)}</div>
+            <div class="tag">${val === null ? "�" : Number(val).toFixed(1)}</div>
           </div>
           <div class="mini-text">This is built from your recent saved energy entries.</div>
         `;
@@ -5157,7 +4760,7 @@ Best move:
       const btn = document.createElement("button");
       btn.className = "chip" + ((state.question_set || "default") === mode ? " active" : "");
       btn.textContent = mode === recommendedMode
-        ? `${getQuestionModeLabel(mode)} · recommended`
+        ? `${getQuestionModeLabel(mode)} � recommended`
         : getQuestionModeLabel(mode);
 
       btn.addEventListener("click", () => {
@@ -6229,14 +5832,14 @@ Best focus prompts right now"
   function getEmojiForPhase(name) {
     const clean = String(name || "").trim().toLowerCase();
 
-    if (clean.includes("untracked")) return "⏳";
-    if (clean.includes("recovery")) return "🌑";
-    if (clean.includes("flow")) return "🌊";
-    if (clean.includes("radiance")) return "☀️";
-    if (clean.includes("surge")) return "⚡";
-    if (clean.includes("settle")) return "🌙";
+    if (clean.includes("untracked")) return "?";
+    if (clean.includes("recovery")) return "??";
+    if (clean.includes("flow")) return "??";
+    if (clean.includes("radiance")) return "??";
+    if (clean.includes("surge")) return "?";
+    if (clean.includes("settle")) return "??";
 
-    return "⏳";
+    return "?";
   }
 
   function forcePhaseEmoji() {
@@ -6279,183 +5882,50 @@ Best focus prompts right now"
 </script>
 <div class="icy-dock">
   <button onclick="showPage('home')" class="active">
-    <div class="icon">🏠</div>
+    <div class="icon">??</div>
     Home
   </button>
 
   <button onclick="showPage('energy')">
-    <div class="icon">⚡</div>
+    <div class="icon">?</div>
     Energy
   </button>
 
   <button onclick="showPage('interpreter')">
-    <div class="icon">🧠</div>
+    <div class="icon">??</div>
     Interpret
   </button>
 
   <button onclick="showPage('patterns')">
-    <div class="icon">📊</div>
+    <div class="icon">??</div>
     Patterns
   </button>
 
   <button onclick="showPage('settings')">
-    <div class="icon">⚙️</div>
+    <div class="icon">??</div>
     Settings
   </button>
 </div>
-<script id="icy-dock-showpage-fix">
-function showPage(pageName) {
-  if (typeof switchPage === "function") {
-    switchPage(pageName);
-  }
+<script>
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.getAttribute('data-tab');
 
-  document.querySelectorAll(".icy-dock button").forEach(btn => {
-    btn.classList.remove("active");
+    // hide all tabs
+    document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
+
+    // show selected
+    const target = document.getElementById(tab);
+    if (target) target.style.display = 'block';
+
+    // active state
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   });
-
-  const activeBtn = document.querySelector(`.icy-dock button[onclick*="${pageName}"]`);
-  if (activeBtn) activeBtn.classList.add("active");
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const savedPage = (typeof loadState === "function" && loadState().page) ? loadState().page : "home";
-
-  document.querySelectorAll(".icy-dock button").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  const activeBtn = document.querySelector(`.icy-dock button[onclick*="${savedPage}"]`);
-  if (activeBtn) activeBtn.classList.add("active");
 });
-</script>
-
-<script id="icy-desktop-os-upgrade-script">
-(function () {
-  function showDesktopPage(page) {
-    if (typeof switchPage === "function") switchPage(page);
-
-    document.querySelectorAll(".desktop-side-nav button").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.page === page);
-    });
-  }
-
-  function ensureDesktopShell() {
-    if (document.getElementById("desktopShell")) return;
-
-    const shell = document.createElement("div");
-    shell.id = "desktopShell";
-    shell.className = "desktop-shell";
-    shell.innerHTML = `
-      <aside class="desktop-sidebar">
-        <div class="desktop-brand">
-          <div class="desktop-logo">â„ï¸</div>
-          <div>Icy Natural OS</div>
-        </div>
-
-        <div class="desktop-side-nav">
-          <button data-page="home">âŒ‚ Home</button>
-          <button data-page="energy">âš¡ Energy</button>
-          <button data-page="interpreter">ðŸ§  Interpreter</button>
-          <button data-page="patterns">ðŸ“Š Patterns</button>
-          <button data-page="settings">âš™ Settings</button>
-        </div>
-      </aside>
-
-      <div class="desktop-top-status">
-        <div class="desktop-pill">All Systems Normal</div>
-        <div class="desktop-avatar">ðŸ‘¤</div>
-      </div>
-    `;
-
-    document.body.prepend(shell);
-
-    shell.querySelectorAll(".desktop-side-nav button").forEach(btn => {
-      btn.addEventListener("click", () => showDesktopPage(btn.dataset.page));
-    });
-  }
-
-  function ensureGlance() {
-    const home = document.getElementById("page-home");
-    if (!home || document.getElementById("desktopGlance")) return;
-
-    const card = document.createElement("div");
-    card.id = "desktopGlance";
-    card.className = "card";
-    card.innerHTML = `
-      <div class="section-title">Today at a glance</div>
-
-      <div class="desktop-glance-item">
-        <div class="desktop-glance-icon">â—·</div>
-        <div>
-          <div class="desktop-glance-label">Wake Window</div>
-          <div class="desktop-glance-value" id="desktopWakeGlance">--:--</div>
-        </div>
-      </div>
-
-      <div class="desktop-glance-item">
-        <div class="desktop-glance-icon">ðŸ’¤</div>
-        <div>
-          <div class="desktop-glance-label">Nap Credit</div>
-          <div class="desktop-glance-value" id="desktopNapGlance">0m</div>
-        </div>
-      </div>
-
-      <div class="desktop-glance-item">
-        <div class="desktop-glance-icon">âš¡</div>
-        <div>
-          <div class="desktop-glance-label">Energy Trend</div>
-          <div class="desktop-glance-value" id="desktopEnergyGlance">Low</div>
-        </div>
-      </div>
-
-      <button class="btn btn-ghost" type="button" id="desktopViewEnergy" style="margin-top:18px;">View Full Energy â†’</button>
-    `;
-
-    const hero = home.querySelector(".hero");
-    if (hero) hero.insertAdjacentElement("afterend", card);
-
-    const energyBtn = document.getElementById("desktopViewEnergy");
-    if (energyBtn) energyBtn.addEventListener("click", () => showDesktopPage("energy"));
-  }
-
-  function syncDesktopShell() {
-    ensureDesktopShell();
-    ensureGlance();
-
-    const state = typeof loadState === "function" ? loadState() : {};
-    const activePage = state.page || "home";
-
-    document.querySelectorAll(".desktop-side-nav button").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.page === activePage);
-    });
-
-    const wake = document.getElementById("wakeValue")?.textContent || "--:--";
-    const nap = document.getElementById("napCreditValue")?.textContent || "0m";
-    const energy = document.getElementById("energyState")?.textContent || "Low";
-
-    const wakeEl = document.getElementById("desktopWakeGlance");
-    const napEl = document.getElementById("desktopNapGlance");
-    const energyEl = document.getElementById("desktopEnergyGlance");
-
-    if (wakeEl) wakeEl.textContent = wake;
-    if (napEl) napEl.textContent = nap;
-    if (energyEl) energyEl.textContent = energy;
-  }
-
-  const oldRenderDesktopOS = window.render;
-  window.render = function () {
-    if (typeof oldRenderDesktopOS === "function") oldRenderDesktopOS();
-    syncDesktopShell();
-  };
-
-  document.addEventListener("DOMContentLoaded", syncDesktopShell);
-})();
 </script>
 </body>
 </html>
-
-
-
 
 
 
