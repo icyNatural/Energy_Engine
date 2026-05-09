@@ -2506,6 +2506,159 @@ body {
   }
 }
 </style>
+<style id="icy-desktop-light-avalanche">
+@media (min-width: 1000px) {
+  body {
+    background:
+      radial-gradient(circle at 82% 4%, rgba(255,255,255,.72), transparent 30%),
+      radial-gradient(circle at 58% -10%, rgba(210,246,255,.62), transparent 32%),
+      radial-gradient(circle at 14% 24%, rgba(135,211,245,.32), transparent 36%),
+      linear-gradient(135deg, #eaf9ff 0%, #cfeefa 42%, #a8d5e7 100%) !important;
+    color: #082033 !important;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(125deg, transparent 0%, rgba(255,255,255,.20) 38%, rgba(255,255,255,.52) 54%, transparent 76%),
+      radial-gradient(circle at 88% 10%, rgba(255,255,255,.58), transparent 34%);
+    mix-blend-mode: screen;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+  }
+
+  .desktop-sidebar {
+    background:
+      linear-gradient(180deg, rgba(236,250,255,.70), rgba(184,223,239,.48)) !important;
+    border-right: 1px solid rgba(255,255,255,.55) !important;
+    box-shadow: 14px 0 40px rgba(35,93,120,.12) !important;
+  }
+
+  .desktop-brand,
+  .desktop-side-nav button,
+  .nav-btn,
+  .section-title,
+  .eyebrow,
+  .text,
+  .energy-meaning,
+  .phase-quote {
+    color: #0b2638 !important;
+  }
+
+  .desktop-side-nav button {
+    background: rgba(255,255,255,.28) !important;
+    border: 1px solid rgba(255,255,255,.34) !important;
+  }
+
+  .desktop-side-nav button.active,
+  .nav-btn.active,
+  .btn-primary {
+    background:
+      linear-gradient(135deg, #ffffff 0%, #effcff 38%, #aeeaff 100%) !important;
+    color: #061927 !important;
+    box-shadow:
+      0 0 14px rgba(255,255,255,.70),
+      0 0 28px rgba(108,207,245,.28),
+      inset 0 1px 0 rgba(255,255,255,.90) !important;
+  }
+
+  .nav-btn,
+  .btn-ghost,
+  .btn-soft {
+    background: rgba(255,255,255,.26) !important;
+    border: 1px solid rgba(255,255,255,.38) !important;
+    color: #0b2638 !important;
+  }
+
+  .card,
+  .desktop-glance-item,
+  .metric,
+  .mini-box,
+  details,
+  .output-block,
+  .state-stack-card {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.52), rgba(226,248,255,.30)),
+      rgba(255,255,255,.24) !important;
+    border: 1px solid rgba(255,255,255,.48) !important;
+    box-shadow:
+      0 18px 46px rgba(50,104,130,.16),
+      0 0 24px rgba(255,255,255,.26),
+      inset 0 1px 0 rgba(255,255,255,.72) !important;
+    backdrop-filter: blur(24px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(135%) !important;
+  }
+
+  .hero {
+    background:
+      radial-gradient(circle at 18% 0%, rgba(255,255,255,.56), transparent 32%),
+      linear-gradient(135deg, rgba(255,255,255,.46), rgba(198,236,249,.28)) !important;
+  }
+
+  .phase,
+  .energy-state,
+  .big,
+  .desktop-glance-value,
+  .metric-value {
+    color: #061927 !important;
+    text-shadow:
+      0 1px 0 rgba(255,255,255,.55),
+      0 0 16px rgba(255,255,255,.45) !important;
+  }
+
+  .app-sub,
+  .muted,
+  .window,
+  .tiny,
+  .desktop-glance-label,
+  .metric-label,
+  .metric-sub {
+    color: rgba(28,62,82,.72) !important;
+  }
+
+  input,
+  textarea {
+    background: rgba(255,255,255,.42) !important;
+    border: 1px solid rgba(255,255,255,.56) !important;
+    color: #061927 !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(28,62,82,.55) !important;
+  }
+
+  .bar {
+    background: rgba(20,70,95,.16) !important;
+    border: 1px solid rgba(255,255,255,.42) !important;
+  }
+
+  .fill {
+    background:
+      linear-gradient(90deg, #ffffff 0%, #e5fbff 35%, #90e3ff 76%, #49c8f2 100%) !important;
+    box-shadow:
+      0 0 12px rgba(255,255,255,.75),
+      0 0 24px rgba(73,200,242,.30) !important;
+  }
+
+  .desktop-logo,
+  .desktop-glance-icon {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.78), rgba(152,225,250,.40)) !important;
+    color: #0b5d7d !important;
+    box-shadow:
+      0 0 18px rgba(255,255,255,.55),
+      inset 0 1px 0 rgba(255,255,255,.85) !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -6604,6 +6757,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
