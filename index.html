@@ -2659,6 +2659,193 @@ body {
   }
 }
 </style>
+<style id="icy-desktop-astro-avalanche-palette">
+@media (min-width: 1000px) {
+  :root {
+    --desktop-text: #102a3a;
+    --desktop-muted: #456b80;
+    --desktop-card: rgba(255, 255, 255, 0.64);
+    --desktop-border: rgba(80, 145, 205, 0.16);
+    --desktop-blue: #4d8ec3;
+    --desktop-ice: #c7e9ff;
+    --desktop-white: #f8fcff;
+  }
+
+  body {
+    color: var(--desktop-text) !important;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(210, 235, 255, 0.62), transparent 42%),
+      radial-gradient(circle at 82% 24%, rgba(155, 205, 245, 0.34), transparent 46%),
+      radial-gradient(circle at 50% 82%, rgba(235, 248, 255, 0.72), transparent 52%),
+      linear-gradient(180deg, #f8fcff 0%, #edf6fb 48%, #e7f1f7 100%) !important;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.35) 42%, rgba(200,235,255,0.35) 56%, transparent 74%);
+    mix-blend-mode: screen;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+  }
+
+  .desktop-sidebar {
+    background:
+      linear-gradient(135deg, rgba(250, 253, 255, 0.78), rgba(210, 232, 246, 0.48)) !important;
+    border-right: 1px solid rgba(105, 160, 210, 0.22) !important;
+    box-shadow:
+      0 18px 50px rgba(35, 90, 130, 0.12),
+      inset 0 0 25px rgba(255,255,255,0.45) !important;
+  }
+
+  .card,
+  .hero,
+  .desktop-glance-item,
+  .metric,
+  .mini-box,
+  details,
+  .output-block,
+  .state-stack-card {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(255,255,255,0.92), transparent 42%),
+      linear-gradient(135deg, rgba(245, 252, 255, 0.82), rgba(205, 228, 245, 0.48)) !important;
+    border: 1px solid rgba(105, 160, 210, 0.22) !important;
+    box-shadow:
+      0 22px 65px rgba(30, 85, 125, 0.12),
+      inset 0 0 34px rgba(255,255,255,0.42) !important;
+    backdrop-filter: blur(18px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(130%) !important;
+  }
+
+  .card:hover {
+    border-color: rgba(100, 170, 230, 0.38) !important;
+    box-shadow:
+      0 28px 80px rgba(40, 105, 150, 0.16),
+      inset 0 0 42px rgba(255,255,255,0.55) !important;
+  }
+
+  .desktop-brand,
+  .desktop-side-nav button,
+  .nav-btn,
+  .section-title,
+  .eyebrow,
+  .text,
+  .energy-meaning,
+  .phase-quote,
+  .energy-action,
+  .metric-value,
+  .desktop-glance-value,
+  summary {
+    color: #102a3a !important;
+    text-shadow: none !important;
+  }
+
+  .phase,
+  .energy-state,
+  .big {
+    color: #102a3a !important;
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.65),
+      0 0 14px rgba(120, 185, 235, 0.22) !important;
+  }
+
+  .app-sub,
+  p,
+  li,
+  .muted,
+  .window,
+  .tiny,
+  .desktop-glance-label,
+  .metric-label,
+  .metric-sub,
+  .state-stack-sub {
+    color: #456b80 !important;
+  }
+
+  .section-title,
+  .eyebrow {
+    background: linear-gradient(90deg, #18364a, #4d8ec3, #c7e9ff, #f8fcff) !important;
+    background-size: 200% 200% !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 0 0 14px rgba(120, 185, 235, 0.22) !important;
+  }
+
+  .nav-btn,
+  .btn-ghost,
+  .btn-soft,
+  .desktop-side-nav button,
+  input,
+  textarea {
+    background:
+      linear-gradient(135deg, rgba(250, 253, 255, 0.56), rgba(210, 232, 246, 0.30)) !important;
+    border: 1px solid rgba(105, 160, 210, 0.22) !important;
+    color: #102a3a !important;
+    box-shadow:
+      inset 0 0 18px rgba(255,255,255,0.28) !important;
+  }
+
+  .nav-btn.active,
+  .btn-primary,
+  .desktop-side-nav button.active {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.95), rgba(199,233,255,0.78), rgba(155,205,245,0.42)) !important;
+    color: #102a3a !important;
+    border-color: rgba(100, 170, 230, 0.38) !important;
+    box-shadow:
+      inset 0 0 20px rgba(160, 215, 255, 0.28),
+      0 8px 22px rgba(35, 90, 130, 0.12),
+      0 0 18px rgba(120, 185, 235, 0.20) !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(69, 107, 128, 0.62) !important;
+  }
+
+  .bar {
+    background: rgba(80, 145, 205, 0.12) !important;
+    border: 1px solid rgba(105, 160, 210, 0.18) !important;
+  }
+
+  .fill {
+    background:
+      linear-gradient(90deg, #f8fcff, #c7e9ff, #4d8ec3) !important;
+    box-shadow:
+      0 0 14px rgba(120, 185, 235, 0.32),
+      0 0 28px rgba(199, 233, 255, 0.28) !important;
+  }
+
+  .desktop-logo,
+  .desktop-glance-icon {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.82), rgba(155,205,245,0.38)) !important;
+    color: #0b4e78 !important;
+    border: 1px solid rgba(105,160,210,0.20) !important;
+    box-shadow:
+      0 12px 28px rgba(35, 90, 130, 0.12),
+      inset 0 0 20px rgba(255,255,255,0.45) !important;
+  }
+
+  .glow,
+  a {
+    color: #102a3a !important;
+    text-decoration-color: rgba(16, 42, 58, 0.32) !important;
+  }
+
+  a:hover {
+    color: #0b4e78 !important;
+    text-decoration-color: rgba(50, 120, 180, 0.75) !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -6757,6 +6944,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
