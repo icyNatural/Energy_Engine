@@ -3074,6 +3074,118 @@ body {
 }
 </style>
 
+
+<style id="icy-desktop-text-contrast-fix">
+/* ===== DESKTOP TEXT CONTRAST FIX ONLY ===== */
+/* No layout, no HTML, no JS. */
+
+@media (min-width: 1000px) {
+
+  /* main readable text */
+  body,
+  .card,
+  .hero,
+  .output-block,
+  .mini-box,
+  .metric,
+  details {
+    color: #102a3a !important;
+  }
+
+  /* all section labels that became too pale */
+  .section-title,
+  .eyebrow,
+  .output-label,
+  .state-stack-label,
+  .icy-field-label,
+  .metric-label,
+  label {
+    color: #18364a !important;
+    -webkit-text-fill-color: #18364a !important;
+    background: none !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+  }
+
+  /* primary titles / strong text */
+  .phase,
+  .energy-state,
+  .big,
+  .state-stack-value,
+  .metric-value,
+  .mini-title,
+  summary,
+  h1, h2, h3, h4,
+  strong,
+  b {
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+  }
+
+  /* paragraph / body copy */
+  p,
+  li,
+  .text,
+  .mini-text,
+  .output-text,
+  .phase-quote,
+  .energy-meaning,
+  .energy-action,
+  .state-stack-sub {
+    color: #2b5268 !important;
+    -webkit-text-fill-color: #2b5268 !important;
+    opacity: 1 !important;
+  }
+
+  /* muted text but still readable */
+  .muted,
+  .tiny,
+  .window,
+  .metric-sub,
+  .desktop-glance-label,
+  .app-sub,
+  .flow-bridge-sub,
+  .flow-bridge-text {
+    color: #456b80 !important;
+    -webkit-text-fill-color: #456b80 !important;
+    opacity: 1 !important;
+  }
+
+  /* placeholders */
+  input,
+  textarea {
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(57, 87, 109, 0.72) !important;
+    opacity: 1 !important;
+  }
+
+  /* disabled / empty states that were almost invisible */
+  button:disabled,
+  .state-btn:disabled,
+  .chip:disabled {
+    color: #6b8798 !important;
+    -webkit-text-fill-color: #6b8798 !important;
+    opacity: 0.75 !important;
+  }
+
+  /* tags */
+  .tag,
+  .secondary-chip {
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+    background: rgba(205, 228, 245, 0.48) !important;
+    border: 1px solid rgba(105, 160, 210, 0.20) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -7172,6 +7284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
