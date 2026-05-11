@@ -3186,6 +3186,86 @@ body {
 }
 </style>
 
+
+<style id="icy-desktop-choice-button-text-fix">
+/* ===== DESKTOP CHOICE BUTTON READABILITY FIX ===== */
+/* Fixes Interpreter choice buttons only. No layout/JS/mobile changes. */
+
+@media (min-width: 1000px) {
+
+  .state-btn,
+  .chip,
+  .question-card,
+  #simpleStateGrid button,
+  #refinedStateGrid button,
+  #secondaryStateGrid button,
+  #intensityChips button {
+    color: #2b5268 !important;
+    -webkit-text-fill-color: #2b5268 !important;
+    opacity: 1 !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,0.58),
+        rgba(205,228,245,0.30)
+      ) !important;
+
+    border: 1px solid rgba(105,160,210,0.22) !important;
+
+    box-shadow:
+      inset 0 0 16px rgba(255,255,255,0.30) !important;
+  }
+
+  .state-btn:hover,
+  .chip:hover,
+  #simpleStateGrid button:hover,
+  #refinedStateGrid button:hover,
+  #secondaryStateGrid button:hover,
+  #intensityChips button:hover {
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+    border-color: rgba(100,170,230,0.38) !important;
+  }
+
+  .state-btn.active,
+  .chip.active,
+  #simpleStateGrid button.active,
+  #refinedStateGrid button.active,
+  #secondaryStateGrid button.active,
+  #intensityChips button.active {
+    color: #061927 !important;
+    -webkit-text-fill-color: #061927 !important;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,0.96),
+        rgba(199,233,255,0.80),
+        rgba(142,221,247,0.55)
+      ) !important;
+
+    border-color: rgba(100,170,230,0.42) !important;
+
+    box-shadow:
+      inset 0 0 20px rgba(160,215,255,0.30),
+      0 8px 22px rgba(35,90,130,0.12),
+      0 0 18px rgba(120,185,235,0.18) !important;
+  }
+
+  .state-btn:disabled,
+  .chip:disabled,
+  #simpleStateGrid button:disabled,
+  #refinedStateGrid button:disabled,
+  #secondaryStateGrid button:disabled,
+  #intensityChips button:disabled {
+    color: rgba(43,82,104,0.55) !important;
+    -webkit-text-fill-color: rgba(43,82,104,0.55) !important;
+    opacity: 1 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -7284,6 +7364,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
