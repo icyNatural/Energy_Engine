@@ -3266,6 +3266,189 @@ body {
 }
 </style>
 
+
+
+
+
+<style id="icy-mobile-avalanche-schema">
+/* ===== MOBILE AVALANCHE SCHEMA ===== */
+/* Mobile only. No desktop, no HTML, no JS. */
+
+@media (max-width: 999px) {
+
+  body {
+    color: #102a3a !important;
+    background:
+      linear-gradient(
+        180deg,
+        #f7fbff 0%,
+        #edf5fb 48%,
+        #e8f0f7 100%
+      ) !important;
+  }
+
+  body::before {
+    background:
+      radial-gradient(circle at 18% 18%, rgba(210,235,255,0.62), transparent 42%),
+      radial-gradient(circle at 82% 24%, rgba(155,205,245,0.34), transparent 46%),
+      radial-gradient(circle at 50% 82%, rgba(235,248,255,0.72), transparent 52%) !important;
+    mix-blend-mode: normal !important;
+  }
+
+  .card,
+  .hero,
+  .metric,
+  .mini-box,
+  details,
+  .output-block,
+  .state-stack-card {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,0.86),
+        rgba(205,228,245,0.34)
+      ) !important;
+
+    border: 1px solid rgba(120,170,215,0.14) !important;
+
+    box-shadow:
+      0 10px 30px rgba(35,90,130,0.08),
+      inset 0 0 14px rgba(255,255,255,0.34) !important;
+
+    color: #102a3a !important;
+  }
+
+  .app-title,
+  .phase,
+  .energy-state,
+  .big,
+  .metric-value,
+  .state-stack-value,
+  .mini-title,
+  summary,
+  strong,
+  b {
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+    text-shadow: none !important;
+  }
+
+  .app-sub,
+  .muted,
+  .window,
+  .tiny,
+  .metric-label,
+  .metric-sub,
+  .mini-text,
+  .text,
+  .phase-quote,
+  .energy-meaning,
+  .state-stack-sub {
+    color: #456b80 !important;
+    -webkit-text-fill-color: #456b80 !important;
+    opacity: 1 !important;
+  }
+
+  .section-title,
+  .eyebrow,
+  .output-label,
+  .state-stack-label,
+  .icy-field-label {
+    color: #18364a !important;
+    -webkit-text-fill-color: #18364a !important;
+    background: none !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+  }
+
+  .nav-btn,
+  .btn-ghost,
+  .btn-soft,
+  .state-btn,
+  .chip,
+  input,
+  textarea {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(250,253,255,0.56),
+        rgba(210,232,246,0.30)
+      ) !important;
+
+    border: 1px solid rgba(105,160,210,0.22) !important;
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+  }
+
+  .nav-btn.active,
+  .btn-primary,
+  .state-btn.active,
+  .chip.active {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,0.95),
+        rgba(215,238,255,0.78),
+        rgba(155,205,245,0.38)
+      ) !important;
+
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+    border-color: rgba(100,170,230,0.38) !important;
+
+    box-shadow:
+      inset 0 0 20px rgba(160,215,255,0.28),
+      0 8px 22px rgba(35,90,130,0.12) !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(69,107,128,0.62) !important;
+    opacity: 1 !important;
+  }
+
+  .bar {
+    background: rgba(80,145,205,0.12) !important;
+    border: 1px solid rgba(105,160,210,0.18) !important;
+  }
+
+  .fill {
+    background:
+      linear-gradient(90deg, #f8fcff, #c7e9ff, #4d8ec3) !important;
+
+    box-shadow:
+      0 0 14px rgba(120,185,235,0.32),
+      0 0 28px rgba(199,233,255,0.28) !important;
+  }
+
+  .icy-dock {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,0.70),
+        rgba(205,228,245,0.56)
+      ) !important;
+
+    border-top: 1px solid rgba(105,160,210,0.22) !important;
+    backdrop-filter: blur(18px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(130%) !important;
+  }
+
+  .icy-dock button {
+    color: #456b80 !important;
+    -webkit-text-fill-color: #456b80 !important;
+    opacity: 0.78 !important;
+  }
+
+  .icy-dock button.active {
+    color: #102a3a !important;
+    -webkit-text-fill-color: #102a3a !important;
+    opacity: 1 !important;
+    text-shadow: 0 0 10px rgba(120,185,235,0.22) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -7364,6 +7547,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
+
 
 
 
