@@ -7545,8 +7545,529 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(fixDesktopEmojis, 250);
 })();
 </script>
+
+
+
+
+
+
+
+<script id="icy-interpreter-manual-collapse">
+/* ===== INTERPRETER MANUAL CONTROLS COLLAPSE ===== */
+/* Keeps buttons, hides manual grid behind "Adjust state manually". */
+
+(function () {
+
+  function collapseInterpreterManualControls() {
+    const card = document.querySelector("#page-interpreter .card");
+    const simpleGrid = document.getElementById("simpleStateGrid");
+    if (!card || !simpleGrid) return;
+
+    const firstBlock = simpleGrid.closest(".output-block");
+    if (!firstBlock || firstBlock.dataset.manualWrapped === "1") return;
+
+    const blocksToWrap = [];
+    let node = firstBlock;
+
+    while (node && node.classList && node.classList.contains("output-block")) {
+      const hasManual =
+        node.querySelector("#simpleStateGrid") ||
+        node.querySelector("#refinedStateGrid") ||
+        node.querySelector("#secondaryStateGrid") ||
+        node.querySelector("#intensityChips");
+
+      if (hasManual) blocksToWrap.push(node);
+      node = node.nextElementSibling;
+    }
+
+    if (!blocksToWrap.length) return;
+
+    const details = document.createElement("details");
+    details.id = "manualStateAdjuster";
+    details.className = "output-block";
+    details.style.marginTop = "18px";
+
+    details.innerHTML = `
+      <summary style="font-weight:900; cursor:pointer;">
+        Adjust state manually
+      </summary>
+      <div class="tiny" style="margin-top:8px;">
+        Use this only if the suggested state does not fit.
+      </div>
+      <div id="manualStateAdjusterInner" style="margin-top:14px;"></div>
+    `;
+
+    card.insertBefore(details, blocksToWrap[0]);
+
+    const inner = details.querySelector("#manualStateAdjusterInner");
+
+    blocksToWrap.forEach(block => {
+      block.dataset.manualWrapped = "1";
+      inner.appendChild(block);
+    });
+  }
+
+  const oldRenderManualCollapse = window.render;
+
+  window.render = function () {
+    if (typeof oldRenderManualCollapse === "function") oldRenderManualCollapse();
+    collapseInterpreterManualControls();
+  };
+
+  document.addEventListener("DOMContentLoaded", collapseInterpreterManualControls);
+
+})();
+</script>
+
+
+
+
+
+<script id="icy-meaning-compact-flow">
+/* ===== MEANING COMPACT FLOW ===== */
+/* Meaning becomes: core loop first, deeper detail optional. */
+
+(function () {
+
+  function getFieldGroup(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+
+    if (el.parentElement && el.parentElement.classList.contains("icy-field-group")) {
+      return el.parentElement;
+    }
+
+    return el;
+  }
+
+  function compactMeaningPage() {
+    const page = document.getElementById("page-meaning");
+    if (!page) return;
+
+    const card = page.querySelector(".card");
+    const list = card ? card.querySelector(".list") : null;
+    if (!card || !list) return;
+
+    if (document.getElementById("meaningDeepDetail")) return;
+
+    const details = document.createElement("details");
+    details.id = "meaningDeepDetail";
+    details.className = "output-block";
+    details.style.marginTop = "14px";
+
+    details.innerHTML = `
+      <summary style="font-weight:900; cursor:pointer;">
+        Add deeper detail
+      </summary>
+      <div class="tiny" style="margin-top:8px;">
+        Optional. Use this only if the entry needs more texture.
+      </div>
+      <div id="meaningDeepDetailInner" style="margin-top:14px; display:grid; gap:12px;"></div>
+    `;
+
+    const saveBtn = document.getElementById("saveMeaningBtn");
+    const saveRow = saveBtn ? saveBtn.closest(".row") : null;
+
+    if (saveRow) {
+      list.insertBefore(details, saveRow);
+    } else {
+      list.appendChild(details);
+    }
+
+    const inner = document.getElementById("meaningDeepDetailInner");
+
+    const idsToMove = [
+      "emotionInput",
+      "actionInput",
+      "costInput",
+      "meaningNotesInput"
+    ];
+
+    idsToMove.forEach(id => {
+      const group = getFieldGroup(id);
+      if (group && inner && !inner.contains(group)) {
+        inner.appendChild(group);
+      }
+    });
+
+    const extraNotesLabel = document.getElementById("extraNotesLabel");
+    if (extraNotesLabel && inner && !inner.contains(extraNotesLabel)) {
+      inner.insertBefore(extraNotesLabel, getFieldGroup("meaningNotesInput"));
+      extraNotesLabel.textContent = "Extra notes";
+      extraNotesLabel.style.fontSize = "14px";
+      extraNotesLabel.style.letterSpacing = "0.12em";
+    }
+
+    const meaningIntro = card.querySelector(".muted");
+    if (meaningIntro) {
+      meaningIntro.textContent = "Capture the core loop first. Add deeper detail only if needed.";
+    }
+
+    const eventInput = document.getElementById("eventInput");
+    const meaningInput = document.getElementById("meaningInput");
+
+    if (eventInput) eventInput.placeholder = "What happened?";
+    if (meaningInput) meaningInput.placeholder = "What did you make it mean?";
+
+    const emotionInput = document.getElementById("emotionInput");
+    const actionInput = document.getElementById("actionInput");
+    const costInput = document.getElementById("costInput");
+    const notesInput = document.getElementById("meaningNotesInput");
+
+    if (emotionInput) emotionInput.placeholder = "State / feeling";
+    if (actionInput) actionInput.placeholder = "Action / urge";
+    if (costInput) costInput.placeholder = "Effect / result";
+    if (notesInput) notesInput.placeholder = "Extra notes (optional)";
+  }
+
+  function injectCompactMeaningStyles() {
+    if (document.getElementById("meaningCompactFlowStyles")) return;
+
+    const style = document.createElement("style");
+    style.id = "meaningCompactFlowStyles";
+    style.textContent = `
+      #meaningDeepDetail {
+        grid-column: 1 / -1;
+      }
+
+      #meaningDeepDetailInner .icy-field-group,
+      #meaningDeepDetailInner input,
+      #meaningDeepDetailInner textarea {
+        width: 100%;
+      }
+
+      @media (max-width: 999px) {
+        #page-meaning .card .muted:nth-of-type(2) {
+          display: none !important;
+        }
+
+        #meaningDeepDetail {
+          margin-top: 18px !important;
+        }
+
+        #meaningDeepDetail summary {
+          font-size: 24px !important;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function applyMeaningCompactFlow() {
+    injectCompactMeaningStyles();
+    compactMeaningPage();
+  }
+
+  const oldRenderMeaningCompact = window.render;
+
+  window.render = function () {
+    if (typeof oldRenderMeaningCompact === "function") oldRenderMeaningCompact();
+    applyMeaningCompactFlow();
+  };
+
+  document.addEventListener("DOMContentLoaded", applyMeaningCompactFlow);
+
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="icy-meaning-compression-style">
+/* ===== MEANING COMPRESSION MODE ===== */
+
+.compressed-hidden {
+  display: none !important;
+}
+
+#expandMeaningBtn {
+  margin-top: 14px !important;
+}
+
+#meaningCompactNotice {
+  margin-bottom: 18px;
+  color: #456b80;
+  line-height: 1.5;
+}
+</style>
+
+<script id="icy-meaning-compression-script">
+(function () {
+
+  function applyMeaningCompression() {
+
+    const page = document.getElementById("page-meaning");
+    if (!page) return;
+
+    const labels = Array.from(page.querySelectorAll("label"));
+
+    labels.forEach(label => {
+
+      const text = (label.textContent || "").toLowerCase();
+
+      if (
+        text.includes("state / feeling") ||
+        text.includes("action / urge") ||
+        text.includes("effect / result")
+      ) {
+
+        let section = label.closest(".field, .input-group, .stack, div");
+
+        if (section) {
+          section.classList.add("compressed-hidden");
+        }
+      }
+    });
+
+    let notice = document.getElementById("meaningCompactNotice");
+
+    if (!notice) {
+
+      notice = document.createElement("div");
+
+      notice.id = "meaningCompactNotice";
+
+      notice.innerHTML = `
+        Capture the core loop first.
+        You can expand deeper reflection only if needed.
+      `;
+
+      const firstCard = page.querySelector(".card");
+
+      if (firstCard) {
+        firstCard.insertBefore(notice, firstCard.firstChild);
+      }
+    }
+
+    let expandBtn = document.getElementById("expandMeaningBtn");
+
+    if (!expandBtn) {
+
+      expandBtn = document.createElement("button");
+
+      expandBtn.id = "expandMeaningBtn";
+
+      expandBtn.className = "btn";
+
+      expandBtn.type = "button";
+
+      expandBtn.textContent = "Add deeper reflection";
+
+      const saveBtn =
+        Array.from(page.querySelectorAll("button"))
+          .find(x =>
+            (x.textContent || "").toLowerCase().includes("save")
+          );
+
+      if (saveBtn && saveBtn.parentNode) {
+        saveBtn.parentNode.insertBefore(expandBtn, saveBtn);
+      }
+
+      expandBtn.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".compressed-hidden")
+          .forEach(el => {
+            el.classList.remove("compressed-hidden");
+          });
+
+        expandBtn.remove();
+      });
+    }
+  }
+
+  const oldRenderMeaningCompression = window.render;
+
+  window.render = function () {
+
+    if (typeof oldRenderMeaningCompression === "function") {
+      oldRenderMeaningCompression();
+    }
+
+    applyMeaningCompression();
+  };
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    applyMeaningCompression
+  );
+
+})();
+</script>
+
+
+<style id="icy-unified-state-reader-style">
+#ambientStateCard {
+  margin-bottom: 18px !important;
+}
+#ambientStateText {
+  color: #2b5268 !important;
+  -webkit-text-fill-color: #2b5268 !important;
+  opacity: 1 !important;
+}
+#ambientStateText b {
+  color: #102a3a !important;
+  -webkit-text-fill-color: #102a3a !important;
+}
+</style>
+
+<script id="icy-unified-state-reader">
+/* ===== UNIFIED STATE READER ===== */
+/* Interpreter now follows the same state logic as Home. */
+
+(function () {
+
+  function unifiedStateRead() {
+    const s = loadState ? loadState() : {};
+    const phase = String(s.phase || s.current_phase || s.state || "").toLowerCase();
+    const energy = String(s.energy_state || s.energyLevel || s.energy_level || "").toLowerCase();
+
+    const homeText = document.body.innerText.toLowerCase();
+
+    if (
+      phase.includes("recovery") ||
+      energy.includes("low") ||
+      homeText.includes("recovery") && homeText.includes("energy is limited")
+    ) {
+      return {
+        label: "Low Recovery",
+        refined: "low_recovery",
+        simple: "tired",
+        text: "Home is reading Recovery / Low, so interpretation should stay gentle. Keep pressure low until clarity gathers."
+      };
+    }
+
+    if (
+      phase.includes("flow") ||
+      energy.includes("steady") ||
+      homeText.includes("flow") ||
+      homeText.includes("steady")
+    ) {
+      return {
+        label: "Steady",
+        refined: "steady",
+        simple: "calm",
+        text: "Home is reading usable range. Interpretation can stay clean, steady, and direct."
+      };
+    }
+
+    if (
+      phase.includes("settle") ||
+      homeText.includes("settle")
+    ) {
+      return {
+        label: "Settling",
+        refined: "low_recovery",
+        simple: "tired",
+        text: "The window is thinning. Treat interpretation as lower-force and recovery-sensitive."
+      };
+    }
+
+    return {
+      label: "Current State",
+      refined: "",
+      simple: "",
+      text: "Use the prompts below, or adjust manually if this read does not fit."
+    };
+  }
+
+  function ensureUnifiedCard() {
+    const card = document.querySelector("#page-interpreter .card");
+    if (!card) return;
+
+    let box = document.getElementById("ambientStateCard");
+
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "ambientStateCard";
+      box.className = "output-block";
+
+      box.innerHTML = `
+        <div class="output-label">Current read</div>
+        <div id="ambientStateText" class="output-text"></div>
+        <div class="tiny" style="margin-top:10px;">
+          This follows the Home state. Select a prompt below to carry it into Meaning.
+        </div>
+      `;
+
+      const firstBlock = card.querySelector(".output-block");
+      if (firstBlock) card.insertBefore(box, firstBlock);
+      else card.appendChild(box);
+    }
+
+    const read = unifiedStateRead();
+    const text = document.getElementById("ambientStateText");
+
+    if (text) {
+      text.innerHTML = `
+        Home currently reads <b>${read.label}</b>.
+        <br><br>
+        ${read.text}
+      `;
+    }
+
+    const badBtn = document.getElementById("acceptAmbientStateBtn");
+    if (badBtn) badBtn.remove();
+  }
+
+  const oldRenderUnifiedReader = window.render;
+
+  window.render = function () {
+    if (typeof oldRenderUnifiedReader === "function") oldRenderUnifiedReader();
+    ensureUnifiedCard();
+  };
+
+  document.addEventListener("DOMContentLoaded", ensureUnifiedCard);
+
+})();
+</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
