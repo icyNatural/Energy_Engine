@@ -7941,62 +7941,61 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
 
+
+
+
 <script id="icy-unified-state-reader">
-/* ===== UNIFIED STATE READER ===== */
-/* Interpreter now follows the same state logic as Home. */
+/* ===== UNIFIED STATE READER REFRESH FIX ===== */
+/* Reads Home output directly each render so refresh does not fall back to Steady. */
 
 (function () {
 
-  function unifiedStateRead() {
-    const s = loadState ? loadState() : {};
-    const phase = String(s.phase || s.current_phase || s.state || "").toLowerCase();
-    const energy = String(s.energy_state || s.energyLevel || s.energy_level || "").toLowerCase();
+  function readHomeSnapshot() {
+    const home = document.getElementById("page-home") || document.body;
+    const txt = (home.innerText || "").toLowerCase();
 
-    const homeText = document.body.innerText.toLowerCase();
+    const isRecovery =
+      txt.includes("recovery") &&
+      (
+        txt.includes("low") ||
+        txt.includes("energy is limited") ||
+        txt.includes("keep things light") ||
+        txt.includes("avoid pressure")
+      );
 
-    if (
-      phase.includes("recovery") ||
-      energy.includes("low") ||
-      homeText.includes("recovery") && homeText.includes("energy is limited")
-    ) {
+    const isFlow =
+      txt.includes("flow") ||
+      txt.includes("usable range") ||
+      txt.includes("make clean progress");
+
+    const isSettle =
+      txt.includes("settle") ||
+      txt.includes("start slowing things down") ||
+      txt.includes("window is thinning");
+
+    if (isRecovery) {
       return {
         label: "Low Recovery",
-        refined: "low_recovery",
-        simple: "tired",
         text: "Home is reading Recovery / Low, so interpretation should stay gentle. Keep pressure low until clarity gathers."
       };
     }
 
-    if (
-      phase.includes("flow") ||
-      energy.includes("steady") ||
-      homeText.includes("flow") ||
-      homeText.includes("steady")
-    ) {
+    if (isSettle) {
       return {
-        label: "Steady",
-        refined: "steady",
-        simple: "calm",
-        text: "Home is reading usable range. Interpretation can stay clean, steady, and direct."
+        label: "Settling",
+        text: "Home is reading a thinning window. Interpretation should stay low-force and recovery-sensitive."
       };
     }
 
-    if (
-      phase.includes("settle") ||
-      homeText.includes("settle")
-    ) {
+    if (isFlow) {
       return {
-        label: "Settling",
-        refined: "low_recovery",
-        simple: "tired",
-        text: "The window is thinning. Treat interpretation as lower-force and recovery-sensitive."
+        label: "Steady",
+        text: "Home is reading usable range. Interpretation can stay clean, steady, and direct."
       };
     }
 
     return {
       label: "Current State",
-      refined: "",
-      simple: "",
       text: "Use the prompts below, or adjust manually if this read does not fit."
     };
   }
@@ -8025,7 +8024,7 @@ document.addEventListener("DOMContentLoaded", function () {
       else card.appendChild(box);
     }
 
-    const read = unifiedStateRead();
+    const read = readHomeSnapshot();
     const text = document.getElementById("ambientStateText");
 
     if (text) {
@@ -8044,16 +8043,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.render = function () {
     if (typeof oldRenderUnifiedReader === "function") oldRenderUnifiedReader();
-    ensureUnifiedCard();
+
+    setTimeout(ensureUnifiedCard, 60);
+    setTimeout(ensureUnifiedCard, 300);
   };
 
-  document.addEventListener("DOMContentLoaded", ensureUnifiedCard);
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(ensureUnifiedCard, 60);
+    setTimeout(ensureUnifiedCard, 300);
+  });
 
 })();
 </script>
 
 </body>
 </html>
+
 
 
 
