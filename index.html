@@ -3449,6 +3449,132 @@ body {
 }
 </style>
 
+
+<style id="icy-interpreter-text-visibility-fix">
+/* ===== INTERPRETER TEXT VISIBILITY FIX ===== */
+/* Fixes hidden white/washed text inside Interpreter cards. */
+
+#page-interpreter,
+#page-interpreter .card,
+#page-interpreter .output-block {
+  color: #102a3a !important;
+  -webkit-text-fill-color: #102a3a !important;
+}
+
+#page-interpreter .muted,
+#page-interpreter .tiny,
+#page-interpreter .mini-text,
+#page-interpreter .output-text,
+#page-interpreter .state-stack-card,
+#page-interpreter .secondary-chip {
+  color: #456b80 !important;
+  -webkit-text-fill-color: #456b80 !important;
+  opacity: 1 !important;
+}
+
+#page-interpreter .section-title,
+#page-interpreter .output-label,
+#page-interpreter .state-stack-label {
+  color: #17384b !important;
+  -webkit-text-fill-color: #17384b !important;
+  opacity: 1 !important;
+}
+
+#page-interpreter .big,
+#page-interpreter .state-stack-value,
+#page-interpreter b,
+#page-interpreter strong {
+  color: #102a3a !important;
+  -webkit-text-fill-color: #102a3a !important;
+  opacity: 1 !important;
+}
+
+#page-interpreter .state-btn,
+#page-interpreter .chip,
+#page-interpreter button {
+  color: #102a3a !important;
+  -webkit-text-fill-color: #102a3a !important;
+  opacity: 1 !important;
+}
+
+#page-interpreter .state-btn.active,
+#page-interpreter .chip.active {
+  color: #081c28 !important;
+  -webkit-text-fill-color: #081c28 !important;
+}
+</style>
+
+
+<style id="icy-energy-text-fix">
+/* ===== ENERGY PAGE VISIBILITY FIX ===== */
+
+#page-energy,
+#page-energy * {
+  text-shadow: none !important;
+}
+
+/* Main readable text */
+#page-energy,
+#page-energy p,
+#page-energy span,
+#page-energy div,
+#page-energy label {
+  color: #23475d !important;
+  -webkit-text-fill-color: #23475d !important;
+}
+
+/* Metric titles */
+#page-energy .metric-card,
+#page-energy .metric-title,
+#page-energy .energy-card strong,
+#page-energy h2,
+#page-energy h3,
+#page-energy h4 {
+  color: #102a3a !important;
+  -webkit-text-fill-color: #102a3a !important;
+  opacity: 1 !important;
+}
+
+/* Hidden values / chips / indicators */
+#page-energy .metric-value,
+#page-energy .metric-score,
+#page-energy .chip,
+#page-energy .tag,
+#page-energy .status,
+#page-energy .indicator {
+  color: #2f6d95 !important;
+  -webkit-text-fill-color: #2f6d95 !important;
+  opacity: 1 !important;
+}
+
+/* Tiny faded descriptive text */
+#page-energy .muted,
+#page-energy .subtle,
+#page-energy .tiny,
+#page-energy .description {
+  color: #5f7d90 !important;
+  -webkit-text-fill-color: #5f7d90 !important;
+  opacity: 1 !important;
+}
+
+/* Prevent ghost-white text */
+#page-energy [style*="color: white"],
+#page-energy [style*="color:#fff"],
+#page-energy [style*="color: #fff"] {
+  color: #23475d !important;
+  -webkit-text-fill-color: #23475d !important;
+}
+
+/* Little circular score bubbles */
+#page-energy .score-bubble,
+#page-energy .metric-badge {
+  background: rgba(194, 235, 255, 0.45) !important;
+  border: 1px solid rgba(130, 205, 255, 0.5) !important;
+  color: #2f6d95 !important;
+  -webkit-text-fill-color: #2f6d95 !important;
+}
+</style>
+
 </head>
 <body>
 <div class="icy-shimmer"></div>
@@ -8091,6 +8217,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
+
 
 
 
