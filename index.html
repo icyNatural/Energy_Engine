@@ -7944,60 +7944,99 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
+
 <script id="icy-unified-state-reader">
-/* ===== UNIFIED STATE READER REFRESH FIX ===== */
-/* Reads Home output directly each render so refresh does not fall back to Steady. */
+/* ===== STRUCTURED HOME STATE READER ===== */
+/* No DOM text scraping. Interpreter follows the same computed state as Home. */
 
 (function () {
 
-  function readHomeSnapshot() {
-    const home = document.getElementById("page-home") || document.body;
-    const txt = (home.innerText || "").toLowerCase();
+  function getStructuredHomeState() {
+    const state = loadState();
+    const core = scoreV1(state);
+    const readiness = core.readiness;
+    const recoveryScore = Math.round(((readiness + 1) / 2) * 1000) / 10;
 
-    const isRecovery =
-      txt.includes("recovery") &&
-      (
-        txt.includes("low") ||
-        txt.includes("energy is limited") ||
-        txt.includes("keep things light") ||
-        txt.includes("avoid pressure")
+    const wakeTs = state.wake_ts;
+    const minsAwake = minsSince(wakeTs);
+    const napDur = computeNapDuration(state);
+    const napCredit = napCreditMinutes(napDur);
+    const phaseExtension = phaseExtensionMinutes(napDur);
+
+    let effAwake = null;
+    let phaseName = "Untracked";
+
+    if (minsAwake !== null) {
+      effAwake = Math.max(0, minsAwake - napCredit);
+      phaseName = phaseFromEffectiveAwake(effAwake, phaseExtension)[1];
+    }
+
+    let energyScore = 0;
+
+    if (effAwake !== null) {
+      const wakeDrag = Math.min((effAwake / 60) * 3, 45);
+      const napBonus = Math.min(napCredit * 0.35 + phaseExtension * 0.5, 22);
+      energyScore = clamp100(
+        Math.round((readiness * 50 + 50 + napBonus - wakeDrag - 5) * 10) / 10
       );
-
-    const isFlow =
-      txt.includes("flow") ||
-      txt.includes("usable range") ||
-      txt.includes("make clean progress");
-
-    const isSettle =
-      txt.includes("settle") ||
-      txt.includes("start slowing things down") ||
-      txt.includes("window is thinning");
-
-    if (isRecovery) {
-      return {
-        label: "Low Recovery",
-        text: "Home is reading Recovery / Low, so interpretation should stay gentle. Keep pressure low until clarity gathers."
-      };
     }
 
-    if (isSettle) {
-      return {
-        label: "Settling",
-        text: "Home is reading a thinning window. Interpretation should stay low-force and recovery-sensitive."
-      };
-    }
+    let level = "Low";
+    let meaning = "Energy is limited right now";
+    let action = "Keep things light and reduce unnecessary friction";
 
-    if (isFlow) {
-      return {
-        label: "Steady",
-        text: "Home is reading usable range. Interpretation can stay clean, steady, and direct."
-      };
+    if (energyScore >= 82 && recoveryScore >= 70) {
+      level = "Open";
+      meaning = "Capacity looks available right now";
+      action = "Use this window for focused work, decisions, or expression";
+    } else if (energyScore >= 62) {
+      level = "Steady";
+      meaning = "You have usable range right now";
+      action = "Make clean progress while the window is stable";
+    } else if (recoveryScore >= 72 && energyScore < 62) {
+      level = "Narrow";
+      meaning = "Recovery looks decent, but the current window is smaller";
+      action = "Use what is available deliberately before the window thins further";
+    } else if (phaseName === "Recovery") {
+      level = "Low";
+      meaning = "Your system is still coming online";
+      action = "Keep pressure low until clarity gathers more fully";
     }
 
     return {
-      label: "Current State",
-      text: "Use the prompts below, or adjust manually if this read does not fit."
+      phase: phaseName,
+      level,
+      meaning,
+      action,
+      energyScore,
+      recoveryScore
     };
+  }
+
+  function interpreterText(home) {
+    if (home.phase === "Recovery" && home.level === "Steady") {
+      return "Recovery phase, but usable range is available. Move forward lightly, without forcing pressure.";
+    }
+
+    if (home.phase === "Recovery" && home.level === "Low") {
+      return "Recovery phase and low energy. Keep interpretation gentle until clarity gathers.";
+    }
+
+    if (home.level === "Steady") {
+      return "Usable range is available. Interpretation can stay clean, steady, and direct.";
+    }
+
+    if (home.level === "Open") {
+      return "Capacity is available. Use the clarity while the window is clean.";
+    }
+
+    if (home.level === "Narrow") {
+      return "The window is smaller. Use what is available deliberately.";
+    }
+
+    return "Use the prompts below, or adjust manually if this read does not fit.";
   }
 
   function ensureUnifiedCard() {
@@ -8015,7 +8054,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="output-label">Current read</div>
         <div id="ambientStateText" class="output-text"></div>
         <div class="tiny" style="margin-top:10px;">
-          This follows the Home state. Select a prompt below to carry it into Meaning.
+          This follows the computed Home state. Select a prompt below to carry it into Meaning.
         </div>
       `;
 
@@ -8024,33 +8063,27 @@ document.addEventListener("DOMContentLoaded", function () {
       else card.appendChild(box);
     }
 
-    const read = readHomeSnapshot();
+    const home = getStructuredHomeState();
     const text = document.getElementById("ambientStateText");
 
     if (text) {
       text.innerHTML = `
-        Home currently reads <b>${read.label}</b>.
+        Home currently reads <b>${home.phase} / ${home.level}</b>.
         <br><br>
-        ${read.text}
+        ${interpreterText(home)}
       `;
     }
-
-    const badBtn = document.getElementById("acceptAmbientStateBtn");
-    if (badBtn) badBtn.remove();
   }
 
-  const oldRenderUnifiedReader = window.render;
+  const oldRenderStructuredReader = window.render;
 
   window.render = function () {
-    if (typeof oldRenderUnifiedReader === "function") oldRenderUnifiedReader();
-
-    setTimeout(ensureUnifiedCard, 60);
-    setTimeout(ensureUnifiedCard, 300);
+    if (typeof oldRenderStructuredReader === "function") oldRenderStructuredReader();
+    setTimeout(ensureUnifiedCard, 80);
   };
 
   document.addEventListener("DOMContentLoaded", function () {
-    setTimeout(ensureUnifiedCard, 60);
-    setTimeout(ensureUnifiedCard, 300);
+    setTimeout(ensureUnifiedCard, 80);
   });
 
 })();
@@ -8058,6 +8091,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
