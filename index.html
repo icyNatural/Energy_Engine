@@ -8215,8 +8215,108 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<style id="icy-disable-interpreter-style">
+/* ===== TEMPORARILY DISABLE INTERPRETER ===== */
+/* Keeps code intact, removes module from visible UI. */
+
+[data-page="interpreter"],
+button[data-page="interpreter"],
+.nav-item[data-page="interpreter"],
+.dock-item[data-page="interpreter"],
+#nav-interpreter,
+#dock-interpreter {
+  display: none !important;
+}
+
+/* If the app uses text-only nav buttons */
+button,
+.nav-item,
+.dock-item {
+  transition: opacity 0.2s ease;
+}
+</style>
+
+<script id="icy-disable-interpreter-script">
+/* ===== TEMPORARILY DISABLE INTERPRETER SAFELY ===== */
+/* No deletion. Redirects interpreter route/state to Home. */
+
+(function () {
+
+  function disableInterpreterLinks() {
+    const candidates = Array.from(
+      document.querySelectorAll("button, a, .nav-item, .dock-item")
+    );
+
+    candidates.forEach(el => {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const page = (el.dataset && el.dataset.page || "").toLowerCase();
+
+      if (
+        page === "interpreter" ||
+        page === "interpret" ||
+        text === "interpreter" ||
+        text === "interpret" ||
+        text.includes("🧠")
+      ) {
+        el.style.display = "none";
+        el.setAttribute("aria-hidden", "true");
+        el.tabIndex = -1;
+      }
+    });
+  }
+
+  function redirectInterpreterToHome() {
+    try {
+      const s = loadState();
+
+      if (
+        s.page === "interpreter" ||
+        s.page === "interpret"
+      ) {
+        s.page = "home";
+        saveState(s);
+      }
+    } catch (e) {}
+  }
+
+  const oldRenderDisableInterpreter = window.render;
+
+  window.render = function () {
+    redirectInterpreterToHome();
+
+    if (typeof oldRenderDisableInterpreter === "function") {
+      oldRenderDisableInterpreter();
+    }
+
+    disableInterpreterLinks();
+
+    const interpreterPage =
+      document.getElementById("page-interpreter") ||
+      document.getElementById("page-interpret");
+
+    if (interpreterPage) {
+      interpreterPage.style.display = "none";
+    }
+
+    const homePage = document.getElementById("page-home");
+
+    if (homePage) {
+      homePage.style.display = "";
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    redirectInterpreterToHome();
+    disableInterpreterLinks();
+  });
+
+})();
+</script>
+
 </body>
 </html>
+
 
 
 
