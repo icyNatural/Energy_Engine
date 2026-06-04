@@ -8362,8 +8362,63 @@ button,
 })();
 </script>
 
+
+<script id="icy-force-hide-interpreter-mobile">
+(function () {
+
+  function forceHideInterpreterMobile() {
+    if (window.innerWidth > 980) return;
+
+    const els = Array.from(document.querySelectorAll("button, a, div, span"));
+
+    els.forEach(el => {
+      const text = (el.textContent || "").trim().toLowerCase();
+
+      if (
+        text === "interpret" ||
+        text === "interpreter" ||
+        text.includes("🧠")
+      ) {
+        const btn = el.closest("button, a, .dock-item, .nav-item") || el;
+        btn.style.display = "none";
+        btn.setAttribute("aria-hidden", "true");
+      }
+    });
+
+    const dock =
+      document.querySelector(".bottom-nav") ||
+      document.querySelector(".bottom-dock") ||
+      document.querySelector(".mobile-dock") ||
+      document.querySelector(".dock");
+
+    if (dock) {
+      dock.style.display = "grid";
+      dock.style.gridTemplateColumns = "repeat(4, 1fr)";
+    }
+  }
+
+  const oldRenderForceHideInterpreter = window.render;
+
+  window.render = function () {
+    if (typeof oldRenderForceHideInterpreter === "function") {
+      oldRenderForceHideInterpreter();
+    }
+
+    setTimeout(forceHideInterpreterMobile, 50);
+    setTimeout(forceHideInterpreterMobile, 300);
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(forceHideInterpreterMobile, 50);
+    setTimeout(forceHideInterpreterMobile, 300);
+  });
+
+})();
+</script>
+
 </body>
 </html>
+
 
 
 
