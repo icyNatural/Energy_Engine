@@ -7842,7 +7842,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const saveBtn = document.getElementById("saveMeaningBtn");
     const saveRow = saveBtn ? saveBtn.closest(".row") : null;
 
-    if (saveRow) {
+    // Layout patches may wrap the save row outside this list. insertBefore
+    // requires a direct child; retain the row and use a safe append otherwise.
+    if (saveRow && saveRow.parentNode === list) {
       list.insertBefore(details, saveRow);
     } else {
       list.appendChild(details);
