@@ -69,7 +69,7 @@
       <label>What happened? <textarea id="dream-report" name="report" maxlength="12000" placeholder="I was in my actual room, except..." required></textarea></label>
       <div class="dream-actions">
         <button id="dream-dictate" type="button">🎙 Dictate report</button>
-        <span class="dream-muted">Dictation writes text; audio isn't stored or uploaded by Energy Engine.</span>
+        <span class="dream-muted">Dictation converts speech to text. Your browser may send audio to its speech provider; Energy Engine stores only the text.</span>
       </div>
       <details>
         <summary>Experience details (optional)</summary>
@@ -149,7 +149,7 @@
   const validDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s);
   const briefMinutes = value => {
     const n = Number(value);
-    if (!Number.isFinite(n) || n < 0) return "Sleep not logged";
+    if (value === null || value === undefined || value === "" || !Number.isFinite(n) || n < 0) return "Sleep not logged";
     return `Sleep logged: ${Math.floor(n/60)}h ${Math.round(n%60)}m`;
   };
   const labelFor = { "sleep-onset":"Sleep onset", "awakening":"Awakening", "nap":"Nap", "during-sleep":"During sleep (uncertain)", "unknown":"Uncertain" };
